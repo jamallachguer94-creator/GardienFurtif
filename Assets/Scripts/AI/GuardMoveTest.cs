@@ -36,7 +36,16 @@ public class GuardMoveTest : MonoBehaviour
         if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
         {
             arrived = true;
-            Debug.Log($"[GuardMoveTest] Arrived. pathStatus = {agent.pathStatus}");
+           Debug.Log($"[GuardMoveTest] Arrived. status={agent.pathStatus} pathEnd={agent.pathEndPosition} guardPos={transform.position}");
         }
     }
+    private void OnDrawGizmos()
+{
+    if (agent == null) return;
+    Vector3[] c = agent.path.corners;
+    Gizmos.color = Color.yellow;
+    for (int i = 0; i < c.Length - 1; i++) Gizmos.DrawLine(c[i], c[i + 1]);
+    Gizmos.color = Color.red;
+    Gizmos.DrawWireSphere(agent.destination, 0.3f);
+}
 }
