@@ -1,59 +1,49 @@
-# Secret Thief Basement Preview
+# Secret Workshop Basement Preview
 
-This is an optional, reversible preview for the `Office_Heist` scene.
+Branch: `feature/full-world-realism-preview`
 
-## Branch
-
-Use `feature/secret-thief-basement`. It is based on the latest `feature/player-gameplay` commit and does not modify `main` or the original gameplay branch.
+The thief's hideout is placed beneath the **05 - Workshop** side building in `OfficeCompoundExpansion_Generated`. It no longer opens the ground floor or changes the staircase of the main `OfficeHeist_Generated` building.
 
 ## Before building
 
-1. In GitHub Desktop, switch to `feature/secret-thief-basement` and pull the latest changes.
-2. Open the project in Unity and wait for scripts to compile.
-3. Open `Assets/Scenes/Office_Heist.unity`.
-4. For a clean visual review, duplicate the scene in the Project window and open the duplicate. Keep the original scene untouched.
-5. Confirm the scene contains `OfficeHeist_Generated`. If it does not, run `Tools > Gardien Furtif > Office Heist > Build or Rebuild Level` first.
+1. In GitHub Desktop, switch to `feature/full-world-realism-preview` and Pull.
+2. Open Unity 6.3 and load `Assets/Scenes/Office_Heist.unity`.
+3. Duplicate the scene first so the preview can be reviewed separately.
+4. Wait for Unity to finish script compilation.
+5. Make sure `OfficeCompoundExpansion_Generated` exists in the active scene. If it does not, run **Gardien Furtif > Environment > Complete Existing Office Compound**.
 
-## Build the preview
+## Build the basement
 
 Run:
 
 `Tools > Gardien Furtif > Secret Basement > 1. Build Preview`
 
-The builder adds a basement hideout below the office, extends the current staircase down, opens a reversible stairwell in the ground-floor slab, and adds:
-
-- Thief planning room with a planning table, heist map, monitors, laptop, documents and seating.
-- Gear workshop with workbench, lockers, tool board and storage crates.
-- Stolen-goods vault with shelves, safe and display area.
-- Escape tunnel with lighting and an exterior exit approach.
-- Basement wall/floor materials, copper accents, warm/cool lights and decorative details.
-- Four collectible items: hidden cash, encrypted laptop, gold bars and black briefcase.
-
-The preview also upgrades the existing office doors to interactive hinged doors.
+The builder:
+- Places the thief hideout below the side Workshop building, not below the main office.
+- Restores the main office slab, corridor/meeting floor finishes and original stair landing if an earlier main-office basement preview exists.
+- Cuts a concealed opening in the Workshop floor and adds a hinged dark-walnut trapdoor.
+- Adds a human-scale staircase, handrails and guide lights down into the hideout.
+- Keeps the planning room, gear workshop, stolen-goods vault, escape tunnel, furniture, props and four loot collectibles.
+- Uses a brighter slate/stone, warm oak, copper and amber palette while keeping the dark-walnut hatch/door finish.
 
 ## Controls
 
-- Approach a door, aim the camera at its panel and press `E` to open or close it.
-- Approach a collectible and press `E` to collect it through the existing Mission interaction system.
-- Existing player controls remain unchanged.
+1. Enter Play mode.
+2. Walk up to the closed Workshop floor hatch.
+3. Aim the camera at the hatch panel. The door prompt should show `[E] OPEN`.
+4. Press `E` to lift the hatch, descend the stairs and reach the hideout.
+5. Aim at the hatch from nearby and press `E` again to close it.
 
-The door interaction radius is approximately 3 metres. The player must use a camera tagged `MainCamera`, and the player object should retain its `Player` tag and `CharacterController`.
+The player needs a camera tagged `MainCamera`, and their collider should be on an object tagged `Player` or under a `CharacterController` tagged `Player`. Existing office doors continue to use the same `E` interaction.
 
-## Door-only actions
-
-- `Tools > Gardien Furtif > Secret Basement > 2. Upgrade Existing Office Doors`
-- `Tools > Gardien Furtif > Secret Basement > 4. Restore Original Office Doors`
-
-The original door leaves are preserved as inactive backups when upgraded.
-
-## Undo the preview
+## Remove and restore
 
 Run:
 
 `Tools > Gardien Furtif > Secret Basement > 3. Remove Preview & Restore Office`
 
-This removes the generated basement, restores the original ground-floor slab, corridor and meeting-room floor finishes, restores the old staircase landing, restores original office doors, and deletes the preview material folder.
+This removes the Workshop basement/trapdoor, re-enables the original Workshop floor, and restores the main office staircase/floor if a legacy main-office basement preview was present. It also restores previously converted office door leaves.
 
-## Validation note
+## Validation
 
-The files have been committed, but the generated geometry and runtime interactions still need to be opened and tested in Unity. If guards should patrol the basement, rebuild/bake the NavMesh for the new floor after the visual layout is approved.
+The new geometry and hatch controller are committed but still need to be tested in the Unity Editor/Play mode. Check the stair clearance, player fit, hatch trigger/raycast, and lighting. If guards need to patrol the basement after approval, rebake/update the NavMesh for the new level.
