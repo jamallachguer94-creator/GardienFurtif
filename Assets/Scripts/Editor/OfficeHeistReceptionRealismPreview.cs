@@ -752,8 +752,13 @@ public static class OfficeHeistReceptionRealismPreview
     {
         Transform group = CreateGroup(name, parent);
         group.position = pos;
+        GameObject colliderBody = CreateLocalBox(group, "CoffeeTable_ColliderBody", new Vector3(0f, 0.24f, 0f),
+            new Vector3(1.30f, 0.44f, 0.85f), null, true);
+        Renderer colliderRenderer = colliderBody.GetComponent<Renderer>();
+        if (colliderRenderer != null) colliderRenderer.enabled = false;
+
         CreateLocalBox(group, "CoffeeTable_Frame", new Vector3(0f, 0.39f, 0f),
-            new Vector3(1.38f, 0.10f, 0.92f), walnutDark, true);
+            new Vector3(1.38f, 0.10f, 0.92f), walnutDark, false);
         CreateLocalBox(group, "CoffeeTable_GlassTop", new Vector3(0f, 0.47f, 0f),
             new Vector3(1.32f, 0.035f, 0.86f), glass, false);
         CreateLocalBox(group, "CoffeeTable_Brass_Inlay", new Vector3(0f, 0.495f, 0f),
@@ -804,6 +809,9 @@ public static class OfficeHeistReceptionRealismPreview
 
     private static void BuildOfficeDetails(Transform parent)
     {
+        // Compact visitor self-service kiosk restores the original information point.
+        BuildVisitorKiosk(parent);
+
         // Reception room wall clock on the east partition.
         CreateWallClock(parent, "Reception_WallClock", new Vector3(-3.18f, 2.25f, -8.25f), Quaternion.Euler(0f, -90f, 0f));
 
@@ -849,6 +857,32 @@ public static class OfficeHeistReceptionRealismPreview
             new Vector3(0.06f, 0.018f, 1.10f), brass, false);
         CreateBox(parent, "Reception_Queue_Inlay_East", new Vector3(-4.05f, 0.026f, -5.15f),
             new Vector3(0.06f, 0.018f, 1.10f), brass, false);
+    }
+
+    private static void BuildVisitorKiosk(Transform parent)
+    {
+        Transform group = CreateGroup("Reception_VisitorKiosk", parent);
+        group.position = new Vector3(-4.60f, 0f, -8.20f);
+
+        CreateLocalBox(group, "Kiosk_ColliderBody", new Vector3(0f, 0.52f, 0f),
+            new Vector3(1.50f, 1.04f, 0.70f), walnutDark, true);
+        CreateLocalBox(group, "Kiosk_FrontVeneer", new Vector3(0f, 0.53f, -0.365f),
+            new Vector3(1.42f, 0.82f, 0.035f), walnut, false);
+        CreateLocalBox(group, "Kiosk_StoneTop", new Vector3(0f, 1.075f, 0f),
+            new Vector3(1.62f, 0.09f, 0.82f), stone, false);
+        CreateLocalBox(group, "Kiosk_BrassBand", new Vector3(0f, 0.18f, -0.39f),
+            new Vector3(1.36f, 0.018f, 0.018f), brass, false);
+
+        CreateLocalBox(group, "Kiosk_ScreenMount", new Vector3(0f, 1.20f, 0.08f),
+            new Vector3(0.12f, 0.18f, 0.12f), charcoal, false);
+        CreateLocalBox(group, "Kiosk_ScreenFrame", new Vector3(0f, 1.52f, -0.15f),
+            new Vector3(0.72f, 0.54f, 0.065f), charcoal, false);
+        CreateLocalBox(group, "Kiosk_TouchDisplay", new Vector3(0f, 1.52f, -0.188f),
+            new Vector3(0.65f, 0.47f, 0.012f), screenEmission, false);
+        CreateLocalBox(group, "Kiosk_StatusLight", new Vector3(0.30f, 1.23f, -0.23f),
+            new Vector3(0.025f, 0.025f, 0.012f), warmEmission, false);
+        CreateLocalBox(group, "Kiosk_Instruction_Plaque", new Vector3(0f, 0.83f, -0.392f),
+            new Vector3(0.66f, 0.18f, 0.018f), charcoal, false);
     }
 
     private static void CreateWallClock(Transform parent, string name, Vector3 pos, Quaternion rotation)
