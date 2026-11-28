@@ -50,4 +50,6 @@ Use **Remove Preview & Restore Materials** to remove all added geometry/actors a
 
 This is procedural geometry and procedural textures, not imported photorealistic asset packs or scanned 3D people/vehicles/animals. Unity runtime, lighting appearance, transparent glass, character facing, path clearance and frame rate still need testing in the actual scene. No Unity runtime test was run from this branch creation.
 
+Before rebuilding either generated building/compound root, remove the world preview first so its separate decorative objects do not remain over the rebuilt architecture.
+
 After building, save with Ctrl+S. Enter Play mode to check traffic, pedestrian and animal motion, verify that all of them remain outside the main office, and inspect the Console for compilation/runtime errors.
