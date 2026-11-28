@@ -315,6 +315,17 @@ public static class OfficeHeistSecretBasementBuilder
                 new Vector3(sideRightX - 0.12f, 0.09f, z),
                 new Vector3(0.06f, 0.045f, 0.22f), metalMat, false);
         }
+
+        // A hinged, dark-walnut trapdoor conceals the staircase. The root trigger
+        // stays in place while the hatch panel swings up when the player aims at it and presses E.
+        CreateExistingInteractiveDoor(
+            parent,
+            "Workshop_SecretHatch",
+            new Vector3(sideX, 0.08f, holeMinZ),
+            Quaternion.Euler(90f, 0f, 0f),
+            holeWidth - 0.08f,
+            holeDepth - 0.08f,
+            105f);
     }
 
     private static void SetOriginalStairLanding(Transform officeRoot, bool restore)
