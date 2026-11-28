@@ -10,7 +10,7 @@ This branch is based on `feature/reception-realism-preview`, so it keeps the sep
 2. Open Unity 6.3 and load `Assets/Scenes/Office_Heist.unity`.
 3. Make a duplicate copy of the scene before the first run.
 4. Let Unity finish script compilation.
-5. Make sure `OfficeHeist_Generated` (or legacy `OfficeEnvironment_Generated`) and/or `OfficeCompoundExpansion_Generated` exist in the active scene.
+5. Make sure `OfficeHeist_Generated` (or legacy `OfficeEnvironment_Generated`) and `OfficeCompoundExpansion_Generated` exist in the active scene. If the main office is missing, use **Tools > Gardien Furtif > Office Heist > Build or Rebuild Level**. If the compound is missing, use **Gardien Furtif > Environment > Complete Existing Office Compound**.
 
 ## Menus
 
@@ -24,15 +24,15 @@ Run the door-color command first if you only want to repair the existing scene. 
 
 ### Main office
 - Procedural plaster, stone, concrete, timber, metal, fabric and glass material palette with generated albedo/normal textures.
-- Exterior identity sign and restrained facade trims.
+- Exterior identity sign, window sills, corner reveals and roofline trims across the south, north, east and west elevations.
 - Room plaques for reception, security, archive, service, stairs, workspace, meeting, director, document archive, server room and offices.
-- Four framed wall-art pieces on selected blank wall spans.
+- Framed wall-art pieces on selected blank wall spans, including the reception area.
 
 ### Existing compound
 - Keeps the existing low-rise buildings, roads, gatehouses, fence, parking, trees and courtyard layout.
 - Adds readable signs for the existing annex buildings, entry awnings and downlights.
 - Adds wayfinding totems, benches, litter bins and planters in the outdoor courtyards.
-- Adds four procedural moving cars on the outer road network.
+- Adds four procedural moving cars on the outer road network, with ground-level wheels that rotate as they travel.
 - Adds four low-detail ambient pedestrians on outside paths/courtyards.
 - Adds one dog and one cat walking only in outside courtyard routes.
 
