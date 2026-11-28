@@ -1594,8 +1594,13 @@ public static class OfficeHeistLevelBuilder
         hinge.transform.position = hingePosition;
         hinge.transform.rotation = hingeRotation;
 
+        GameObject pivotObject = new GameObject("SwingPivot");
+        Undo.RegisterCreatedObjectUndo(pivotObject, "Create Door Swing Pivot");
+        pivotObject.transform.SetParent(hinge.transform, false);
+        Transform pivot = pivotObject.transform;
+
         GameObject panel = CreateLocalBox(
-            hinge.transform,
+            pivot,
             "DoorPanel",
             new Vector3(width * 0.5f, height * 0.5f, 0f),
             new Vector3(width, height, 0.10f),
@@ -1603,7 +1608,7 @@ public static class OfficeHeistLevelBuilder
             true);
 
         CreateLocalBox(
-            hinge.transform,
+            pivot,
             "DoorInset",
             new Vector3(width * 0.5f, height * 0.55f, -0.058f),
             new Vector3(width * 0.68f, height * 0.52f, 0.018f),
@@ -1613,7 +1618,7 @@ public static class OfficeHeistLevelBuilder
         GameObject handle = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         Undo.RegisterCreatedObjectUndo(handle, "Create Office Door Handle");
         handle.name = "DoorHandle";
-        handle.transform.SetParent(hinge.transform, false);
+        handle.transform.SetParent(pivot, false);
         handle.transform.localPosition = new Vector3(width * 0.84f, height * 0.48f, -0.085f);
         handle.transform.localScale = Vector3.one * 0.085f;
         handle.GetComponent<Renderer>().sharedMaterial = matMetalBrushed;
@@ -1630,7 +1635,7 @@ public static class OfficeHeistLevelBuilder
         body.useGravity = false;
 
         OfficeDoorController controller = hinge.AddComponent<OfficeDoorController>();
-        controller.Configure(panel.transform, doorName, openAngle, 5.5f);
+        controller.Configure(pivot, panel.transform, doorName, openAngle, 5.5f);
     }
 
     private static void BuildDoorFrameAlongX(Transform parent, string name, Vector3 baseCenter, float width, float height, float thickness, bool isWideArch)
