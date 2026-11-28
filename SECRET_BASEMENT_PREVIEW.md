@@ -34,7 +34,9 @@ The builder:
 4. Press `E` to lift the hatch, descend the stairs and reach the hideout.
 5. Aim at the hatch from nearby and press `E` again to close it.
 
-The player needs a camera tagged `MainCamera`, and their collider should be on an object tagged `Player` or under a `CharacterController` tagged `Player`. Existing office doors continue to use the same `E` interaction.
+The player needs a camera tagged `MainCamera`, and their collider should be on an object tagged `Player` or under a `CharacterController` tagged `Player`.
+
+For older office scenes with static office doors, run **Tools > Gardien Furtif > Secret Basement > 2. Upgrade Existing Office Doors** once. The updated office builder already creates interactive doors for newly generated office layouts. Use **4. Restore Original Office Doors** to return the original static office door leaves.
 
 ## Remove and restore
 
