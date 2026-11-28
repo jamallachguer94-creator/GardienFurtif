@@ -334,12 +334,13 @@ public static class GardienFurtifWorldRealismPreview
 
         // Keep brass/steel handles and decorative insets in their own materials.
         if (name.Contains("handle") || name.Contains("knob") ||
-            name.Contains("hinge") || name.Contains("inset") || name.Contains("metal"))
+            name.Contains("hinge") || name.Contains("metal"))
             return false;
 
         return name.Contains("jamb") ||
                name.Contains("headertrim") ||
                name.Contains("openleaf") ||
+               name.Contains("inset") ||
                name == "doorpanel" ||
                name.StartsWith("doorpanel_", StringComparison.Ordinal);
     }
