@@ -639,7 +639,7 @@ public static class OfficeHeistSecretBasementBuilder
         BuildWallAlongZ(walls, "Basement_PlanningNorthPartition", 5.2f, -7.2f, 7.2f, 0f, 1.85f);
 
         // Door at the bottom of the new stair flight.
-        BuildWallAlongZ(walls, "Basement_StairBulkhead", -7.0f, 10.85f, 13.15f, 12f, 1.90f);
+        BuildWallAlongZ(walls, "Basement_StairBulkhead", -7.0f, 7.8f, 12.2f, 10f, 4.0f);
 
         for (int i = 0; i < 15; i++)
         {
