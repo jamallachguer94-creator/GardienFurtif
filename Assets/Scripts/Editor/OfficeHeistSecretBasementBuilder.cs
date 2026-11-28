@@ -13,7 +13,10 @@ using UnityEngine.SceneManagement;
 public static class OfficeHeistSecretBasementBuilder
 {
     private const string OfficeRootName = "OfficeHeist_Generated";
-    private const string PreviewRootName = "OfficeHeist_SecretBasement_PREVIEW";
+    private const string PreviewRootName = "Workshop_SecretBasement_PREVIEW";
+    private const string LegacyPreviewRootName = "OfficeHeist_SecretBasement_PREVIEW";
+    private const string WorkshopFloorBackupName = "OriginalWorkshopFloor_BACKUP";
+    private const string ScaledGeometryName = "BasementScaledGeometry";
     private const string ChangesName = "BasementStairOpening_Changes";
     private const string SlabBackupName = "GF_Structural_Slab__PreviewBackup";
     private const string CorridorBackupName = "GF_Finish_MainCorridor__PreviewBackup";
@@ -48,70 +51,88 @@ public static class OfficeHeistSecretBasementBuilder
     public static void BuildPreview()
     {
         Scene scene = SceneManager.GetActiveScene();
-
         if (!string.Equals(scene.name, "Office_Heist", System.StringComparison.OrdinalIgnoreCase))
         {
             bool continueHere = EditorUtility.DisplayDialog(
                 "Secret Basement Preview",
-                $"The active scene is '{scene.name}'. Open 'Office_Heist' for the intended preview.\n\nBuild here anyway?",
+                $"The active scene is '{scene.name}'. Open 'Office_Heist' for the intended preview.\\n\\nBuild here anyway?",
                 "Build Here", "Cancel");
             if (!continueHere) return;
         }
 
-        GameObject officeObject = GameObject.Find(OfficeRootName);
-        if (officeObject == null)
-        {
-            EditorUtility.DisplayDialog(
-                "Secret Basement Preview",
-                "OfficeHeist_Generated was not found. Open Office_Heist and build the existing office environment first.",
-                "OK");
-            return;
-        }
+        GameObject compoundObject = GameObject.Find("OfficeCompoundExpansion_Generated");
+        Transform buildings = compoundObject != null
+            ? compoundObject.transform.Find("10 Additional Low-Rise Buildings")
+            : null;
+        Transform workshop = buildings != null ? buildings.Find("05 - Workshop") : null;
+        Transform originalWorkshopFloor = workshop != null ? workshop.Find("Floor") : null;
 
-        Transform floors = officeObject.transform.Find("Building_Architecture/GroundFloor/Floors");
-        if (floors == null || floors.Find("GF_Structural_Slab") == null &&
-            floors.Find(SlabBackupName) == null)
+        if (workshop == null || (originalWorkshopFloor == null && workshop.Find(PreviewRootName) == null))
         {
             EditorUtility.DisplayDialog(
-                "Secret Basement Preview",
-                "The expected GroundFloor/Floors hierarchy or structural slab was not found. No changes were made.",
+                "Secret Workshop Basement",
+                "The side-building '05 - Workshop' was not found. Build OfficeCompoundExpansion_Generated first using Gardien Furtif > Environment > Complete Existing Office Compound.",
                 "OK");
             return;
         }
 
         if (!EditorUtility.DisplayDialog(
-                "Build Secret Thief Basement",
-                "This creates a reversible underground level and extends the existing stairwell downwards.\n\n" +
-                "The original floor pieces are kept as disabled backups. Use 'Remove Preview & Restore Office' to undo the preview.",
-                "Build Preview", "Cancel"))
+            "Build Secret Workshop Basement",
+            "The secret hideout will be moved beneath the side Workshop building.\\n\\n" +
+            "The main office floor and staircase will be restored exactly as before. " +
+            "A new concealed stair opening will be added inside the Workshop. " +
+            "Use Remove Preview to restore the Workshop floor.",
+            "Build Preview", "Cancel"))
             return;
 
         int undoGroup = Undo.GetCurrentGroup();
-        Undo.SetCurrentGroupName("Build Secret Thief Basement Preview");
+        Undo.SetCurrentGroupName("Build Secret Workshop Basement Preview");
 
-        RemovePreviewRoot(officeObject.transform);
-        RestoreGroundFloorOpening(floors);
-        SetOriginalStairLanding(officeObject.transform, true);
-        EnsureMaterials();
+        // Remove an earlier copy of the new Workshop preview and restore its original floor.
+        RemoveWorkshopPreview(workshop);
 
-        if (!CreateGroundFloorOpening(floors))
+        // Remove the older basement version (if present) and restore the main office staircase,
+        // slab and floor finishes. This deliberately does not create an opening in the main office.
+        GameObject officeObject = GameObject.Find(OfficeRootName);
+        if (officeObject != null)
         {
-            EditorUtility.DisplayDialog("Secret Basement Preview", "Could not create the stairwell opening. The original floor was restored.", "OK");
+            Transform floors = officeObject.transform.Find("Building_Architecture/GroundFloor/Floors");
+            RemoveLegacyMainOfficePreview(officeObject.transform);
+            if (floors != null) RestoreGroundFloorOpening(floors);
+            SetOriginalStairLanding(officeObject.transform, true);
+        }
+
+        originalWorkshopFloor = workshop.Find("Floor");
+        if (originalWorkshopFloor == null)
+        {
+            EditorUtility.DisplayDialog(
+                "Secret Workshop Basement",
+                "The original Workshop floor could not be restored. No new basement was built.",
+                "OK");
             return;
         }
-        SetOriginalStairLanding(officeObject.transform, false);
-        int upgradedDoors = UpgradeExistingOfficeDoors(officeObject.transform);
+
+        EnsureMaterials();
 
         GameObject preview = new GameObject(PreviewRootName);
-        Undo.RegisterCreatedObjectUndo(preview, "Create Secret Basement Preview");
-        preview.transform.SetParent(officeObject.transform, false);
+        Undo.RegisterCreatedObjectUndo(preview, "Create Secret Workshop Basement Preview");
+        preview.transform.SetParent(workshop, false);
 
-        Transform architecture = CreateGroup("Architecture", preview.transform);
-        Transform stairs = CreateGroup("SecretStaircase", preview.transform);
-        Transform rooms = CreateGroup("RoomsAndFurniture", preview.transform);
-        Transform props = CreateGroup("PropsAndLoot", preview.transform);
-        Transform lights = CreateGroup("Lighting", preview.transform);
-        Transform tunnel = CreateGroup("EscapeTunnel", preview.transform);
+        Transform floorOpening = CreateGroup("WorkshopFloorOpening", preview.transform);
+        Transform floorBackup = CreateGroup(WorkshopFloorBackupName, preview.transform);
+        Undo.SetTransformParent(originalWorkshopFloor, floorBackup, "Back up original Workshop floor");
+        originalWorkshopFloor.name = "Floor";
+        originalWorkshopFloor.gameObject.SetActive(false);
+
+        BuildWorkshopFloorOpening(floorOpening);
+
+        Transform geometry = CreateGroup(ScaledGeometryName, preview.transform);
+        Transform architecture = CreateGroup("Architecture", geometry);
+        Transform stairs = CreateGroup("SecretStaircase", geometry);
+        Transform rooms = CreateGroup("RoomsAndFurniture", geometry);
+        Transform props = CreateGroup("PropsAndLoot", geometry);
+        Transform lights = CreateGroup("Lighting", geometry);
+        Transform tunnel = CreateGroup("EscapeTunnel", geometry);
 
         BuildBasementArchitecture(architecture);
         BuildStairExtension(stairs);
@@ -120,11 +141,24 @@ public static class OfficeHeistSecretBasementBuilder
         BuildLighting(lights);
         BuildEscapeTunnel(tunnel);
 
+        // The original hideout is 30 x 20 m. A 0.40 horizontal scale brings it to
+        // 12 x 8 m, fitting beneath the 12 x 10 m Workshop. The staircase is
+        // compensated horizontally so its treads and width remain human-sized.
+        stairs.localScale = new Vector3(3f, 1f, 2f);
+        stairs.localPosition = new Vector3(-26f, 0f, 0f);
+        geometry.position = new Vector3(-43f, 0f, 8f);
+        geometry.localScale = new Vector3(0.40f, 1f, 0.40f);
+
         Selection.activeGameObject = preview;
         EditorSceneManager.MarkSceneDirty(scene);
         Undo.CollapseUndoOperations(undoGroup);
+        AssetDatabase.SaveAssets();
 
-        Debug.Log($"[Secret Basement] Preview built. Upgraded {upgradedDoors} existing office doors. Aim at any door and press E to open/close; loot uses the existing Mission interaction system.");
+        Debug.Log("[Secret Workshop Basement] Built beneath 05 - Workshop. The main office slab, floor finishes and staircase have been restored. The new entrance is inside the Workshop.");
+        EditorUtility.DisplayDialog(
+            "Secret Workshop Basement Built",
+            "The hideout is now beneath the side Workshop building. The main office staircase is back to its original state. Save the scene with Ctrl+S.",
+            "OK");
     }
 
     [MenuItem("Tools/Gardien Furtif/Secret Basement/2. Upgrade Existing Office Doors", false, 20)]
@@ -162,35 +196,120 @@ public static class OfficeHeistSecretBasementBuilder
     [MenuItem("Tools/Gardien Furtif/Secret Basement/3. Remove Preview & Restore Office", false, 30)]
     public static void RemovePreviewAndRestoreOffice()
     {
+        GameObject compoundObject = GameObject.Find("OfficeCompoundExpansion_Generated");
+        Transform buildings = compoundObject != null
+            ? compoundObject.transform.Find("10 Additional Low-Rise Buildings")
+            : null;
+        Transform workshop = buildings != null ? buildings.Find("05 - Workshop") : null;
         GameObject officeObject = GameObject.Find(OfficeRootName);
-        if (officeObject == null)
+
+        if (workshop == null && officeObject == null)
         {
-            EditorUtility.DisplayDialog("Secret Basement Preview", "OfficeHeist_Generated was not found in the active scene.", "OK");
+            EditorUtility.DisplayDialog("Secret Basement Preview", "Neither the Workshop preview nor the main office was found.", "OK");
             return;
         }
 
         if (!EditorUtility.DisplayDialog(
-                "Remove Secret Basement Preview",
-                "Delete the basement preview, restore the original floor and corridor finish, and remove its generated materials?",
-                "Remove & Restore", "Cancel"))
+            "Remove Secret Workshop Basement",
+            "Remove the hideout beneath the Workshop, restore the original Workshop floor, and restore the main office staircase if an older preview is present?",
+            "Remove & Restore", "Cancel"))
             return;
 
-        Transform floors = officeObject.transform.Find("Building_Architecture/GroundFloor/Floors");
-        RemovePreviewRoot(officeObject.transform);
-        if (floors != null) RestoreGroundFloorOpening(floors);
-        SetOriginalStairLanding(officeObject.transform, true);
-        int restoredDoors = RestoreOriginalOfficeDoors(officeObject.transform);
+        if (workshop != null) RemoveWorkshopPreview(workshop);
 
-        AssetDatabase.DeleteAsset(MaterialFolder);
+        int restoredDoors = 0;
+        if (officeObject != null)
+        {
+            Transform floors = officeObject.transform.Find("Building_Architecture/GroundFloor/Floors");
+            RemoveLegacyMainOfficePreview(officeObject.transform);
+            if (floors != null) RestoreGroundFloorOpening(floors);
+            SetOriginalStairLanding(officeObject.transform, true);
+            restoredDoors = RestoreOriginalOfficeDoors(officeObject.transform);
+        }
+
+        AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
         EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
-        Debug.Log($"[Secret Basement] Preview removed; original floor and {restoredDoors} original office doors restored.");
+        Debug.Log("[Secret Workshop Basement] Preview removed; Workshop floor and main-office staircase restored. Door leaves restored: " + restoredDoors);
+        EditorUtility.DisplayDialog(
+            "Secret Workshop Basement Removed",
+            "The Workshop floor is restored. The main office staircase and floor are also restored to their original layout.",
+            "OK");
     }
 
-    private static void RemovePreviewRoot(Transform officeRoot)
+    private static void RemoveLegacyMainOfficePreview(Transform officeRoot)
     {
-        Transform preview = officeRoot.Find(PreviewRootName);
-        if (preview != null) Undo.DestroyObjectImmediate(preview.gameObject);
+        if (officeRoot == null) return;
+        Transform legacyPreview = officeRoot.Find(LegacyPreviewRootName);
+        if (legacyPreview != null) Undo.DestroyObjectImmediate(legacyPreview.gameObject);
+    }
+
+    private static void RemoveWorkshopPreview(Transform workshop)
+    {
+        if (workshop == null) return;
+        Transform preview = workshop.Find(PreviewRootName);
+        if (preview == null) return;
+
+        Transform backup = preview.Find(WorkshopFloorBackupName);
+        Transform originalFloor = backup != null ? backup.Find("Floor") : null;
+        if (originalFloor != null)
+        {
+            Undo.SetTransformParent(originalFloor, workshop, "Restore original Workshop floor");
+            originalFloor.name = "Floor";
+            originalFloor.gameObject.SetActive(true);
+        }
+
+        Undo.DestroyObjectImmediate(preview.gameObject);
+    }
+
+    private static void BuildWorkshopFloorOpening(Transform parent)
+    {
+        // Workshop footprint: X [-49,-37], Z [3,13]. The stair shaft is on the east side,
+        // clear of the entry door, cabinet and work table.
+        const float floorY = -0.045f;
+        const float thickness = 0.12f;
+        const float holeCenterX = -39f;
+        const float holeWidth = 2.64f;
+        const float holeMinZ = 5.42f;
+        const float holeMaxZ = 10.34f;
+        const float holeDepth = holeMaxZ - holeMinZ;
+
+        CreateBox(parent, "WorkshopFloor_West",
+            new Vector3(-44.66f, floorY, 8f), new Vector3(8.68f, thickness, 10f), floorMat, true);
+        CreateBox(parent, "WorkshopFloor_East",
+            new Vector3(-37.34f, floorY, 8f), new Vector3(0.68f, thickness, 10f), floorMat, true);
+        CreateBox(parent, "WorkshopFloor_South",
+            new Vector3(holeCenterX, floorY, (3f + holeMinZ) * 0.5f),
+            new Vector3(holeWidth, thickness, holeMinZ - 3f), floorMat, true);
+        CreateBox(parent, "WorkshopFloor_North",
+            new Vector3(holeCenterX, floorY, (holeMaxZ + 13f) * 0.5f),
+            new Vector3(holeWidth, thickness, 13f - holeMaxZ), floorMat, true);
+
+        // Warm timber and metal edging make the concealed shaft read as a deliberate floor hatch.
+        float frameY = 0.055f;
+        float sideX = holeCenterX - holeWidth * 0.5f;
+        float sideRightX = holeCenterX + holeWidth * 0.5f;
+        float frameDepth = holeDepth + 0.12f;
+        CreateBox(parent, "WorkshopHatch_Frame_West",
+            new Vector3(sideX, frameY, (holeMinZ + holeMaxZ) * 0.5f),
+            new Vector3(0.09f, 0.10f, frameDepth), darkWoodMat, false);
+        CreateBox(parent, "WorkshopHatch_Frame_East",
+            new Vector3(sideRightX, frameY, (holeMinZ + holeMaxZ) * 0.5f),
+            new Vector3(0.09f, 0.10f, frameDepth), darkWoodMat, false);
+        CreateBox(parent, "WorkshopHatch_Frame_South",
+            new Vector3(holeCenterX, frameY, holeMinZ),
+            new Vector3(holeWidth, 0.10f, 0.09f), trimMat, false);
+        CreateBox(parent, "WorkshopHatch_Frame_North",
+            new Vector3(holeCenterX, frameY, holeMaxZ),
+            new Vector3(holeWidth, 0.10f, 0.09f), trimMat, false);
+
+        for (int i = 0; i < 7; i++)
+        {
+            float z = holeMinZ + 0.35f + i * 0.68f;
+            CreateBox(parent, "WorkshopHatch_SideGrip_" + i,
+                new Vector3(sideRightX - 0.12f, 0.09f, z),
+                new Vector3(0.06f, 0.045f, 0.22f), metalMat, false);
+        }
     }
 
     private static void SetOriginalStairLanding(Transform officeRoot, bool restore)
@@ -504,7 +623,7 @@ public static class OfficeHeistSecretBasementBuilder
         BuildWallAlongZ(walls, "Basement_PlanningNorthPartition", 5.2f, -7.2f, 7.2f, 0f, 1.85f);
 
         // Door at the bottom of the new stair flight.
-        BuildWallAlongZ(walls, "Basement_StairBulkhead", -4.48f, 10.85f, 13.15f, 12f, 1.65f);
+        BuildWallAlongZ(walls, "Basement_StairBulkhead", -2.75f, 10.85f, 13.15f, 12f, 1.90f);
 
         for (int i = 0; i < 15; i++)
         {
@@ -670,9 +789,9 @@ public static class OfficeHeistSecretBasementBuilder
         CreateBox(steps, "Basement_TopLandingPad", new Vector3(12f, 0.01f, 2.55f),
             new Vector3(2.2f, 0.02f, 0.72f), landingMaterial, false);
 
-        const int count = 18;
+        const int count = 14;
         const float startZ = 2.2f;
-        const float endZ = -3.8f;
+        const float endZ = -2.2f;
         const float totalDrop = 3.35f;
         float tread = (startZ - endZ) / count;
         float rise = totalDrop / count;
@@ -690,13 +809,13 @@ public static class OfficeHeistSecretBasementBuilder
         }
 
         CreateBox(steps, "BasementStair_BottomLanding",
-            new Vector3(12f, FloorY + 0.06f, -4.30f),
+            new Vector3(12f, FloorY + 0.06f, -2.60f),
             new Vector3(2.0f, 0.12f, 1.1f), floorAccentMat, true);
 
         Vector3 leftStart = new Vector3(11.13f, 0.92f, 2.0f);
-        Vector3 leftEnd = new Vector3(11.13f, -2.42f, -3.75f);
+        Vector3 leftEnd = new Vector3(11.13f, -2.42f, -2.40f);
         Vector3 rightStart = new Vector3(12.87f, 0.92f, 2.0f);
-        Vector3 rightEnd = new Vector3(12.87f, -2.42f, -3.75f);
+        Vector3 rightEnd = new Vector3(12.87f, -2.42f, -2.40f);
         CreateBeam(rails, "LeftStairHandrail", leftStart, leftEnd, 0.075f, metalMat);
         CreateBeam(rails, "RightStairHandrail", rightStart, rightEnd, 0.075f, metalMat);
 
@@ -711,8 +830,8 @@ public static class OfficeHeistSecretBasementBuilder
 
         for (int i = 0; i < 6; i++)
         {
-            float z = 1.4f - i * 0.86f;
-            float y = -0.15f - i * 0.47f;
+            float z = 1.55f - i * 0.68f;
+            float y = -0.15f - i * 0.55f;
             CreateBox(rails, $"StairGuideLight_L_{i + 1}",
                 new Vector3(11.03f, y, z), new Vector3(0.06f, 0.10f, 0.30f), amberMat, false);
             CreateBox(rails, $"StairGuideLight_R_{i + 1}",
@@ -991,19 +1110,19 @@ public static class OfficeHeistSecretBasementBuilder
 
     private static void EnsureMaterials()
     {
-        floorMat = GetOrCreateMaterial("Basement_Floor_DeepSlate", new Color(0.15f, 0.19f, 0.23f), 0.20f, 0.42f);
-        floorAccentMat = GetOrCreateMaterial("Basement_Floor_Charcoal", new Color(0.23f, 0.27f, 0.30f), 0.10f, 0.32f);
-        wallMat = GetOrCreateMaterial("Basement_Wall_MidnightBlue", new Color(0.12f, 0.19f, 0.25f), 0.05f, 0.22f);
-        wallAccentMat = GetOrCreateMaterial("Basement_Wall_SlateBlue", new Color(0.23f, 0.31f, 0.36f), 0.08f, 0.28f);
-        trimMat = GetOrCreateMaterial("Basement_Trim_BurnishedCopper", new Color(0.62f, 0.31f, 0.13f), 0.55f, 0.58f);
+        floorMat = GetOrCreateMaterial("Basement_Floor_DeepSlate", new Color(0.28f, 0.32f, 0.34f), 0.12f, 0.24f);
+        floorAccentMat = GetOrCreateMaterial("Basement_Floor_Charcoal", new Color(0.38f, 0.41f, 0.40f), 0.08f, 0.22f);
+        wallMat = GetOrCreateMaterial("Basement_Wall_MidnightBlue", new Color(0.24f, 0.31f, 0.34f), 0.02f, 0.18f);
+        wallAccentMat = GetOrCreateMaterial("Basement_Wall_SlateBlue", new Color(0.45f, 0.49f, 0.45f), 0.04f, 0.20f);
+        trimMat = GetOrCreateMaterial("Basement_Trim_BurnishedCopper", new Color(0.72f, 0.43f, 0.22f), 0.38f, 0.44f);
         metalMat = GetOrCreateMaterial("Basement_Metal_BrushedSteel", new Color(0.48f, 0.55f, 0.60f), 0.78f, 0.62f);
         darkMetalMat = GetOrCreateMaterial("Basement_Metal_Charcoal", new Color(0.075f, 0.09f, 0.11f), 0.72f, 0.48f);
-        woodMat = GetOrCreateMaterial("Basement_Wood_WarmOak", new Color(0.42f, 0.27f, 0.16f), 0.02f, 0.36f);
-        darkWoodMat = GetOrCreateMaterial("Basement_Wood_DarkWalnut", new Color(0.18f, 0.11f, 0.075f), 0.02f, 0.38f);
+        woodMat = GetOrCreateMaterial("Basement_Wood_WarmOak", new Color(0.52f, 0.35f, 0.20f), 0.01f, 0.30f);
+        darkWoodMat = GetOrCreateMaterial("Basement_Wood_DarkWalnut", new Color(0.26f, 0.16f, 0.10f), 0.01f, 0.32f);
         fabricMat = GetOrCreateMaterial("Basement_Fabric_OliveGrey", new Color(0.26f, 0.31f, 0.30f), 0f, 0.16f);
-        screenMat = GetOrCreateMaterial("Basement_Screen_Cyan", new Color(0.04f, 0.38f, 0.49f), 0.12f, 0.65f, true);
-        amberMat = GetOrCreateMaterial("Basement_Emissive_Amber", new Color(0.95f, 0.40f, 0.10f), 0.1f, 0.50f, true);
-        tealMat = GetOrCreateMaterial("Basement_Emissive_Teal", new Color(0.05f, 0.68f, 0.72f), 0.1f, 0.50f, true);
+        screenMat = GetOrCreateMaterial("Basement_Screen_Cyan", new Color(0.10f, 0.48f, 0.54f), 0.10f, 0.55f, true);
+        amberMat = GetOrCreateMaterial("Basement_Emissive_Amber", new Color(1f, 0.58f, 0.22f), 0.08f, 0.42f, true);
+        tealMat = GetOrCreateMaterial("Basement_Emissive_Teal", new Color(0.12f, 0.55f, 0.55f), 0.08f, 0.42f, true);
         goldMat = GetOrCreateMaterial("Basement_Gold_Collectible", new Color(0.88f, 0.62f, 0.16f), 0.72f, 0.62f);
         paperMat = GetOrCreateMaterial("Basement_Paper_OffWhite", new Color(0.82f, 0.79f, 0.68f), 0f, 0.12f);
         doorMat = GetOrCreateMaterial("Basement_Door_Mahogany", new Color(0.22f, 0.12f, 0.08f), 0.08f, 0.46f);
