@@ -250,9 +250,10 @@ public static class GardienFurtifWorldRealismPreview
                     Renderer[] renderers = doors.GetComponentsInChildren<Renderer>(true);
                     for (int i = 0; i < renderers.Length; i++)
                     {
-                        if (renderers[i] == null || originalLeaf == null) continue;
-                        renderers[i].sharedMaterial = originalLeaf;
-                        EditorUtility.SetDirty(renderers[i]);
+                        Renderer renderer = renderers[i];
+                        if (renderer == null || originalLeaf == null || !IsOriginalWoodDoorPart(renderer)) continue;
+                        renderer.sharedMaterial = originalLeaf;
+                        EditorUtility.SetDirty(renderer);
                         count++;
                     }
                 }
@@ -324,6 +325,23 @@ public static class GardienFurtifWorldRealismPreview
         }
 
         return count;
+    }
+
+    private static bool IsOriginalWoodDoorPart(Renderer renderer)
+    {
+        if (renderer == null) return false;
+        string name = renderer.name.ToLowerInvariant();
+
+        // Keep brass/steel handles and decorative insets in their own materials.
+        if (name.Contains("handle") || name.Contains("knob") ||
+            name.Contains("hinge") || name.Contains("inset") || name.Contains("metal"))
+            return false;
+
+        return name.Contains("jamb") ||
+               name.Contains("headertrim") ||
+               name.Contains("openleaf") ||
+               name == "doorpanel" ||
+               name.StartsWith("doorpanel_", StringComparison.Ordinal);
     }
 
     private static bool IsDoorRenderer(Renderer renderer)
