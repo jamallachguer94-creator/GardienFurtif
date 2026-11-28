@@ -215,6 +215,6 @@ public class MissionResultsUI : MonoBehaviour
         if (current.buildIndex >= 0)
             SceneManager.LoadScene(current.buildIndex);
         else
-            Debug.LogError("[Mission Results] The current scene has no valid Build Index. Add Office_Heist to Build Settings before using Replay.");
+            SceneManager.LoadScene(current.name);
     }
 }
