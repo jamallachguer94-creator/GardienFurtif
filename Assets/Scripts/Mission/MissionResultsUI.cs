@@ -89,6 +89,8 @@ public class MissionResultsUI : MonoBehaviour
         if (rootOverlay == null) return;
         rootOverlay.SetActive(true);
 
+        // Freeze gameplay behind the results screen while keeping its UI interactive.
+        Time.timeScale = 0f;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
@@ -205,7 +207,14 @@ public class MissionResultsUI : MonoBehaviour
 
     public void ReplayCurrentMission()
     {
+        Time.timeScale = 1f;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
         Scene current = SceneManager.GetActiveScene();
-        SceneManager.LoadScene(current.buildIndex);
+        if (current.buildIndex >= 0)
+            SceneManager.LoadScene(current.buildIndex);
+        else
+            Debug.LogError("[Mission Results] The current scene has no valid Build Index. Add Office_Heist to Build Settings before using Replay.");
     }
 }
