@@ -608,7 +608,7 @@ public static class OfficeHeistReceptionRealismPreview
             }
         }
 
-        GameObject mouse = CreatePrimitive(group, "Mouse", PrimitiveType.Sphere,
+        GameObject mouse = CreateLocalPrimitive(group, "Mouse", PrimitiveType.Sphere,
             new Vector3(0.34f, 0.025f, -0.01f), new Vector3(0.075f, 0.045f, 0.12f), charcoal, false);
     }
 
@@ -650,7 +650,7 @@ public static class OfficeHeistReceptionRealismPreview
             new Vector3(0.10f, 0.09f, 0.10f), ceramic, false, Quaternion.identity);
         for (int i = 0; i < 5; i++)
         {
-            GameObject pen = CreatePrimitive(group, "Pen_" + i, PrimitiveType.Cylinder,
+            GameObject pen = CreateLocalPrimitive(group, "Pen_" + i, PrimitiveType.Cylinder,
                 new Vector3(-0.05f + i * 0.024f, 0.23f, (i % 2 == 0) ? 0.01f : -0.01f),
                 new Vector3(0.008f, 0.11f, 0.008f), brass, false);
             pen.transform.localRotation = Quaternion.Euler(0f, 0f, (i - 2) * 5f);
@@ -663,10 +663,10 @@ public static class OfficeHeistReceptionRealismPreview
         group.localPosition = localPos;
         CreateLocalCylinder(group, "Lamp_Base", new Vector3(0f, 0.025f, 0f),
             new Vector3(0.16f, 0.025f, 0.16f), brass, false, Quaternion.identity);
-        GameObject stem = CreatePrimitive(group, "Lamp_Stem", PrimitiveType.Cylinder,
+        GameObject stem = CreateLocalPrimitive(group, "Lamp_Stem", PrimitiveType.Cylinder,
             new Vector3(0f, 0.17f, 0f), new Vector3(0.018f, 0.15f, 0.018f), charcoal, false);
         stem.transform.localRotation = Quaternion.Euler(0f, 0f, -12f);
-        GameObject shade = CreatePrimitive(group, "Lamp_Shade", PrimitiveType.Cylinder,
+        GameObject shade = CreateLocalPrimitive(group, "Lamp_Shade", PrimitiveType.Cylinder,
             new Vector3(0f, 0.32f, -0.06f), new Vector3(0.11f, 0.045f, 0.11f), warmEmission, false);
     }
 
@@ -685,7 +685,7 @@ public static class OfficeHeistReceptionRealismPreview
         {
             float a = i * Mathf.PI * 2f / 5f;
             Vector3 legPos = new Vector3(Mathf.Cos(a) * 0.22f, 0.055f, Mathf.Sin(a) * 0.22f);
-            GameObject leg = CreatePrimitive(group, "Chair_BaseLeg_" + i, PrimitiveType.Cube,
+            GameObject leg = CreateLocalPrimitive(group, "Chair_BaseLeg_" + i, PrimitiveType.Cube,
                 legPos, new Vector3(0.34f, 0.055f, 0.07f), charcoal, false);
             leg.transform.localRotation = Quaternion.Euler(0f, -i * 72f, 0f);
             CreateLocalCylinder(group, "Chair_Caster_" + i,
@@ -790,11 +790,11 @@ public static class OfficeHeistReceptionRealismPreview
         {
             float angle = i * 40f * Mathf.Deg2Rad;
             Vector3 leafPos = new Vector3(Mathf.Cos(angle) * 0.12f * size, 0.78f * size, Mathf.Sin(angle) * 0.12f * size);
-            GameObject leaf = CreatePrimitive(group, "Plant_Leaf_" + i, PrimitiveType.Capsule,
+            GameObject leaf = CreateLocalPrimitive(group, "Plant_Leaf_" + i, PrimitiveType.Capsule,
                 leafPos, new Vector3(0.10f * size, 0.43f * size, 0.07f * size), foliage, false);
             leaf.transform.localRotation = Quaternion.Euler(0f, i * 40f, (i % 2 == 0) ? -22f : 22f);
         }
-        GameObject center = CreatePrimitive(group, "Plant_Center", PrimitiveType.Sphere,
+        GameObject center = CreateLocalPrimitive(group, "Plant_Center", PrimitiveType.Sphere,
             new Vector3(0f, 0.70f * size, 0f), new Vector3(0.24f * size, 0.38f * size, 0.24f * size), foliage, false);
     }
 
@@ -991,6 +991,27 @@ public static class OfficeHeistReceptionRealismPreview
         go.transform.SetParent(parent, false);
         go.transform.position = worldPos;
         go.transform.localScale = worldScale;
+
+        Renderer renderer = go.GetComponent<Renderer>();
+        if (renderer != null && material != null) renderer.sharedMaterial = material;
+
+        if (!withCollider)
+        {
+            Collider collider = go.GetComponent<Collider>();
+            if (collider != null) UnityEngine.Object.DestroyImmediate(collider);
+        }
+
+        return go;
+    }
+
+    private static GameObject CreateLocalPrimitive(
+        Transform parent, string name, PrimitiveType type, Vector3 localPos, Vector3 localScale, Material material, bool withCollider)
+    {
+        GameObject go = GameObject.CreatePrimitive(type);
+        go.name = name;
+        go.transform.SetParent(parent, false);
+        go.transform.localPosition = localPos;
+        go.transform.localScale = localScale;
 
         Renderer renderer = go.GetComponent<Renderer>();
         if (renderer != null && material != null) renderer.sharedMaterial = material;
