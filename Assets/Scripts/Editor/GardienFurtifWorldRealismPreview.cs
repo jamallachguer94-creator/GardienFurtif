@@ -815,7 +815,6 @@ public static class GardienFurtifWorldRealismPreview
         AddWallArt(parent, "Meeting_WallArt", new Vector3(14.78f, 1.82f, -6.4f), Quaternion.Euler(0f, 90f, 0f));
         AddWallArt(parent, "Director_WallArt", new Vector3(-4.35f, 5.18f, 9.82f), Quaternion.identity);
         AddWallArt(parent, "Server_WallArt", new Vector3(-14.78f, 5.18f, -8.5f), Quaternion.Euler(0f, -90f, 0f));
-        AddWallArt(parent, "Reception_West_WallArt", new Vector3(-14.78f, 1.75f, -8.55f), Quaternion.Euler(0f, -90f, 0f));
     }
 
     private static void AddRoomPlaque(Transform parent, string name, string label, Vector3 position, float yaw)
