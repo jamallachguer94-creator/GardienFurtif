@@ -10,13 +10,22 @@ This branch is based on `feature/reception-realism-preview`, so it keeps the sep
 2. Open Unity 6.3 and load `Assets/Scenes/Office_Heist.unity`.
 3. Make a duplicate copy of the scene before the first run.
 4. Let Unity finish script compilation.
-5. Make sure `OfficeHeist_Generated` (or legacy `OfficeEnvironment_Generated`) and `OfficeCompoundExpansion_Generated` exist in the active scene. If the main office is missing, use **Tools > Gardien Furtif > Office Heist > Build or Rebuild Level**. If the compound is missing, use **Gardien Furtif > Environment > Complete Existing Office Compound**.
+5. Make a duplicate of `Office_Heist` before the first run.
+6. Make sure `OfficeHeist_Generated` (or legacy `OfficeEnvironment_Generated`) and `OfficeCompoundExpansion_Generated` exist in the active scene. If the main office is missing, use **Tools > Gardien Furtif > Office Heist > Build or Rebuild Level**. This branch's main office builder creates interactive office doors. If the compound is missing, use **Gardien Furtif > Environment > Complete Existing Office Compound**.
+
+## Recommended build order
+
+1. For existing static office doors, run **Tools > Gardien Furtif > Secret Basement > 2. Upgrade Existing Office Doors**. A newly built main office already creates interactive doors.
+2. To add the thief's underground level, run **Tools > Gardien Furtif > Secret Basement > 1. Build Preview**. This also upgrades existing office doors and is reversible.
+3. Run **Tools > Gardien Furtif > World Realism > 1. Restore Original Door Colors** if you only want the door repair, or go straight to the full preview (it restores the original door materials automatically).
+4. Run **Tools > Gardien Furtif > World Realism > 2. Build Whole World Realism Preview**.
 
 ## Menus
 
 - **Tools > Gardien Furtif > World Realism > 1. Restore Original Door Colors**
 - **Tools > Gardien Furtif > World Realism > 2. Build Whole World Realism Preview**
 - **Tools > Gardien Furtif > World Realism > 3. Remove Preview & Restore Materials**
+- **Tools > Gardien Furtif > Secret Basement > 3. Remove Preview & Restore Office**
 
 Run the door-color command first if you only want to repair the existing scene. The build command also restores original builder door/frame materials before applying the realism pass.
 
@@ -41,12 +50,12 @@ Run the door-color command first if you only want to repair the existing scene. 
 - Cars, pedestrians and animals are generated only under `WorldRealism_PREVIEW` and only at outer-road/courtyard coordinates.
 - Ambient actors have no colliders, rigidbodies, NavMeshAgents, tags, audio emitters or gameplay scripts; movement is a lightweight waypoint animation.
 - The main Player, Mission System, Guard AI, patrol points, spawn points, interior doors and objective triggers are not intentionally modified.
-- Door renderers are excluded from the general material remapping. Original door materials are restored using the original generated material assets; the preview-removal command preserves that door-color correction.
+- Door renderers are excluded from the general material remapping. Original dark-walnut material is restored to the office door panels, leaves, jambs and header trims; separate metal handles and decorative insets keep their own materials. The preview-removal command preserves the door-color correction.
 - Original shared materials for other remapped renderers are captured and restored when the preview is removed.
 
 ## Revert and validation
 
-Use **Remove Preview & Restore Materials** to remove all added geometry/actors and restore the material assignments captured before the preview. The explicit correction to original door colors is kept.
+Use **World Realism > 3. Remove Preview & Restore Materials** to remove the world-only geometry/actors and restore the material assignments captured before the preview. The explicit correction to original door colors is kept. To remove the basement as well, then use **Secret Basement > 3. Remove Preview & Restore Office**.
 
 This is procedural geometry and procedural textures, not imported photorealistic asset packs or scanned 3D people/vehicles/animals. Unity runtime, lighting appearance, transparent glass, character facing, path clearance and frame rate still need testing in the actual scene. No Unity runtime test was run from this branch creation.
 
