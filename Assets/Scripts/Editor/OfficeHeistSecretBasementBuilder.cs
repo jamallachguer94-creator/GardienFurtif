@@ -17,6 +17,7 @@ public static class OfficeHeistSecretBasementBuilder
     private const string ChangesName = "BasementStairOpening_Changes";
     private const string SlabBackupName = "GF_Structural_Slab__PreviewBackup";
     private const string CorridorBackupName = "GF_Finish_MainCorridor__PreviewBackup";
+    private const string StairLandingBackupName = "Stair_Bottom_LandingPad__PreviewBackup";
     private const string MaterialFolder = "Assets/Generated/SecretBasement/Materials";
 
     private const float FloorY = -3.55f;
@@ -89,6 +90,7 @@ public static class OfficeHeistSecretBasementBuilder
 
         RemovePreviewRoot(officeObject.transform);
         RestoreGroundFloorOpening(floors);
+        SetOriginalStairLanding(officeObject.transform, true);
         EnsureMaterials();
 
         if (!CreateGroundFloorOpening(floors))
@@ -96,6 +98,7 @@ public static class OfficeHeistSecretBasementBuilder
             EditorUtility.DisplayDialog("Secret Basement Preview", "Could not create the stairwell opening. The original floor was restored.", "OK");
             return;
         }
+        SetOriginalStairLanding(officeObject.transform, false);
 
         GameObject preview = new GameObject(PreviewRootName);
         Undo.RegisterCreatedObjectUndo(preview, "Create Secret Basement Preview");
@@ -141,6 +144,7 @@ public static class OfficeHeistSecretBasementBuilder
         Transform floors = officeObject.transform.Find("Building_Architecture/GroundFloor/Floors");
         RemovePreviewRoot(officeObject.transform);
         if (floors != null) RestoreGroundFloorOpening(floors);
+        SetOriginalStairLanding(officeObject.transform, true);
 
         AssetDatabase.DeleteAsset(MaterialFolder);
         AssetDatabase.Refresh();
@@ -152,6 +156,26 @@ public static class OfficeHeistSecretBasementBuilder
     {
         Transform preview = officeRoot.Find(PreviewRootName);
         if (preview != null) Undo.DestroyObjectImmediate(preview.gameObject);
+    }
+
+    private static void SetOriginalStairLanding(Transform officeRoot, bool restore)
+    {
+        Transform stairRoot = officeRoot.Find("Building_Architecture/Staircase/Stair_Steps");
+        if (stairRoot == null) return;
+
+        Transform landing = stairRoot.Find(restore ? StairLandingBackupName : "Stair_Bottom_LandingPad");
+        if (landing == null) return;
+
+        if (restore)
+        {
+            landing.name = "Stair_Bottom_LandingPad";
+            landing.gameObject.SetActive(true);
+        }
+        else
+        {
+            landing.name = StairLandingBackupName;
+            landing.gameObject.SetActive(false);
+        }
     }
 
     private static bool CreateGroundFloorOpening(Transform floors)
@@ -417,6 +441,12 @@ public static class OfficeHeistSecretBasementBuilder
     {
         Transform steps = CreateGroup("BasementStairSteps", parent);
         Transform rails = CreateGroup("BasementStairRails", parent);
+
+        Material landingMaterial = AssetDatabase.LoadAssetAtPath<Material>(
+            "Assets/Generated/OfficeHeist/Materials/Floor_CorridorSlate.mat");
+        if (landingMaterial == null) landingMaterial = floorAccentMat;
+        CreateBox(steps, "Basement_TopLandingPad", new Vector3(12f, 0.01f, 2.55f),
+            new Vector3(2.2f, 0.02f, 0.72f), landingMaterial, false);
 
         const int count = 18;
         const float startZ = 2.2f;
