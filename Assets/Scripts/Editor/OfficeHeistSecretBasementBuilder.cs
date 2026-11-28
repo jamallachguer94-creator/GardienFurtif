@@ -143,7 +143,22 @@ public static class OfficeHeistSecretBasementBuilder
         EditorUtility.DisplayDialog("Interactive Office Doors", $"Upgraded {count} office doors. Enter Play mode, look at a door from close range, and press E to open or close it.", "OK");
     }
 
-    [MenuItem("Tools/Gardien Furtif/Secret Basement/2. Remove Preview & Restore Office", false, 20)]
+    [MenuItem("Tools/Gardien Furtif/Secret Basement/4. Restore Original Office Doors", false, 40)]
+    public static void RestoreOfficeDoorsMenu()
+    {
+        GameObject officeObject = GameObject.Find(OfficeRootName);
+        if (officeObject == null)
+        {
+            EditorUtility.DisplayDialog("Interactive Office Doors", "OfficeHeist_Generated was not found in the active scene.", "OK");
+            return;
+        }
+
+        int count = RestoreOriginalOfficeDoors(officeObject.transform);
+        EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+        EditorUtility.DisplayDialog("Interactive Office Doors", $"Restored {count} original office door leaves.", "OK");
+    }
+
+    [MenuItem("Tools/Gardien Furtif/Secret Basement/3. Remove Preview & Restore Office", false, 30)]
     public static void RemovePreviewAndRestoreOffice()
     {
         GameObject officeObject = GameObject.Find(OfficeRootName);
@@ -163,11 +178,12 @@ public static class OfficeHeistSecretBasementBuilder
         RemovePreviewRoot(officeObject.transform);
         if (floors != null) RestoreGroundFloorOpening(floors);
         SetOriginalStairLanding(officeObject.transform, true);
+        int restoredDoors = RestoreOriginalOfficeDoors(officeObject.transform);
 
         AssetDatabase.DeleteAsset(MaterialFolder);
         AssetDatabase.Refresh();
         EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
-        Debug.Log("[Secret Basement] Preview removed; original ground-floor objects restored.");
+        Debug.Log($"[Secret Basement] Preview removed; original floor and {restoredDoors} original office doors restored.");
     }
 
     private static void RemovePreviewRoot(Transform officeRoot)
@@ -258,13 +274,46 @@ public static class OfficeHeistSecretBasementBuilder
             if (width < 0.55f || height < 1.4f)
                 continue;
 
-            Undo.DestroyObjectImmediate(leaf.gameObject);
+            leaf.name = baseName + "_OpenLeaf__PreviewBackup";
+            leaf.gameObject.SetActive(false);
             CreateExistingInteractiveDoor(
                 parent, baseName, hingePosition, hingeRotation, width, height, openAngle);
             upgraded++;
         }
 
         return upgraded;
+    }
+
+    private static int RestoreOriginalOfficeDoors(Transform officeRoot)
+    {
+        if (officeRoot == null) return 0;
+
+        Transform[] allTransforms = officeRoot.GetComponentsInChildren<Transform>(true);
+        int restored = 0;
+
+        for (int i = 0; i < allTransforms.Length; i++)
+        {
+            Transform hinge = allTransforms[i];
+            if (hinge == null ||
+                !hinge.name.EndsWith("_InteractiveHinge", System.StringComparison.Ordinal))
+                continue;
+
+            Transform parent = hinge.parent;
+            if (parent == null || !parent.name.Contains("DoorsAndFrames"))
+                continue;
+
+            string baseName = hinge.name.Substring(
+                0, hinge.name.Length - "_InteractiveHinge".Length);
+            Transform backup = parent.Find(baseName + "_OpenLeaf__PreviewBackup");
+            if (backup == null) continue;
+
+            Undo.DestroyObjectImmediate(hinge.gameObject);
+            backup.name = baseName + "_OpenLeaf";
+            backup.gameObject.SetActive(true);
+            restored++;
+        }
+
+        return restored;
     }
 
     private static void CreateExistingInteractiveDoor(
