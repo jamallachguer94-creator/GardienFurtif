@@ -99,6 +99,7 @@ public static class OfficeHeistSecretBasementBuilder
             return;
         }
         SetOriginalStairLanding(officeObject.transform, false);
+        int upgradedDoors = UpgradeExistingOfficeDoors(officeObject.transform);
 
         GameObject preview = new GameObject(PreviewRootName);
         Undo.RegisterCreatedObjectUndo(preview, "Create Secret Basement Preview");
@@ -122,7 +123,24 @@ public static class OfficeHeistSecretBasementBuilder
         EditorSceneManager.MarkSceneDirty(scene);
         Undo.CollapseUndoOperations(undoGroup);
 
-        Debug.Log("[Secret Basement] Preview built. Doors use E while aimed at them; loot uses the existing Mission interaction system.");
+        Debug.Log($"[Secret Basement] Preview built. Upgraded {upgradedDoors} existing office doors. Aim at any door and press E to open/close; loot uses the existing Mission interaction system.");
+    }
+
+    [MenuItem("Tools/Gardien Furtif/Secret Basement/2. Upgrade Existing Office Doors", false, 20)]
+    public static void UpgradeOfficeDoorsMenu()
+    {
+        GameObject officeObject = GameObject.Find(OfficeRootName);
+        if (officeObject == null)
+        {
+            EditorUtility.DisplayDialog("Interactive Office Doors", "OfficeHeist_Generated was not found in the active scene.", "OK");
+            return;
+        }
+
+        EnsureMaterials();
+        int count = UpgradeExistingOfficeDoors(officeObject.transform);
+        EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+        Debug.Log($"[Interactive Office Doors] Upgraded {count} existing office doors.");
+        EditorUtility.DisplayDialog("Interactive Office Doors", $"Upgraded {count} office doors. Enter Play mode, look at a door from close range, and press E to open or close it.", "OK");
     }
 
     [MenuItem("Tools/Gardien Furtif/Secret Basement/2. Remove Preview & Restore Office", false, 20)]
@@ -176,6 +194,120 @@ public static class OfficeHeistSecretBasementBuilder
             landing.name = StairLandingBackupName;
             landing.gameObject.SetActive(false);
         }
+    }
+
+    private static int UpgradeExistingOfficeDoors(Transform officeRoot)
+    {
+        if (officeRoot == null) return 0;
+
+        Transform[] allTransforms = officeRoot.GetComponentsInChildren<Transform>(true);
+        int upgraded = 0;
+
+        for (int i = 0; i < allTransforms.Length; i++)
+        {
+            Transform leaf = allTransforms[i];
+            if (leaf == null || !leaf.name.EndsWith("_OpenLeaf", System.StringComparison.Ordinal))
+                continue;
+
+            Transform parent = leaf.parent;
+            if (parent == null || !parent.name.Contains("DoorsAndFrames"))
+                continue;
+
+            string baseName = leaf.name.Substring(0, leaf.name.Length - "_OpenLeaf".Length);
+            if (parent.Find(baseName + "_InteractiveHinge") != null)
+                continue;
+
+            Transform leftJamb = parent.Find(baseName + "_LeftJamb");
+            Transform rightJamb = parent.Find(baseName + "_RightJamb");
+            Transform southJamb = parent.Find(baseName + "_SouthJamb");
+            Transform northJamb = parent.Find(baseName + "_NorthJamb");
+
+            Vector3 hingePosition;
+            Quaternion hingeRotation;
+            float width;
+            float height;
+            float openAngle;
+
+            if (leftJamb != null && rightJamb != null)
+            {
+                width = Vector3.Distance(leftJamb.position, rightJamb.position) - 0.08f;
+                height = Mathf.Min(leftJamb.lossyScale.y, rightJamb.lossyScale.y) - 0.08f;
+                hingePosition = new Vector3(
+                    leftJamb.position.x + 0.04f,
+                    leftJamb.position.y - leftJamb.lossyScale.y * 0.5f,
+                    leftJamb.position.z);
+                hingeRotation = Quaternion.identity;
+                openAngle = leftJamb.position.z < 0f ? -100f : 100f;
+            }
+            else if (southJamb != null && northJamb != null)
+            {
+                width = Vector3.Distance(southJamb.position, northJamb.position) - 0.08f;
+                height = Mathf.Min(southJamb.lossyScale.y, northJamb.lossyScale.y) - 0.08f;
+                hingePosition = new Vector3(
+                    southJamb.position.x,
+                    southJamb.position.y - southJamb.lossyScale.y * 0.5f,
+                    southJamb.position.z + 0.04f);
+                hingeRotation = Quaternion.Euler(0f, -90f, 0f);
+                openAngle = southJamb.position.x > 0f ? -100f : 100f;
+            }
+            else
+            {
+                continue;
+            }
+
+            if (width < 0.55f || height < 1.4f)
+                continue;
+
+            Undo.DestroyObjectImmediate(leaf.gameObject);
+            CreateExistingInteractiveDoor(
+                parent, baseName, hingePosition, hingeRotation, width, height, openAngle);
+            upgraded++;
+        }
+
+        return upgraded;
+    }
+
+    private static void CreateExistingInteractiveDoor(
+        Transform parent, string name, Vector3 hingePosition,
+        Quaternion hingeRotation, float width, float height, float openAngle)
+    {
+        GameObject hinge = new GameObject(name + "_InteractiveHinge");
+        Undo.RegisterCreatedObjectUndo(hinge, "Upgrade Existing Office Door");
+        hinge.transform.SetParent(parent, false);
+        hinge.transform.position = hingePosition;
+        hinge.transform.rotation = hingeRotation;
+
+        GameObject panel = CreateLocalBox(
+            hinge.transform, "DoorPanel",
+            new Vector3(width * 0.5f, height * 0.5f, 0f),
+            new Vector3(width, height, 0.10f), doorMat, true);
+
+        CreateLocalBox(
+            hinge.transform, "DoorInset",
+            new Vector3(width * 0.5f, height * 0.55f, -0.058f),
+            new Vector3(width * 0.68f, height * 0.52f, 0.018f), woodMat, false);
+
+        GameObject handle = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        Undo.RegisterCreatedObjectUndo(handle, "Upgrade Office Door Handle");
+        handle.name = "DoorHandle";
+        handle.transform.SetParent(hinge.transform, false);
+        handle.transform.localPosition = new Vector3(width * 0.84f, height * 0.48f, -0.085f);
+        handle.transform.localScale = Vector3.one * 0.085f;
+        handle.GetComponent<Renderer>().sharedMaterial = goldMat;
+        Collider handleCollider = handle.GetComponent<Collider>();
+        if (handleCollider != null) Undo.DestroyObjectImmediate(handleCollider);
+
+        BoxCollider interaction = hinge.AddComponent<BoxCollider>();
+        interaction.isTrigger = true;
+        interaction.center = new Vector3(width * 0.5f, height * 0.5f, 0f);
+        interaction.size = new Vector3(width + 1.25f, height + 0.55f, 2.8f);
+
+        Rigidbody body = hinge.AddComponent<Rigidbody>();
+        body.isKinematic = true;
+        body.useGravity = false;
+
+        OfficeDoorController controller = hinge.AddComponent<OfficeDoorController>();
+        controller.Configure(panel.transform, name, openAngle, 5.5f);
     }
 
     private static bool CreateGroundFloorOpening(Transform floors)
