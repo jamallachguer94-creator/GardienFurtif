@@ -307,12 +307,12 @@ public static class GardienFurtifWorldRealismPreview
                 if (!name.Contains("door")) continue;
 
                 Material target = null;
-                if (name.Contains("post") || name.Contains("header") || name.Contains("frame"))
-                    target = originalExpansionFrame;
+                if (name.Contains("fill"))
+                    target = originalExpansionWall;
                 else if (name.Contains("leaf") || name.Contains("panel"))
                     target = originalExpansionDoor != null ? originalExpansionDoor : originalCompoundDoor;
-                else if (name.Contains("fill"))
-                    target = originalExpansionWall;
+                else if (name.Contains("post") || name.Contains("header") || name.Contains("frame"))
+                    target = originalExpansionFrame;
 
                 if (target == null) continue;
                 renderer.sharedMaterial = target;
@@ -770,12 +770,12 @@ public static class GardienFurtifWorldRealismPreview
             if (annex.side == "South")
             {
                 signPosition = new Vector3(annex.center.x, 2.83f, annex.center.y - annex.depth * 0.5f - 0.16f);
-                facing = Quaternion.Euler(0f, 180f, 0f);
+                facing = Quaternion.identity;
             }
             else if (annex.side == "North")
             {
                 signPosition = new Vector3(annex.center.x, 2.83f, annex.center.y + annex.depth * 0.5f + 0.16f);
-                facing = Quaternion.identity;
+                facing = Quaternion.Euler(0f, 180f, 0f);
             }
             else if (annex.side == "East")
             {
@@ -795,9 +795,9 @@ public static class GardienFurtifWorldRealismPreview
             CreateLocalBox(signGroup, "Sign_TopTrim", new Vector3(0f, 0.245f, -0.056f),
                 new Vector3(2.45f, 0.018f, 0.018f), brushedMetal, false);
             CreateText(signGroup, "Sign_Title", annex.displayName,
-                new Vector3(0f, 0.04f, -0.059f), Quaternion.identity, 0.0022f, signLight.color, true);
+                new Vector3(0f, 0.04f, -0.059f), Quaternion.Euler(0f, 180f, 0f), 0.0022f, new Color(0.88f, 0.80f, 0.65f), true);
             CreateText(signGroup, "Sign_Code", "GF / " + (i + 1).ToString("00"),
-                new Vector3(0f, -0.15f, -0.059f), Quaternion.identity, 0.0013f, signLight.color, true);
+                new Vector3(0f, -0.15f, -0.059f), Quaternion.Euler(0f, 180f, 0f), 0.0013f, new Color(0.88f, 0.80f, 0.65f), true);
 
             // A small awning lip and downlight above the entrance, with no collider.
             Vector3 awningPosition = signPosition + (annex.side == "South" ? Vector3.back * 0.18f :
@@ -864,7 +864,7 @@ public static class GardienFurtifWorldRealismPreview
         CreateLocalBox(group, "Totem_Board", new Vector3(0f, 2.28f, -0.06f), new Vector3(1.40f, 1.10f, 0.16f), signDark, false);
         for (int i = 0; i < labels.Length; i++)
             CreateText(group, "Totem_Label_" + i, labels[i],
-                new Vector3(0f, 2.58f - i * 0.30f, -0.15f), Quaternion.identity, 0.0015f, signLight.color, true);
+                new Vector3(0f, 2.58f - i * 0.30f, -0.15f), Quaternion.Euler(0f, 180f, 0f), 0.0015f, new Color(0.88f, 0.80f, 0.65f), true);
     }
 
     private static void BuildOutdoorBench(Transform parent, string name, Vector3 pos)
