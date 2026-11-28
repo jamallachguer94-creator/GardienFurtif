@@ -741,10 +741,14 @@ public class MissionManager : MonoBehaviour
         promptRect.anchorMin = new Vector2(0.5f, 0f);
         promptRect.anchorMax = new Vector2(0.5f, 0f);
         promptRect.pivot = new Vector2(0.5f, 0f);
-        promptRect.anchoredPosition = new Vector2(0f, 76f);
+        promptRect.anchoredPosition = new Vector2(0f, 292f);
         promptRect.sizeDelta = new Vector2(620f, 72f);
         Image promptBg = promptRoot.AddComponent<Image>();
-        promptBg.color = new Color(0.04f, 0.07f, 0.12f, 0.92f);
+        promptBg.sprite = MissionIconFactory.GetIcon(MissionIconFactory.IconKind.CircleFill);
+        promptBg.color = new Color(0.12f, 0.085f, 0.045f, 0.96f);
+        Outline promptOutline = promptRoot.AddComponent<Outline>();
+        promptOutline.effectColor = new Color(1f, 0.63f, 0.14f, 1f);
+        promptOutline.effectDistance = new Vector2(3f, -3f);
 
         Image promptIconImg = CreateUIIcon("PromptIcon", promptRect, new Vector2(38f, 0f), new Vector2(48f, 48f), MissionIconFactory.GetIcon(MissionIconFactory.IconKind.LootBag));
         Text promptTxt = CreateUIText("PromptText", promptRect, font, "PRESS E TO INTERACT", 24, FontStyle.Bold, TextAnchor.MiddleCenter, Color.white);
