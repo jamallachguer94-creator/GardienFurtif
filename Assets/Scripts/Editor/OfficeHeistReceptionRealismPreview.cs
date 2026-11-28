@@ -506,8 +506,8 @@ public static class OfficeHeistReceptionRealismPreview
         // Main body retains the approximate footprint and height of the original stealth-cover counter.
         CreateLocalBox(group, "Counter_Main_ColliderBody", new Vector3(0f, 0.56f, 0f),
             new Vector3(4.20f, 1.12f, 0.90f), walnutDark, true);
-        CreateLocalBox(group, "Counter_Front_Veneer", new Vector3(0f, 0.51f, -0.465f),
-            new Vector3(4.12f, 0.82f, 0.035f), walnut, false);
+        CreateLocalBox(group, "Counter_Front_Veneer", new Vector3(0f, 0.57f, -0.465f),
+            new Vector3(4.12f, 0.98f, 0.035f), walnut, false);
         CreateLocalBox(group, "Counter_ToeKick", new Vector3(0f, 0.075f, -0.47f),
             new Vector3(4.10f, 0.12f, 0.055f), charcoal, false);
         CreateLocalBox(group, "Counter_Brass_Lower_Inlay", new Vector3(0f, 0.17f, -0.505f),
@@ -519,8 +519,8 @@ public static class OfficeHeistReceptionRealismPreview
         for (int i = 0; i < 29; i++)
         {
             float x = -1.94f + i * 0.138f;
-            CreateLocalBox(group, "Counter_Front_Flute_" + i, new Vector3(x, 0.53f, -0.493f),
-                new Vector3(0.026f, 0.60f, 0.025f), walnutDark, false);
+            CreateLocalBox(group, "Counter_Front_Flute_" + i, new Vector3(x, 0.55f, -0.493f),
+                new Vector3(0.026f, 0.86f, 0.025f), walnutDark, false);
         }
 
         // Brushed-brass logo medallion, not a gameplay object.
@@ -548,15 +548,15 @@ public static class OfficeHeistReceptionRealismPreview
         wing.position = new Vector3(-6.90f, 0f, -4.10f);
         CreateLocalBox(wing, "SideReturn_ColliderBody", new Vector3(0f, 0.56f, 0f),
             new Vector3(0.82f, 1.12f, 1.90f), walnutDark, true);
-        CreateLocalBox(wing, "SideReturn_FrontVeneer", new Vector3(0.43f, 0.50f, 0f),
-            new Vector3(0.035f, 0.82f, 1.82f), walnut, false);
+        CreateLocalBox(wing, "SideReturn_FrontVeneer", new Vector3(0.43f, 0.57f, 0f),
+            new Vector3(0.035f, 0.98f, 1.82f), walnut, false);
         CreateLocalBox(wing, "SideReturn_StoneTop", new Vector3(0f, 1.15f, 0f),
             new Vector3(0.98f, 0.12f, 2.04f), stone, false);
         CreateLocalBox(wing, "SideReturn_BrassEdge", new Vector3(0f, 1.115f, 0f),
             new Vector3(0.99f, 0.018f, 2.05f), brass, false);
 
-        BuildReceptionComputer(group, "Reception_PC_Left", new Vector3(-0.82f, 1.10f, -0.12f));
-        BuildReceptionComputer(group, "Reception_PC_Right", new Vector3(0.82f, 1.10f, -0.12f));
+        BuildReceptionComputer(group, "Reception_PC_Left", new Vector3(-0.82f, 1.21f, -0.12f));
+        BuildReceptionComputer(group, "Reception_PC_Right", new Vector3(0.82f, 1.21f, -0.12f));
 
         BuildKeyboard(group, "Reception_Keyboard_Left", new Vector3(-0.82f, 1.115f, -0.39f));
         BuildKeyboard(group, "Reception_Keyboard_Right", new Vector3(0.82f, 1.115f, -0.39f));
@@ -668,8 +668,8 @@ public static class OfficeHeistReceptionRealismPreview
         group.rotation = Quaternion.Euler(0f, yaw, 0f);
         CreateLocalBox(group, "Seat_Pan", new Vector3(0f, 0.43f, 0f), new Vector3(0.62f, 0.12f, 0.58f), charcoal, true);
         CreateLocalBox(group, "Seat_Cushion", new Vector3(0f, 0.52f, 0f), new Vector3(0.59f, 0.10f, 0.55f), fabric, false);
-        CreateLocalBox(group, "Back_Frame", new Vector3(0f, 0.91f, 0.25f), new Vector3(0.60f, 0.70f, 0.10f), charcoal, false);
-        CreateLocalBox(group, "Back_Cushion", new Vector3(0f, 0.92f, 0.18f), new Vector3(0.55f, 0.62f, 0.12f), fabric, false);
+        CreateLocalBox(group, "Back_Frame", new Vector3(0f, 0.91f, -0.25f), new Vector3(0.60f, 0.70f, 0.10f), charcoal, false);
+        CreateLocalBox(group, "Back_Cushion", new Vector3(0f, 0.92f, -0.18f), new Vector3(0.55f, 0.62f, 0.12f), fabric, false);
         CreateLocalCylinder(group, "Chair_GasLift", new Vector3(0f, 0.22f, 0f),
             new Vector3(0.055f, 0.20f, 0.055f), brass, false, Quaternion.identity);
         for (int i = 0; i < 5; i++)
