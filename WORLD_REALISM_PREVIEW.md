@@ -2,15 +2,14 @@
 
 Branch: `feature/full-world-realism-preview`
 
-This branch is based on `feature/reception-realism-preview`, so it keeps the separate Reception Realism Preview work. It is an isolated preview branch; it does not modify `main`, `feature/player-gameplay`, or the existing `feature/secret-thief-basement` branch.
+This is a combined preview branch containing the Reception Realism Preview, the Secret Thief Basement and interactive office doors, plus the whole-world realism pass. It preserves the latest `Office_Heist.unity` scene update from the reception branch. The original source branches are left untouched; this combined work is isolated from `main`.
 
 ## Before running
 
 1. In GitHub Desktop, switch to `feature/full-world-realism-preview` and Pull.
 2. Open Unity 6.3 and load `Assets/Scenes/Office_Heist.unity`.
-3. Make a duplicate copy of the scene before the first run.
+3. Make one duplicate copy of `Office_Heist` before the first run.
 4. Let Unity finish script compilation.
-5. Make a duplicate of `Office_Heist` before the first run.
 6. Make sure `OfficeHeist_Generated` (or legacy `OfficeEnvironment_Generated`) and `OfficeCompoundExpansion_Generated` exist in the active scene. If the main office is missing, use **Tools > Gardien Furtif > Office Heist > Build or Rebuild Level**. This branch's main office builder creates interactive office doors. If the compound is missing, use **Gardien Furtif > Environment > Complete Existing Office Compound**.
 
 ## Recommended build order
@@ -51,7 +50,7 @@ Run the door-color command first if you only want to repair the existing scene. 
 
 - Cars, pedestrians and animals are generated only under `WorldRealism_PREVIEW` and only at outer-road/courtyard coordinates.
 - Ambient actors have no colliders, rigidbodies, NavMeshAgents, tags, audio emitters or gameplay scripts; movement is a lightweight waypoint animation.
-- The main Player, Mission System, Guard AI, patrol points, spawn points, interior doors and objective triggers are not intentionally modified.
+- The world realism pass does not change the Player, Mission System, Guard AI, patrol points, spawn points, door interaction logic or objective triggers. It only restores the original wood material on the office door panels and frames.
 - Door renderers are excluded from the general material remapping. Original dark-walnut material is restored to the office door panels, leaves, jambs, header trims and wooden insets; separate metal handles keep their metal finish. The preview-removal command preserves the door-color correction.
 - Original shared materials for other remapped renderers are captured and restored when the preview is removed.
 
