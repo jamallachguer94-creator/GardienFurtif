@@ -136,14 +136,17 @@ public class MissionResultsUI : MonoBehaviour
 
         if (scoreHeadlineText != null)
         {
-            scoreHeadlineText.text = collectedScore.ToString("N0");
+            scoreHeadlineText.text = "$" + collectedScore.ToString("N0");
             scoreHeadlineText.color = won
                 ? new Color(0.12f, 0.10f, 0.06f, 1f)
                 : new Color(0.40f, 0.07f, 0.04f, 1f);
         }
 
         if (subtitleMessageText != null)
-            subtitleMessageText.text = subtitle;
+        {
+            subtitleMessageText.text = won ? "MISSION COMPLETE — YOU ESCAPED!" : subtitle;
+            subtitleMessageText.color = new Color(0.28f, 0.18f, 0.08f, 1f);
+        }
 
         if (dossierValueText != null)
         {
@@ -174,7 +177,7 @@ public class MissionResultsUI : MonoBehaviour
             }
         }
 
-        if (lootScoreValueText != null)
+        if (lootScoreValueText != null && lootScoreValueText != scoreHeadlineText)
         {
             lootScoreValueText.text = totalScore > 0 ? $"${collectedScore} / ${totalScore}" : $"{collectedScore}";
             lootScoreValueText.color = new Color(1f, 0.84f, 0.25f, 1f);
