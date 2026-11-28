@@ -134,6 +134,7 @@ public static class GardienFurtifWorldRealismPreview
         if (mainRoot != null)
         {
             BuildMainOfficeFacade(architecture, mainRoot.name == MainHeistRoot);
+            BuildMainOfficeSideFacades(architecture, mainRoot.name == MainHeistRoot);
             BuildMainOfficeInteriorDetails(interior, mainRoot.name == MainHeistRoot);
             ApplyRealisticMaterials(mainRoot.transform);
         }
@@ -708,6 +709,70 @@ public static class GardienFurtifWorldRealismPreview
         }
     }
 
+    private static void BuildMainOfficeSideFacades(Transform parent, bool modernHeist)
+    {
+        if (!modernHeist) return;
+
+        // North facade (Z=+10): ground-floor and upper-floor window sills.
+        float[] northGroundX = { -10.5f, -2.0f, 12.0f };
+        float[] northGroundW = { 2.4f, 2.4f, 2.4f };
+        float[] northGroundY = { 1.15f, 1.15f, 0.95f };
+        for (int i = 0; i < northGroundX.Length; i++)
+            CreateBox(parent, "MainFacade_North_GF_Sill_" + i,
+                new Vector3(northGroundX[i], northGroundY[i], 10.22f),
+                new Vector3(northGroundW[i] + 0.14f, 0.055f, 0.16f), paleStone, false);
+
+        float[] northUpperX = { -11.5f, -6.2f, 3.0f, 12.0f };
+        float[] northUpperW = { 3.2f, 2.8f, 2.6f, 2.4f };
+        float[] northUpperSill = { 0.85f, 0.85f, 1.05f, 0.95f };
+        for (int i = 0; i < northUpperX.Length; i++)
+            CreateBox(parent, "MainFacade_North_UF_Sill_" + i,
+                new Vector3(northUpperX[i], 3.40f + northUpperSill[i], 10.22f),
+                new Vector3(northUpperW[i] + 0.14f, 0.055f, 0.16f), paleStone, false);
+
+        // West facade (X=-15): sill pieces run along Z and never bridge door openings.
+        Vector2[] westGround = { new Vector2(-6.0f, 2.6f), new Vector2(6.0f, 2.2f) };
+        float[] westGroundY = { 0.95f, 1.15f };
+        for (int i = 0; i < westGround.Length; i++)
+            CreateBox(parent, "MainFacade_West_GF_Sill_" + i,
+                new Vector3(-15.22f, westGroundY[i], westGround[i].x),
+                new Vector3(0.16f, 0.055f, westGround[i].y + 0.14f), paleStone, false);
+
+        Vector2[] westUpper = { new Vector2(6.0f, 3.2f), new Vector2(-6.0f, 2.0f) };
+        float[] westUpperY = { 0.85f, 1.35f };
+        for (int i = 0; i < westUpper.Length; i++)
+            CreateBox(parent, "MainFacade_West_UF_Sill_" + i,
+                new Vector3(-15.22f, 3.40f + westUpperY[i], westUpper[i].x),
+                new Vector3(0.16f, 0.055f, westUpper[i].y + 0.14f), paleStone, false);
+
+        // East facade (X=+15): the main extraction doorway at Z=0 is intentionally left clear.
+        float[] eastGroundZ = { -6.0f, 6.0f };
+        for (int i = 0; i < eastGroundZ.Length; i++)
+            CreateBox(parent, "MainFacade_East_GF_Sill_" + i,
+                new Vector3(15.22f, 0.95f, eastGroundZ[i]),
+                new Vector3(0.16f, 0.055f, 2.54f), paleStone, false);
+
+        float[] eastUpperZ = { -6.0f, 0.0f, 6.0f };
+        for (int i = 0; i < eastUpperZ.Length; i++)
+            CreateBox(parent, "MainFacade_East_UF_Sill_" + i,
+                new Vector3(15.22f, 4.35f, eastUpperZ[i]),
+                new Vector3(0.16f, 0.055f, 2.74f), paleStone, false);
+
+        // Restrained roofline bands make the three additional elevations read as one building.
+        CreateBox(parent, "MainFacade_North_RooflineBand", new Vector3(0f, 6.48f, 10.20f),
+            new Vector3(30.15f, 0.07f, 0.10f), slate, false);
+        CreateBox(parent, "MainFacade_West_RooflineBand", new Vector3(-15.20f, 6.48f, 0f),
+            new Vector3(0.10f, 0.07f, 20.15f), slate, false);
+        CreateBox(parent, "MainFacade_East_RooflineBand", new Vector3(15.20f, 6.48f, 0f),
+            new Vector3(0.10f, 0.07f, 20.15f), slate, false);
+
+        // Minimal corner reveals, set outside the structural wall faces.
+        foreach (float x in new[] { -15.20f, 15.20f })
+        foreach (float z in new[] { -10.20f, 10.20f })
+            CreateBox(parent, "MainFacade_CornerReveal_" + x + "_" + z,
+                new Vector3(x, 3.25f, z), new Vector3(0.055f, 6.45f, 0.055f), paleStone, false);
+    }
+
     private static void BuildMainOfficeInteriorDetails(Transform parent, bool modernHeist)
     {
         if (!modernHeist) return;
@@ -732,6 +797,7 @@ public static class GardienFurtifWorldRealismPreview
         AddWallArt(parent, "Meeting_WallArt", new Vector3(14.78f, 1.82f, -6.4f), Quaternion.Euler(0f, 90f, 0f));
         AddWallArt(parent, "Director_WallArt", new Vector3(-4.35f, 5.18f, 9.82f), Quaternion.identity);
         AddWallArt(parent, "Server_WallArt", new Vector3(-14.78f, 5.18f, -8.5f), Quaternion.Euler(0f, -90f, 0f));
+        AddWallArt(parent, "Reception_West_WallArt", new Vector3(-14.78f, 1.75f, -8.55f), Quaternion.Euler(0f, -90f, 0f));
     }
 
     private static void AddRoomPlaque(Transform parent, string name, string label, Vector3 position, float yaw)
