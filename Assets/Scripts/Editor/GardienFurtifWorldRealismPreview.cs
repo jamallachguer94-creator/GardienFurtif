@@ -263,18 +263,27 @@ public static class GardienFurtifWorldRealismPreview
             Material originalThreshold = AssetDatabase.LoadAssetAtPath<Material>(
                 "Assets/Materials/GeneratedOffice/Office_Wood_Light.mat");
 
-            Renderer[] renderers = mainRoot.GetComponentsInChildren<Renderer>(true);
-            for (int i = 0; i < renderers.Length; i++)
+            HashSet<Renderer> restored = new HashSet<Renderer>();
+            Transform[] transforms = mainRoot.GetComponentsInChildren<Transform>(true);
+            for (int t = 0; t < transforms.Length; t++)
             {
-                Renderer renderer = renderers[i];
-                if (renderer == null || !renderer.name.ToLowerInvariant().Contains("door")) continue;
-
-                bool threshold = renderer.name.ToLowerInvariant().Contains("threshold");
-                Material target = threshold ? originalThreshold : originalTrim;
-                if (target == null) continue;
-                renderer.sharedMaterial = target;
-                EditorUtility.SetDirty(renderer);
-                count++;
+                string groupName = transforms[t].name.ToLowerInvariant();
+                bool isDoorFrameGroup = groupName.Contains("door frame") ||
+                                        groupName.Contains("entrance frame") ||
+                                        groupName.Contains("doorsandframes");
+                if (!isDoorFrameGroup) continue;
+                Renderer[] children = transforms[t].GetComponentsInChildren<Renderer>(true);
+                for (int i = 0; i < children.Length; i++)
+                {
+                    Renderer renderer = children[i];
+                    if (renderer == null || !restored.Add(renderer)) continue;
+                    bool threshold = renderer.name.ToLowerInvariant().Contains("threshold");
+                    Material target = threshold ? originalThreshold : originalTrim;
+                    if (target == null) continue;
+                    renderer.sharedMaterial = target;
+                    EditorUtility.SetDirty(renderer);
+                    count++;
+                }
             }
         }
 
@@ -326,7 +335,9 @@ public static class GardienFurtifWorldRealismPreview
         {
             string n = current.name;
             if (n.IndexOf("door", StringComparison.OrdinalIgnoreCase) >= 0 ||
-                n.IndexOf("doorsandframes", StringComparison.OrdinalIgnoreCase) >= 0)
+                n.IndexOf("doorsandframes", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                (n.IndexOf("frame", StringComparison.OrdinalIgnoreCase) >= 0 &&
+                 n.IndexOf("entrance", StringComparison.OrdinalIgnoreCase) >= 0))
                 return true;
             current = current.parent;
         }
@@ -357,7 +368,7 @@ public static class GardienFurtifWorldRealismPreview
         paving = CreateMaterial("World_Paving", new Color(0.55f, 0.52f, 0.45f), TextureStyle.Stone, 0.16f, 0f);
         grass = CreateMaterial("World_Grass", new Color(0.24f, 0.31f, 0.19f), TextureStyle.Grass, 0.08f, 0f);
         foliage = CreateMaterial("World_Foliage", new Color(0.15f, 0.26f, 0.14f), TextureStyle.Grass, 0.10f, 0f);
-        glass = CreateMaterial("World_Tinted_Glass", new Color(0.22f, 0.34f, 0.37f), TextureStyle.Flat, 0.72f, 0.12f);
+        glass = CreateTransparentGlass("World_Tinted_Glass", new Color(0.22f, 0.34f, 0.37f, 0.38f));
         signDark = CreateMaterial("World_Sign_Dark", new Color(0.09f, 0.15f, 0.14f), TextureStyle.Flat, 0.18f, 0.12f);
         signLight = CreateMaterial("World_Sign_Light", new Color(0.76f, 0.69f, 0.53f), TextureStyle.Flat, 0.25f, 0f);
         warmEmission = CreateEmission("World_Warm_Sign_Emission", new Color(1f, 0.72f, 0.40f) * 1.8f);
@@ -449,6 +460,44 @@ public static class GardienFurtifWorldRealismPreview
 
         if (albedo != null) { albedo.wrapMode = TextureWrapMode.Repeat; albedo.filterMode = FilterMode.Trilinear; albedo.anisoLevel = 8; }
         if (normal != null) { normal.wrapMode = TextureWrapMode.Repeat; normal.filterMode = FilterMode.Trilinear; normal.anisoLevel = 8; }
+        EditorUtility.SetDirty(material);
+        return material;
+    }
+
+    private static Material CreateTransparentGlass(string name, Color tint)
+    {
+        string path = MaterialFolder + "/" + name + ".mat";
+        Material material = AssetDatabase.LoadAssetAtPath<Material>(path);
+        if (material == null)
+        {
+            material = new Material(ResolveLitShader()) { name = name };
+            AssetDatabase.CreateAsset(material, path);
+        }
+        SetColor(material, "_BaseColor", tint);
+        SetColor(material, "_Color", tint);
+        SetFloat(material, "_Metallic", 0.12f);
+        SetFloat(material, "_Smoothness", 0.82f);
+        if (material.HasProperty("_Surface"))
+        {
+            material.SetFloat("_Surface", 1f);
+            material.SetFloat("_Blend", 0f);
+            material.SetInt("_SrcBlend", (int)BlendMode.SrcAlpha);
+            material.SetInt("_DstBlend", (int)BlendMode.OneMinusSrcAlpha);
+            material.SetInt("_ZWrite", 0);
+            material.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
+            material.renderQueue = (int)RenderQueue.Transparent;
+        }
+        if (material.HasProperty("_Mode"))
+        {
+            material.SetFloat("_Mode", 3f);
+            material.SetInt("_SrcBlend", (int)BlendMode.SrcAlpha);
+            material.SetInt("_DstBlend", (int)BlendMode.OneMinusSrcAlpha);
+            material.SetInt("_ZWrite", 0);
+            material.DisableKeyword("_ALPHATEST_ON");
+            material.DisableKeyword("_ALPHABLEND_ON");
+            material.EnableKeyword("_ALPHAPREMULTIPLY_ON");
+            material.renderQueue = (int)RenderQueue.Transparent;
+        }
         EditorUtility.SetDirty(material);
         return material;
     }
@@ -594,20 +643,26 @@ public static class GardienFurtifWorldRealismPreview
         for (int i = 0; i < renderers.Length; i++)
         {
             Renderer renderer = renderers[i];
-            if (renderer == null || IsDoorRenderer(renderer) || renderer.sharedMaterial == null) continue;
-
-            Material replacement;
-            if (!MaterialMap.TryGetValue(renderer.sharedMaterial.name.Replace(" (Instance)", ""), out replacement))
-                continue;
-
+            if (renderer == null || IsDoorRenderer(renderer)) continue;
+            Material[] materials = renderer.sharedMaterials;
+            bool changed = false;
+            for (int slot = 0; slot < materials.Length; slot++)
+            {
+                if (materials[slot] == null) continue;
+                Material replacement;
+                string sourceName = materials[slot].name.Replace(" (Instance)", "");
+                if (!MaterialMap.TryGetValue(sourceName, out replacement)) continue;
+                materials[slot] = replacement;
+                changed = true;
+            }
+            if (!changed) continue;
             WorldRealismMaterialBackup backup = renderer.GetComponent<WorldRealismMaterialBackup>();
             if (backup == null)
             {
                 backup = Undo.AddComponent<WorldRealismMaterialBackup>(renderer.gameObject);
                 backup.Capture(renderer);
             }
-
-            renderer.sharedMaterial = replacement;
+            renderer.sharedMaterials = materials;
             EditorUtility.SetDirty(renderer);
         }
     }
@@ -620,7 +675,7 @@ public static class GardienFurtifWorldRealismPreview
             CreateBox(parent, "MainOffice_IdentitySign_Back", new Vector3(-9f, 2.48f, -10.22f),
                 new Vector3(3.55f, 0.40f, 0.13f), signDark, false);
             CreateText(parent, "MainOffice_IdentitySign_Text", "GARDIEN FURTIF",
-                new Vector3(-9f, 2.48f, -10.305f), Quaternion.Euler(0f, 180f, 0f), 0.0042f, signLight.color);
+                new Vector3(-9f, 2.48f, -10.305f), Quaternion.Euler(0f, 180f, 0f), 0.0042f, new Color(0.88f, 0.80f, 0.65f));
 
             // Slim stone reveals and brass-like bands on solid wall portions only.
             float[] pilasters = { -11.1f, -7.0f, -0.8f, 7.4f, 13.8f };
@@ -645,7 +700,7 @@ public static class GardienFurtifWorldRealismPreview
             CreateBox(parent, "LegacyOffice_IdentitySign_Back", new Vector3(-10f, 2.58f, -11.18f),
                 new Vector3(3.6f, 0.42f, 0.12f), signDark, false);
             CreateText(parent, "LegacyOffice_IdentitySign_Text", "GARDIEN FURTIF",
-                new Vector3(-10f, 2.58f, -11.26f), Quaternion.Euler(0f, 180f, 0f), 0.0041f, signLight.color);
+                new Vector3(-10f, 2.58f, -11.26f), Quaternion.Euler(0f, 180f, 0f), 0.0041f, new Color(0.88f, 0.80f, 0.65f));
         }
     }
 
@@ -654,25 +709,25 @@ public static class GardienFurtifWorldRealismPreview
         if (!modernHeist) return;
 
         // Ground-floor room plaques mounted above the doorway openings on the corridor side.
-        AddRoomPlaque(parent, "GF_Sign_Security", "SECURITY", new Vector3(-10.5f, 2.58f, 1.82f), 0f);
-        AddRoomPlaque(parent, "GF_Sign_Archive", "ARCHIVE", new Vector3(-2f, 2.58f, 1.82f), 0f);
-        AddRoomPlaque(parent, "GF_Sign_Service", "SERVICE", new Vector3(5.5f, 2.58f, 1.82f), 0f);
-        AddRoomPlaque(parent, "GF_Sign_Stairwell", "STAIRWELL", new Vector3(12f, 2.58f, 1.82f), 0f);
-        AddRoomPlaque(parent, "GF_Sign_Reception", "RECEPTION", new Vector3(-9f, 2.58f, -1.82f), 180f);
-        AddRoomPlaque(parent, "GF_Sign_Workspace", "WORKSPACE", new Vector3(2.5f, 2.58f, -1.82f), 180f);
-        AddRoomPlaque(parent, "GF_Sign_Meeting", "MEETING ROOM", new Vector3(11.5f, 2.58f, -1.82f), 180f);
+        AddRoomPlaque(parent, "GF_Sign_Security", "SECURITY", new Vector3(-10.5f, 2.58f, 1.82f), 180f);
+        AddRoomPlaque(parent, "GF_Sign_Archive", "ARCHIVE", new Vector3(-2f, 2.58f, 1.82f), 180f);
+        AddRoomPlaque(parent, "GF_Sign_Service", "SERVICE", new Vector3(5.5f, 2.58f, 1.82f), 180f);
+        AddRoomPlaque(parent, "GF_Sign_Stairwell", "STAIRWELL", new Vector3(12f, 2.58f, 1.82f), 180f);
+        AddRoomPlaque(parent, "GF_Sign_Reception", "RECEPTION", new Vector3(-9f, 2.58f, -1.82f), 0f);
+        AddRoomPlaque(parent, "GF_Sign_Workspace", "WORKSPACE", new Vector3(2.5f, 2.58f, -1.82f), 0f);
+        AddRoomPlaque(parent, "GF_Sign_Meeting", "MEETING ROOM", new Vector3(11.5f, 2.58f, -1.82f), 0f);
 
         // Upper-floor plaques.
-        AddRoomPlaque(parent, "UF_Sign_Director", "DIRECTOR", new Vector3(-9f, 5.98f, 1.82f), 0f);
-        AddRoomPlaque(parent, "UF_Sign_Archive", "DOCUMENT ARCHIVE", new Vector3(3f, 5.98f, 1.82f), 0f);
-        AddRoomPlaque(parent, "UF_Sign_Server", "SERVER ROOM", new Vector3(-10f, 5.98f, -1.82f), 180f);
-        AddRoomPlaque(parent, "UF_Sign_Office", "OFFICES", new Vector3(0.5f, 5.98f, -1.82f), 180f);
+        AddRoomPlaque(parent, "UF_Sign_Director", "DIRECTOR", new Vector3(-9f, 5.98f, 1.82f), 180f);
+        AddRoomPlaque(parent, "UF_Sign_Archive", "DOCUMENT ARCHIVE", new Vector3(3f, 5.98f, 1.82f), 180f);
+        AddRoomPlaque(parent, "UF_Sign_Server", "SERVER ROOM", new Vector3(-10f, 5.98f, -1.82f), 0f);
+        AddRoomPlaque(parent, "UF_Sign_Office", "OFFICES", new Vector3(0.5f, 5.98f, -1.82f), 0f);
 
         // A few framed pictures on blank, safe wall spans. All renderers are decorative and collider-free.
-        AddWallArt(parent, "Security_WallArt", new Vector3(-7.35f, 1.78f, 9.82f), Quaternion.Euler(0f, 180f, 0f));
-        AddWallArt(parent, "Meeting_WallArt", new Vector3(14.78f, 1.82f, -6.4f), Quaternion.Euler(0f, -90f, 0f));
-        AddWallArt(parent, "Director_WallArt", new Vector3(-4.35f, 5.18f, 9.82f), Quaternion.Euler(0f, 180f, 0f));
-        AddWallArt(parent, "Server_WallArt", new Vector3(-14.78f, 5.18f, -8.5f), Quaternion.Euler(0f, 90f, 0f));
+        AddWallArt(parent, "Security_WallArt", new Vector3(-7.35f, 1.78f, 9.82f), Quaternion.identity);
+        AddWallArt(parent, "Meeting_WallArt", new Vector3(14.78f, 1.82f, -6.4f), Quaternion.Euler(0f, 90f, 0f));
+        AddWallArt(parent, "Director_WallArt", new Vector3(-4.35f, 5.18f, 9.82f), Quaternion.identity);
+        AddWallArt(parent, "Server_WallArt", new Vector3(-14.78f, 5.18f, -8.5f), Quaternion.Euler(0f, -90f, 0f));
     }
 
     private static void AddRoomPlaque(Transform parent, string name, string label, Vector3 position, float yaw)
@@ -681,10 +736,10 @@ public static class GardienFurtifWorldRealismPreview
         group.position = position;
         group.rotation = Quaternion.Euler(0f, yaw, 0f);
         CreateLocalBox(group, "Plaque_Body", Vector3.zero, new Vector3(1.55f, 0.24f, 0.045f), signDark, false);
-        CreateLocalBox(group, "Plaque_TopLine", new Vector3(0f, 0.095f, -0.026f),
+        CreateLocalBox(group, "Plaque_TopLine", new Vector3(0f, 0.095f, 0.026f),
             new Vector3(1.35f, 0.012f, 0.012f), brushedMetal, false);
-        CreateText(group, "Plaque_Text", label, new Vector3(0f, -0.01f, -0.028f),
-            Quaternion.identity, 0.0017f, signLight.color, true);
+        CreateText(group, "Plaque_Text", label, new Vector3(0f, -0.01f, 0.029f),
+            Quaternion.identity, 0.0017f, new Color(0.88f, 0.80f, 0.65f), true);
     }
 
     private static void AddWallArt(Transform parent, string name, Vector3 position, Quaternion rotation)
@@ -745,9 +800,9 @@ public static class GardienFurtifWorldRealismPreview
                 new Vector3(0f, -0.15f, -0.059f), Quaternion.identity, 0.0013f, signLight.color, true);
 
             // A small awning lip and downlight above the entrance, with no collider.
-            Vector3 awningPosition = signPosition + (annex.side == "South" ? Vector3.forward * 0.18f :
-                annex.side == "North" ? Vector3.back * 0.18f :
-                annex.side == "East" ? Vector3.left * 0.18f : Vector3.right * 0.18f);
+            Vector3 awningPosition = signPosition + (annex.side == "South" ? Vector3.back * 0.18f :
+                annex.side == "North" ? Vector3.forward * 0.18f :
+                annex.side == "East" ? Vector3.right * 0.18f : Vector3.left * 0.18f);
             Quaternion awningRotation = facing;
             GameObject awning = CreateBox(parent, annex.name + "_Entry_Awning", awningPosition + Vector3.up * 0.38f,
                 new Vector3(2.1f, 0.07f, 0.65f), darkMetal, false);
@@ -892,7 +947,7 @@ public static class GardienFurtifWorldRealismPreview
         }
 
         CompoundAmbientMover mover = car.gameObject.AddComponent<CompoundAmbientMover>();
-        mover.Configure(route, speed, true, null, null, wheels, 0.33f);
+        mover.Configure(route, speed, true, null, null, wheels, 0.33f, 7f, 24f, 0f, true);
     }
 
     // ---------------------------------------------------------------------
@@ -929,13 +984,13 @@ public static class GardienFurtifWorldRealismPreview
 
         Transform leftLeg = Group("Left_Leg_Pivot", visual);
         leftLeg.localPosition = new Vector3(-0.13f, 0.63f, 0f);
-        CreateLocalCapsule(leftLeg, "Leg", new Vector3(0f, -0.21f, 0f), new Vector3(0.12f, 0.24f, 0.12f), trousers, false);
-        CreateLocalBox(leftLeg, "Shoe", new Vector3(0f, -0.42f, -0.04f), new Vector3(0.15f, 0.07f, 0.25f), darkMetal, false);
+        CreateLocalCapsule(leftLeg, "Leg", new Vector3(0f, -0.29f, 0f), new Vector3(0.12f, 0.30f, 0.12f), trousers, false);
+        CreateLocalBox(leftLeg, "Shoe", new Vector3(0f, -0.585f, -0.06f), new Vector3(0.15f, 0.07f, 0.25f), darkMetal, false);
 
         Transform rightLeg = Group("Right_Leg_Pivot", visual);
         rightLeg.localPosition = new Vector3(0.13f, 0.63f, 0f);
-        CreateLocalCapsule(rightLeg, "Leg", new Vector3(0f, -0.21f, 0f), new Vector3(0.12f, 0.24f, 0.12f), trousers, false);
-        CreateLocalBox(rightLeg, "Shoe", new Vector3(0f, -0.42f, -0.04f), new Vector3(0.15f, 0.07f, 0.25f), darkMetal, false);
+        CreateLocalCapsule(rightLeg, "Leg", new Vector3(0f, -0.29f, 0f), new Vector3(0.12f, 0.30f, 0.12f), trousers, false);
+        CreateLocalBox(rightLeg, "Shoe", new Vector3(0f, -0.585f, -0.06f), new Vector3(0.15f, 0.07f, 0.25f), darkMetal, false);
 
         Transform leftArm = Group("Left_Arm_Pivot", visual);
         leftArm.localPosition = new Vector3(-0.28f, 1.24f, 0f);
@@ -948,7 +1003,7 @@ public static class GardienFurtifWorldRealismPreview
         mover.Configure(route, speed, true,
             new[] { leftLeg, rightLeg, leftArm, rightArm },
             new[] { 0f, Mathf.PI, Mathf.PI, 0f },
-            null, 0.34f, 7.5f, 20f, 0.012f);
+            null, 0.34f, 7.5f, 20f, 0.012f, true);
     }
 
     // ---------------------------------------------------------------------
@@ -1006,7 +1061,7 @@ public static class GardienFurtifWorldRealismPreview
         Transform[] gait = { legs[0], legs[3], legs[1], legs[2], tail };
         CompoundAmbientMover mover = actor.gameObject.AddComponent<CompoundAmbientMover>();
         mover.Configure(route, 1.15f, true, gait,
-            new[] { 0f, Mathf.PI, Mathf.PI, 0f, 0.5f * Mathf.PI });
+            new[] { 0f, Mathf.PI, Mathf.PI, 0f, 0.5f * Mathf.PI }, null, 0.34f, 7f, 24f, 0.018f, true);
     }
 
     private static void BuildCat(Transform parent, string name, Vector3[] route)
@@ -1030,14 +1085,14 @@ public static class GardienFurtifWorldRealismPreview
         {
             Transform leg = Group("Leg_Pivot_" + k, visual);
             leg.localPosition = new Vector3(side * 0.11f, 0.27f, z * 0.18f);
-            CreateLocalCapsule(leg, "Leg", new Vector3(0f, -0.10f, 0f), new Vector3(0.07f, 0.13f, 0.07f), catFur, false);
+            CreateLocalCapsule(leg, "Leg", new Vector3(0f, -0.06f, 0f), new Vector3(0.07f, 0.10f, 0.07f), catFur, false);
             legs[k++] = leg;
         }
 
         Transform[] gait = { legs[0], legs[3], legs[1], legs[2], tail };
         CompoundAmbientMover mover = actor.gameObject.AddComponent<CompoundAmbientMover>();
         mover.Configure(route, 0.70f, true, gait,
-            new[] { 0f, Mathf.PI, Mathf.PI, 0f, 0.8f * Mathf.PI });
+            new[] { 0f, Mathf.PI, Mathf.PI, 0f, 0.8f * Mathf.PI }, null, 0.34f, 7f, 24f, 0.018f, true);
     }
 
     // ---------------------------------------------------------------------
