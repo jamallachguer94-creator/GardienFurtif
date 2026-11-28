@@ -16,10 +16,11 @@ This is a combined preview branch containing the Reception Realism Preview, the 
 
 1. If the outdoor compound is missing, run **Gardien Furtif > Environment > Complete Existing Office Compound**.
 2. To add the thief's underground hideout, run **Tools > Gardien Furtif > Secret Basement > 1. Build Preview**. The hideout is placed under the side Workshop building; the main-office staircase is restored.
-3. For the detailed reception furniture and finishes, run **Tools > Gardien Furtif > Reception Realism > 1. Build Reception Preview**.
-4. Run **Tools > Gardien Furtif > World Realism > 1. Restore Original Door Colors** if you only want the door repair, or go straight to the full preview (it restores the original door materials automatically).
-5. Run **Tools > Gardien Furtif > World Realism > 2. Build Whole World Realism Preview**.
-6. If the Mission UI needs to be regenerated, run **Tools > Gardien Furtif > Mission > 2. Build / Update Mission UI**. This rebuilds the UI Canvas and saves the MissionUI prefab.
+3. For older static office doors, run **Tools > Gardien Furtif > Secret Basement > 2. Upgrade Existing Office Doors**. Newly generated main offices already have interactive doors.
+4. For the detailed reception furniture and finishes, run **Tools > Gardien Furtif > Reception Realism > 1. Build Reception Preview**.
+5. Run **Tools > Gardien Furtif > World Realism > 1. Restore Original Door Colors** if you only want the door repair, or go straight to the full preview (it restores the original door materials automatically).
+6. Run **Tools > Gardien Furtif > World Realism > 2. Build Whole World Realism Preview**.
+7. If the Mission UI needs to be regenerated, run **Tools > Gardien Furtif > Mission > 2. Build / Update Mission UI**. This rebuilds the UI Canvas and saves the MissionUI prefab.
 
 ## Menus
 
@@ -27,6 +28,7 @@ This is a combined preview branch containing the Reception Realism Preview, the 
 - **Tools > Gardien Furtif > World Realism > 2. Build Whole World Realism Preview**
 - **Tools > Gardien Furtif > World Realism > 3. Remove Preview & Restore Materials**
 - **Tools > Gardien Furtif > Secret Basement > 3. Remove Preview & Restore Office**
+- **Tools > Gardien Furtif > Secret Basement > 4. Restore Original Office Doors**
 - **Tools > Gardien Furtif > Reception Realism > 2. Remove Preview & Restore Original**
 
 Run the door-color command first if you only want to repair the existing scene. The build command also restores original builder door/frame materials before applying the realism pass.
