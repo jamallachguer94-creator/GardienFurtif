@@ -313,7 +313,7 @@ public static class OfficeHeistReceptionRealismPreview
 
         Shader standard = Shader.Find("Standard");
         if (standard != null) return standard;
-        return Shader.Find("Diffuse");
+        return Shader.Find("Sprites/Default");
     }
 
     private static Texture2D FindTexture(string assetPath, string expectedName)
