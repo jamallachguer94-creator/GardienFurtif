@@ -495,7 +495,7 @@ public static class OfficeHeistReceptionRealismPreview
 
         // Direction plate above the corridor doorway; it does not cover the opening.
         CreateBox(parent, "Reception_MainHall_Sign", new Vector3(-9.0f, 2.72f, -2.56f), new Vector3(1.55f, 0.18f, 0.38f), charcoal, false);
-        CreateWorldText(parent, "Reception_MainHall_Sign_Text", "MAIN HALL", new Vector3(-9.0f, 2.70f, -2.77f), Quaternion.Euler(0f, 180f, 0f), 0.0035f, new Color(0.88f, 0.73f, 0.48f));
+        CreateWorldText(parent, "Reception_MainHall_Sign_Text", "MAIN HALL", new Vector3(-9.0f, 2.70f, -2.77f), Quaternion.Euler(0f, 180f, 0f), 0.0022f, new Color(0.88f, 0.73f, 0.48f));
     }
 
     private static void CreateWallBaseSegment(Transform parent, string name, Vector3 pos, Vector3 size)
@@ -785,11 +785,11 @@ public static class OfficeHeistReceptionRealismPreview
         Transform group = CreateGroup(name, parent);
         group.position = pos;
         CreateLocalCylinder(group, "Planter_Pot", new Vector3(0f, 0.28f * size, 0f),
-            new Vector3(0.30f * size, 0.28f * size, 0.30f * size), ceramic, true, Quaternion.identity);
+            new Vector3(0.52f * size, 0.28f * size, 0.52f * size), ceramic, true, Quaternion.identity);
         CreateLocalCylinder(group, "Planter_Brass_Rim", new Vector3(0f, 0.50f * size, 0f),
-            new Vector3(0.31f * size, 0.025f * size, 0.31f * size), brass, false, Quaternion.identity);
+            new Vector3(0.54f * size, 0.025f * size, 0.54f * size), brass, false, Quaternion.identity);
         CreateLocalCylinder(group, "Planter_Soil", new Vector3(0f, 0.515f * size, 0f),
-            new Vector3(0.25f * size, 0.012f * size, 0.25f * size), walnutDark, false, Quaternion.identity);
+            new Vector3(0.44f * size, 0.012f * size, 0.44f * size), walnutDark, false, Quaternion.identity);
 
         for (int i = 0; i < 9; i++)
         {
@@ -929,11 +929,11 @@ public static class OfficeHeistReceptionRealismPreview
         Transform group = CreateGroup(name, parent);
         group.position = pos;
         CreateLocalCylinder(group, "Bin_Body", new Vector3(0f, 0.24f, 0f),
-            new Vector3(0.19f, 0.24f, 0.19f), charcoal, true, Quaternion.identity);
+            new Vector3(0.28f, 0.24f, 0.28f), charcoal, true, Quaternion.identity);
         CreateLocalCylinder(group, "Bin_Rim", new Vector3(0f, 0.49f, 0f),
-            new Vector3(0.20f, 0.025f, 0.20f), brass, false, Quaternion.identity);
+            new Vector3(0.29f, 0.025f, 0.29f), brass, false, Quaternion.identity);
         CreateLocalCylinder(group, "Bin_Opening", new Vector3(0f, 0.505f, 0f),
-            new Vector3(0.13f, 0.008f, 0.13f), walnutDark, false, Quaternion.identity);
+            new Vector3(0.22f, 0.008f, 0.22f), walnutDark, false, Quaternion.identity);
     }
 
     // ---------------------------------------------------------------------
