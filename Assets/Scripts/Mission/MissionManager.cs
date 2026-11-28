@@ -850,6 +850,11 @@ public class MissionManager : MonoBehaviour
 
         Text resSub = CreateUIText("ResultsSubtitle", cardRect, font, "YOU MADE IT OUT!", 25, FontStyle.Bold, TextAnchor.MiddleCenter, new Color(0.28f, 0.18f, 0.08f, 1f));
         SetCenteredRect(resSub.rectTransform, new Vector2(0f, 258f), new Vector2(600f, 48f));
+        resSub.resizeTextForBestFit = true;
+        resSub.resizeTextMinSize = 18;
+        resSub.resizeTextMaxSize = 25;
+        resSub.horizontalOverflow = HorizontalWrapMode.Wrap;
+        resSub.verticalOverflow = VerticalWrapMode.Overflow;
 
         GameObject portraitFrameObj = CreateUIObject("ResultPortraitFrame", cardRect);
         RectTransform portraitFrameRect = portraitFrameObj.GetComponent<RectTransform>();
