@@ -663,7 +663,7 @@ public class MissionManager : MonoBehaviour
         vlg.childForceExpandHeight = false;
         vlg.spacing = 5f;
 
-        // 2. MISSION GUIDE CHARACTER UI (Top-Left)
+        // 2. MISSION GUIDE CHARACTER UI (Bottom-Left)
         GameObject guideObj = CreateUIObject("MissionGuidePanel", canvasRect);
         RectTransform guideRect = guideObj.GetComponent<RectTransform>();
         guideRect.anchorMin = new Vector2(0f, 0f);
