@@ -17,6 +17,7 @@ public sealed class CompoundAmbientMover : MonoBehaviour
     [SerializeField] private float gaitFrequency = 7f;
     [SerializeField] private float gaitAmplitude = 24f;
     [SerializeField] private float bodyBob = 0.018f;
+    [SerializeField] private bool modelFacesNegativeZ;
     [SerializeField] private Transform[] rotatingWheels = Array.Empty<Transform>();
     [SerializeField] private float wheelRadius = 0.34f;
 
@@ -34,7 +35,8 @@ public sealed class CompoundAmbientMover : MonoBehaviour
         float wheelRadiusMetres = 0.34f,
         float gaitRate = 7f,
         float swingDegrees = 24f,
-        float bobAmount = 0.018f)
+        float bobAmount = 0.018f,
+        bool facesNegativeZ = false)
     {
         waypoints = route != null ? (Vector3[])route.Clone() : Array.Empty<Vector3>();
         moveSpeed = Mathf.Max(0.05f, speed);
@@ -46,6 +48,7 @@ public sealed class CompoundAmbientMover : MonoBehaviour
         gaitFrequency = gaitRate;
         gaitAmplitude = swingDegrees;
         bodyBob = bobAmount;
+        modelFacesNegativeZ = facesNegativeZ;
         waypointIndex = waypoints.Length > 1 ? 1 : 0;
         baseY = transform.position.y;
     }
@@ -83,7 +86,7 @@ public sealed class CompoundAmbientMover : MonoBehaviour
 
         if (direction.sqrMagnitude > 0.0001f)
         {
-            Quaternion wanted = Quaternion.LookRotation(direction, Vector3.up);
+            Quaternion wanted = Quaternion.LookRotation(modelFacesNegativeZ ? -direction : direction, Vector3.up);
             transform.rotation = Quaternion.Slerp(transform.rotation, wanted, turnSpeed * Time.deltaTime);
         }
 
