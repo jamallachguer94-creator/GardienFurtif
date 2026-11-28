@@ -134,6 +134,11 @@ public static class OfficeHeistSecretBasementBuilder
         Transform lights = CreateGroup("Lighting", geometry);
         Transform tunnel = CreateGroup("EscapeTunnel", geometry);
 
+        // Build all geometry in its own local origin, then place it beneath the Workshop.
+        // CreateBox uses world-space coordinates while building, so the root must be at zero first.
+        geometry.position = Vector3.zero;
+        geometry.localScale = Vector3.one;
+
         BuildBasementArchitecture(architecture);
         BuildStairExtension(stairs);
         BuildRoomsAndFurniture(rooms);
@@ -623,7 +628,7 @@ public static class OfficeHeistSecretBasementBuilder
         BuildWallAlongZ(walls, "Basement_PlanningNorthPartition", 5.2f, -7.2f, 7.2f, 0f, 1.85f);
 
         // Door at the bottom of the new stair flight.
-        BuildWallAlongZ(walls, "Basement_StairBulkhead", -2.75f, 10.85f, 13.15f, 12f, 1.90f);
+        BuildWallAlongZ(walls, "Basement_StairBulkhead", -7.0f, 10.85f, 13.15f, 12f, 1.90f);
 
         for (int i = 0; i < 15; i++)
         {
@@ -789,9 +794,9 @@ public static class OfficeHeistSecretBasementBuilder
         CreateBox(steps, "Basement_TopLandingPad", new Vector3(12f, 0.01f, 2.55f),
             new Vector3(2.2f, 0.02f, 0.72f), landingMaterial, false);
 
-        const int count = 14;
+        const int count = 18;
         const float startZ = 2.2f;
-        const float endZ = -2.2f;
+        const float endZ = -3.8f;
         const float totalDrop = 3.35f;
         float tread = (startZ - endZ) / count;
         float rise = totalDrop / count;
@@ -809,13 +814,13 @@ public static class OfficeHeistSecretBasementBuilder
         }
 
         CreateBox(steps, "BasementStair_BottomLanding",
-            new Vector3(12f, FloorY + 0.06f, -2.60f),
+            new Vector3(12f, FloorY + 0.06f, -4.30f),
             new Vector3(2.0f, 0.12f, 1.1f), floorAccentMat, true);
 
         Vector3 leftStart = new Vector3(11.13f, 0.92f, 2.0f);
-        Vector3 leftEnd = new Vector3(11.13f, -2.42f, -2.40f);
+        Vector3 leftEnd = new Vector3(11.13f, -2.42f, -3.75f);
         Vector3 rightStart = new Vector3(12.87f, 0.92f, 2.0f);
-        Vector3 rightEnd = new Vector3(12.87f, -2.42f, -2.40f);
+        Vector3 rightEnd = new Vector3(12.87f, -2.42f, -3.75f);
         CreateBeam(rails, "LeftStairHandrail", leftStart, leftEnd, 0.075f, metalMat);
         CreateBeam(rails, "RightStairHandrail", rightStart, rightEnd, 0.075f, metalMat);
 
@@ -830,8 +835,8 @@ public static class OfficeHeistSecretBasementBuilder
 
         for (int i = 0; i < 6; i++)
         {
-            float z = 1.55f - i * 0.68f;
-            float y = -0.15f - i * 0.55f;
+            float z = 1.4f - i * 0.86f;
+            float y = -0.15f - i * 0.47f;
             CreateBox(rails, $"StairGuideLight_L_{i + 1}",
                 new Vector3(11.03f, y, z), new Vector3(0.06f, 0.10f, 0.30f), amberMat, false);
             CreateBox(rails, $"StairGuideLight_R_{i + 1}",
