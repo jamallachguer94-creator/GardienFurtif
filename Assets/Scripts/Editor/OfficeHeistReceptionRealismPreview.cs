@@ -552,14 +552,14 @@ public static class OfficeHeistReceptionRealismPreview
             new Vector3(0.035f, 0.98f, 1.82f), walnut, false);
         CreateLocalBox(wing, "SideReturn_StoneTop", new Vector3(0f, 1.15f, 0f),
             new Vector3(0.98f, 0.12f, 2.04f), stone, false);
-        CreateLocalBox(wing, "SideReturn_BrassEdge", new Vector3(0f, 1.115f, 0f),
+        CreateLocalBox(wing, "SideReturn_BrassEdge", new Vector3(0f, 1.225f, 0f),
             new Vector3(0.99f, 0.018f, 2.05f), brass, false);
 
         BuildReceptionComputer(group, "Reception_PC_Left", new Vector3(-0.82f, 1.21f, -0.12f));
         BuildReceptionComputer(group, "Reception_PC_Right", new Vector3(0.82f, 1.21f, -0.12f));
 
-        BuildKeyboard(group, "Reception_Keyboard_Left", new Vector3(-0.82f, 1.115f, -0.39f));
-        BuildKeyboard(group, "Reception_Keyboard_Right", new Vector3(0.82f, 1.115f, -0.39f));
+        BuildKeyboard(group, "Reception_Keyboard_Left", new Vector3(-0.82f, 1.225f, -0.39f));
+        BuildKeyboard(group, "Reception_Keyboard_Right", new Vector3(0.82f, 1.225f, -0.39f));
         BuildDeskPhone(group, "Reception_DeskPhone", new Vector3(1.48f, 1.23f, 0.22f));
         BuildPaperwork(group, "Reception_VisitorForms", new Vector3(-1.48f, 1.225f, 0.18f));
         BuildPenCup(group, "Reception_PenHolder", new Vector3(-1.75f, 1.23f, 0.18f));
