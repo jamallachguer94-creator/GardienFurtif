@@ -37,6 +37,7 @@ public static class GardienFurtifWorldRealismPreview
     private static Material fabric;
     private static Material roof;
     private static Material asphalt;
+    private static Material dryEarth;
     private static Material paving;
     private static Material grass;
     private static Material foliage;
@@ -365,6 +366,7 @@ public static class GardienFurtifWorldRealismPreview
         fabric = CreateMaterial("World_Fabric", new Color(0.34f, 0.35f, 0.32f), TextureStyle.Fabric, 0.16f, 0f);
         roof = CreateMaterial("World_Terracotta_Roof", new Color(0.45f, 0.23f, 0.16f), TextureStyle.Roof, 0.20f, 0f);
         asphalt = CreateMaterial("World_Asphalt", new Color(0.18f, 0.19f, 0.19f), TextureStyle.Asphalt, 0.12f, 0f);
+        dryEarth = CreateMaterial("World_Dry_Earth", new Color(0.42f, 0.37f, 0.27f), TextureStyle.Grass, 0.08f, 0f);
         paving = CreateMaterial("World_Paving", new Color(0.55f, 0.52f, 0.45f), TextureStyle.Stone, 0.16f, 0f);
         grass = CreateMaterial("World_Grass", new Color(0.24f, 0.31f, 0.19f), TextureStyle.Grass, 0.08f, 0f);
         foliage = CreateMaterial("World_Foliage", new Color(0.15f, 0.26f, 0.14f), TextureStyle.Grass, 0.10f, 0f);
@@ -389,16 +391,18 @@ public static class GardienFurtifWorldRealismPreview
             "Expansion_Concrete", "Expansion_Interior_Floor", "GF_Compound_Concrete", "GF_Compound_Interior_Terrazzo" }, paleStone);
         Map(new[] { "Floor_CorridorSlate", "Office_Corridor", "GF_Office_Corridor_Tile", "Expansion_Wall_Accent",
             "GF_Compound_Slate_Accent", "Roof_ModernSlate" }, slate);
-        Map(new[] { "Floor_ExecutiveHardwood", "Furniture_WalnutWood", "Furniture_WarmOak", "Office_Wood",
-            "Office_Wood_Light", "GF_Office_Walnut", "GF_Office_Oak", "Expansion_Wood", "GF_Compound_Natural_Wood" }, walnut);
+        Map(new[] { "Floor_ExecutiveHardwood", "Furniture_WalnutWood", "Office_Wood", "GF_Office_Walnut",
+            "Ext_TreeBarkBrown" }, walnut);
+        Map(new[] { "Furniture_WarmOak", "Office_Wood_Light", "GF_Office_Oak", "Expansion_Wood",
+            "GF_Compound_Natural_Wood" }, lightOak);
         Map(new[] { "Metal_BrushedSteel", "Metal_CharcoalFrame", "Office_Metal", "Office_Dark_Metal",
             "GF_Office_Brushed_Metal", "GF_Office_Dark_Metal", "Expansion_Metal", "Expansion_Dark_Metal",
             "GF_Compound_Painted_Metal", "GF_Compound_Dark_Metal", "GF_Compound_Window_Frame" }, brushedMetal);
         Map(new[] { "Furniture_FabricMutedGrey", "Furniture_FabricWarmTaupe", "Furniture_LeatherCharcoal",
             "Office_Fabric", "GF_Office_Deep_Charcoal_Fabric" }, fabric);
         Map(new[] { "Ext_AsphaltRoad", "Expansion_Road", "GF_Compound_Asphalt" }, asphalt);
-        Map(new[] { "Ext_SidewalkConcrete", "Ext_CourtyardStonePaving", "Expansion_Path", "Expansion_Ground",
-            "GF_Compound_Paving", "GF_Compound_Dry_Earth" }, paving);
+        Map(new[] { "Ext_SidewalkConcrete", "Ext_CourtyardStonePaving", "Expansion_Path", "GF_Compound_Paving" }, paving);
+        Map(new[] { "Expansion_Ground", "GF_Compound_Dry_Earth" }, dryEarth);
         Map(new[] { "Ext_GrassOlive", "Ext_FoliageNaturalGreen", "Ext_TreeBarkBrown", "Office_Plant",
             "GF_Office_Plant", "Expansion_Grass", "Expansion_Tree", "Expansion_Bush",
             "GF_Compound_Olive_Grass", "GF_Compound_Tree_Foliage", "GF_Compound_Bush_Foliage" }, grass);
@@ -780,12 +784,12 @@ public static class GardienFurtifWorldRealismPreview
             else if (annex.side == "East")
             {
                 signPosition = new Vector3(annex.center.x + annex.width * 0.5f + 0.16f, 2.83f, annex.center.y);
-                facing = Quaternion.Euler(0f, 90f, 0f);
+                facing = Quaternion.Euler(0f, -90f, 0f);
             }
             else
             {
                 signPosition = new Vector3(annex.center.x - annex.width * 0.5f - 0.16f, 2.83f, annex.center.y);
-                facing = Quaternion.Euler(0f, -90f, 0f);
+                facing = Quaternion.Euler(0f, 90f, 0f);
             }
 
             Transform signGroup = Group("RealisticSign_" + (i + 1).ToString("00"), parent);
@@ -1092,7 +1096,7 @@ public static class GardienFurtifWorldRealismPreview
         Transform[] gait = { legs[0], legs[3], legs[1], legs[2], tail };
         CompoundAmbientMover mover = actor.gameObject.AddComponent<CompoundAmbientMover>();
         mover.Configure(route, 0.70f, true, gait,
-            new[] { 0f, Mathf.PI, Mathf.PI, 0f, 0.8f * Mathf.PI }, null, 0.34f, 7f, 24f, 0.018f, true);
+            new[] { 0f, Mathf.PI, Mathf.PI, 0f, 0.8f * Mathf.PI }, null, 0.34f, 7f, 24f, 0.008f, true);
     }
 
     // ---------------------------------------------------------------------
