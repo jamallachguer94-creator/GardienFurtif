@@ -997,15 +997,15 @@ public static class GardienFurtifWorldRealismPreview
     {
         Transform group = Group(name, parent);
         group.position = pos;
-        CreateLocalCylinder(group, "Bin_Body", new Vector3(0f, 0.42f, 0f), new Vector3(0.27f, 0.42f, 0.27f), darkMetal, false);
-        CreateLocalCylinder(group, "Bin_Lid", new Vector3(0f, 0.86f, 0f), new Vector3(0.29f, 0.035f, 0.29f), brushedMetal, false);
+        CreateLocalCylinder(group, "Bin_Body", new Vector3(0f, 0.42f, 0f), new Vector3(0.27f, 0.42f, 0.27f), darkMetal, false, Quaternion.identity);
+        CreateLocalCylinder(group, "Bin_Lid", new Vector3(0f, 0.86f, 0f), new Vector3(0.29f, 0.035f, 0.29f), brushedMetal, false, Quaternion.identity);
     }
 
     private static void BuildPlanter(Transform parent, string name, Vector3 pos)
     {
         Transform group = Group(name, parent);
         group.position = pos;
-        CreateLocalCylinder(group, "Planter_Pot", new Vector3(0f, 0.27f, 0f), new Vector3(0.48f, 0.27f, 0.48f), paleStone, false);
+        CreateLocalCylinder(group, "Planter_Pot", new Vector3(0f, 0.27f, 0f), new Vector3(0.48f, 0.27f, 0.48f), paleStone, false, Quaternion.identity);
         CreateLocalSphere(group, "Planter_Foliage", new Vector3(0f, 0.85f, 0f), new Vector3(0.62f, 0.95f, 0.62f), foliage);
     }
 
