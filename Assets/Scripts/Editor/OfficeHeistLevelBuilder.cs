@@ -1579,6 +1579,60 @@ public static class OfficeHeistLevelBuilder
         return list.OrderBy(s => s.Start).ToList();
     }
 
+    private static void CreateInteractiveDoorLeaf(
+        Transform parent,
+        string doorName,
+        Vector3 hingePosition,
+        Quaternion hingeRotation,
+        float width,
+        float height,
+        float openAngle)
+    {
+        GameObject hinge = new GameObject(doorName + "_Hinge");
+        Undo.RegisterCreatedObjectUndo(hinge, "Create Interactive Office Door");
+        hinge.transform.SetParent(parent, false);
+        hinge.transform.position = hingePosition;
+        hinge.transform.rotation = hingeRotation;
+
+        GameObject panel = CreateLocalBox(
+            hinge.transform,
+            "DoorPanel",
+            new Vector3(width * 0.5f, height * 0.5f, 0f),
+            new Vector3(width, height, 0.10f),
+            matDoorWalnut,
+            true);
+
+        CreateLocalBox(
+            hinge.transform,
+            "DoorInset",
+            new Vector3(width * 0.5f, height * 0.55f, -0.058f),
+            new Vector3(width * 0.68f, height * 0.52f, 0.018f),
+            matWoodWalnut,
+            false);
+
+        GameObject handle = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        Undo.RegisterCreatedObjectUndo(handle, "Create Office Door Handle");
+        handle.name = "DoorHandle";
+        handle.transform.SetParent(hinge.transform, false);
+        handle.transform.localPosition = new Vector3(width * 0.84f, height * 0.48f, -0.085f);
+        handle.transform.localScale = Vector3.one * 0.085f;
+        handle.GetComponent<Renderer>().sharedMaterial = matMetalBrushed;
+        Collider handleCollider = handle.GetComponent<Collider>();
+        if (handleCollider != null) Undo.DestroyObjectImmediate(handleCollider);
+
+        BoxCollider interaction = hinge.AddComponent<BoxCollider>();
+        interaction.isTrigger = true;
+        interaction.center = new Vector3(width * 0.5f, height * 0.5f, 0f);
+        interaction.size = new Vector3(width + 1.25f, height + 0.55f, 2.8f);
+
+        Rigidbody body = hinge.AddComponent<Rigidbody>();
+        body.isKinematic = true;
+        body.useGravity = false;
+
+        OfficeDoorController controller = hinge.AddComponent<OfficeDoorController>();
+        controller.Configure(panel.transform, doorName, openAngle, 5.5f);
+    }
+
     private static void BuildDoorFrameAlongX(Transform parent, string name, Vector3 baseCenter, float width, float height, float thickness, bool isWideArch)
     {
         float frameDepth = thickness + 0.06f;
@@ -1588,9 +1642,14 @@ public static class OfficeHeistLevelBuilder
 
         if (!isWideArch)
         {
-            // Open door leaf swung 82 degrees against wall so doorway is 100% clear for players & NavMesh
-            GameObject leaf = CreateBox(parent, name + "_OpenLeaf", baseCenter + new Vector3(-width * 0.5f + 0.12f, (height - 0.08f) * 0.5f, 0.42f), new Vector3(0.05f, height - 0.08f, 0.82f), matDoorWalnut, false);
-            leaf.transform.rotation = Quaternion.Euler(0f, -8f, 0f);
+            // Functional hinged leaf: closed across the doorway, opens toward the adjacent room.
+            Vector3 hingePosition = new Vector3(
+                baseCenter.x - width * 0.5f + 0.04f,
+                baseCenter.y,
+                baseCenter.z);
+            float openingAngle = baseCenter.z < 0f ? -100f : 100f;
+            CreateInteractiveDoorLeaf(parent, name, hingePosition, Quaternion.identity,
+                width - 0.08f, height - 0.08f, openingAngle);
         }
     }
 
@@ -1603,8 +1662,14 @@ public static class OfficeHeistLevelBuilder
 
         if (!isWideArch)
         {
-            GameObject leaf = CreateBox(parent, name + "_OpenLeaf", baseCenter + new Vector3(0.42f, (height - 0.08f) * 0.5f, -width * 0.5f + 0.12f), new Vector3(0.82f, height - 0.08f, 0.05f), matDoorWalnut, false);
-            leaf.transform.rotation = Quaternion.Euler(0f, 8f, 0f);
+            // Rotate the hinge so its local X axis follows the doorway along world +Z.
+            Vector3 hingePosition = new Vector3(
+                baseCenter.x,
+                baseCenter.y,
+                baseCenter.z - width * 0.5f + 0.04f);
+            float openingAngle = baseCenter.x > 0f ? -100f : 100f;
+            CreateInteractiveDoorLeaf(parent, name, hingePosition,
+                Quaternion.Euler(0f, -90f, 0f), width - 0.08f, height - 0.08f, openingAngle);
         }
     }
 
