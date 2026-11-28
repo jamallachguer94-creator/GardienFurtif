@@ -20,6 +20,8 @@ public class MissionResultsUI : MonoBehaviour
     [SerializeField] private Text completionPercentValueText;
     [SerializeField] private Image[] starImages = new Image[3];
     [SerializeField] private Button replayButton;
+    [SerializeField] private Image resultPortraitImage;
+    [SerializeField] private Text scoreHeadlineText;
 
     public bool IsShowing => rootOverlay != null && rootOverlay.activeSelf;
 
@@ -51,6 +53,12 @@ public class MissionResultsUI : MonoBehaviour
             replayButton.onClick.RemoveAllListeners();
             replayButton.onClick.AddListener(ReplayCurrentMission);
         }
+    }
+
+    public void BindResultArtwork(Image portrait, Text scoreHeadline)
+    {
+        resultPortraitImage = portrait;
+        scoreHeadlineText = scoreHeadline;
     }
 
     private void Awake()
@@ -113,10 +121,25 @@ public class MissionResultsUI : MonoBehaviour
 
         if (headerTitleText != null)
         {
-            headerTitleText.text = string.IsNullOrWhiteSpace(title)
-                ? (won ? "MISSION COMPLETED" : "MISSION FAILED")
-                : title;
-            headerTitleText.color = won ? winColor : failColor;
+            headerTitleText.text = won ? "BRAVO!" : "GAME OVER";
+            headerTitleText.color = won
+                ? new Color(0.16f, 0.10f, 0.045f, 1f)
+                : new Color(0.42f, 0.055f, 0.045f, 1f);
+        }
+
+        if (resultPortraitImage != null)
+        {
+            resultPortraitImage.sprite = MissionIconFactory.GetIcon(
+                won ? MissionIconFactory.IconKind.ThiefPortrait : MissionIconFactory.IconKind.VillainPortrait);
+            resultPortraitImage.color = Color.white;
+        }
+
+        if (scoreHeadlineText != null)
+        {
+            scoreHeadlineText.text = collectedScore.ToString("N0");
+            scoreHeadlineText.color = won
+                ? new Color(0.12f, 0.10f, 0.06f, 1f)
+                : new Color(0.40f, 0.07f, 0.04f, 1f);
         }
 
         if (subtitleMessageText != null)
