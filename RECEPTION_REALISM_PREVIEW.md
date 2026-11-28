@@ -19,7 +19,7 @@ It is based on `feature/player-gameplay`. It does not modify `main`, `feature/pl
 
 - Replaces only `OfficeHeist_Generated/Furniture/Reception` while the preview is active.
 - Adds a layered walnut-and-stone reception counter, brass trims, fluted front, two detailed computer stations, keyboards, desk phone, visitor forms, pen cup and task lamp.
-- Rebuilds the waiting lounge with upholstery, cushions, glass/brass coffee table, rug and planters.
+- Rebuilds the waiting lounge with upholstery, cushions, glass/brass coffee table, rug and planters, and restores a detailed visitor self-service kiosk.
 - Adds reception wall panels, signage, blinds, clock, noticeboard, extinguisher, waste bin, brochure stand, ceiling grid and accent lighting.
 - Uses generated Unity materials and textures. It does not require external downloads or third-party assets.
 
