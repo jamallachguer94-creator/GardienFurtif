@@ -472,11 +472,22 @@ public static class GardienFurtifWorldRealismPreview
             AssetDatabase.AddObjectToAsset(normal, material);
         }
 
-        if (material.HasProperty("_BaseMap")) material.SetTexture("_BaseMap", albedo);
-        if (material.HasProperty("_MainTex")) material.SetTexture("_MainTex", albedo);
+        float tiling = TextureTiling(style);
+        Vector2 textureScale = new Vector2(tiling, tiling);
+        if (material.HasProperty("_BaseMap"))
+        {
+            material.SetTexture("_BaseMap", albedo);
+            material.SetTextureScale("_BaseMap", textureScale);
+        }
+        if (material.HasProperty("_MainTex"))
+        {
+            material.SetTexture("_MainTex", albedo);
+            material.SetTextureScale("_MainTex", textureScale);
+        }
         if (material.HasProperty("_BumpMap"))
         {
             material.SetTexture("_BumpMap", normal);
+            material.SetTextureScale("_BumpMap", textureScale);
             material.EnableKeyword("_NORMALMAP");
             SetFloat(material, "_BumpScale", 0.32f);
         }
@@ -614,6 +625,23 @@ public static class GardienFurtifWorldRealismPreview
         texture.SetPixels(pixels);
         texture.Apply(true, false);
         return texture;
+    }
+
+    private static float TextureTiling(TextureStyle style)
+    {
+        switch (style)
+        {
+            case TextureStyle.Plaster: return 3.5f;
+            case TextureStyle.Stone: return 3.0f;
+            case TextureStyle.Concrete: return 5.0f;
+            case TextureStyle.Wood: return 4.0f;
+            case TextureStyle.Metal: return 3.0f;
+            case TextureStyle.Fabric: return 5.0f;
+            case TextureStyle.Asphalt: return 8.0f;
+            case TextureStyle.Roof: return 5.0f;
+            case TextureStyle.Grass: return 7.0f;
+            default: return 1.0f;
+        }
     }
 
     private static float Height(float u, float v, TextureStyle style)
