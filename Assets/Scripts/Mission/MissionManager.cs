@@ -862,9 +862,9 @@ public class MissionManager : MonoBehaviour
         portraitFrameRect.anchorMax = new Vector2(0.5f, 0.5f);
         portraitFrameRect.anchoredPosition = new Vector2(0f, 160f);
         portraitFrameRect.sizeDelta = new Vector2(152f, 152f);
-        Image portraitFrame = portraitFrameObj.AddComponent<Image>();
-        portraitFrame.sprite = MissionIconFactory.GetIcon(MissionIconFactory.IconKind.CircleFill);
-        portraitFrame.color = new Color(1f, 0.63f, 0.10f, 1f);
+        Image resultPortraitFrameImage = portraitFrameObj.AddComponent<Image>();
+        resultPortraitFrameImage.sprite = MissionIconFactory.GetIcon(MissionIconFactory.IconKind.CircleFill);
+        resultPortraitFrameImage.color = new Color(1f, 0.63f, 0.10f, 1f);
         Outline portraitOutline = portraitFrameObj.AddComponent<Outline>();
         portraitOutline.effectColor = new Color(0.20f, 0.13f, 0.075f, 1f);
         portraitOutline.effectDistance = new Vector2(3f, -3f);
