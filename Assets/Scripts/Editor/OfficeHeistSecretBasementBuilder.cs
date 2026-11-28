@@ -326,20 +326,25 @@ public static class OfficeHeistSecretBasementBuilder
         hinge.transform.position = hingePosition;
         hinge.transform.rotation = hingeRotation;
 
+        GameObject pivotObject = new GameObject("SwingPivot");
+        Undo.RegisterCreatedObjectUndo(pivotObject, "Create Office Door Swing Pivot");
+        pivotObject.transform.SetParent(hinge.transform, false);
+        Transform pivot = pivotObject.transform;
+
         GameObject panel = CreateLocalBox(
-            hinge.transform, "DoorPanel",
+            pivot, "DoorPanel",
             new Vector3(width * 0.5f, height * 0.5f, 0f),
             new Vector3(width, height, 0.10f), doorMat, true);
 
         CreateLocalBox(
-            hinge.transform, "DoorInset",
+            pivot, "DoorInset",
             new Vector3(width * 0.5f, height * 0.55f, -0.058f),
             new Vector3(width * 0.68f, height * 0.52f, 0.018f), woodMat, false);
 
         GameObject handle = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         Undo.RegisterCreatedObjectUndo(handle, "Upgrade Office Door Handle");
         handle.name = "DoorHandle";
-        handle.transform.SetParent(hinge.transform, false);
+        handle.transform.SetParent(pivot, false);
         handle.transform.localPosition = new Vector3(width * 0.84f, height * 0.48f, -0.085f);
         handle.transform.localScale = Vector3.one * 0.085f;
         handle.GetComponent<Renderer>().sharedMaterial = goldMat;
@@ -356,7 +361,7 @@ public static class OfficeHeistSecretBasementBuilder
         body.useGravity = false;
 
         OfficeDoorController controller = hinge.AddComponent<OfficeDoorController>();
-        controller.Configure(panel.transform, name, openAngle, 5.5f);
+        controller.Configure(pivot, panel.transform, name, openAngle, 5.5f);
     }
 
     private static bool CreateGroundFloorOpening(Transform floors)
@@ -587,18 +592,23 @@ public static class OfficeHeistSecretBasementBuilder
         hinge.transform.position = hingePosition;
         hinge.transform.rotation = hingeRotation;
 
-        GameObject panel = CreateLocalBox(hinge.transform, "DoorPanel",
+        GameObject pivotObject = new GameObject("SwingPivot");
+        Undo.RegisterCreatedObjectUndo(pivotObject, "Create Door Swing Pivot");
+        pivotObject.transform.SetParent(hinge.transform, false);
+        Transform pivot = pivotObject.transform;
+
+        GameObject panel = CreateLocalBox(pivot, "DoorPanel",
             new Vector3(width * 0.5f, height * 0.5f, 0f),
             new Vector3(width - 0.08f, height - 0.08f, 0.12f), doorMat, true);
 
-        CreateLocalBox(hinge.transform, "DoorInset",
+        CreateLocalBox(pivot, "DoorInset",
             new Vector3(width * 0.5f, height * 0.55f, -0.066f),
             new Vector3(width * 0.72f, height * 0.50f, 0.018f), woodMat, false);
 
         GameObject handle = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         Undo.RegisterCreatedObjectUndo(handle, "Create Door Handle");
         handle.name = "DoorHandle";
-        handle.transform.SetParent(hinge.transform, false);
+        handle.transform.SetParent(pivot, false);
         handle.transform.localPosition = new Vector3(width * 0.84f, height * 0.48f, -0.095f);
         handle.transform.localScale = Vector3.one * 0.09f;
         handle.GetComponent<Renderer>().sharedMaterial = goldMat;
@@ -615,7 +625,7 @@ public static class OfficeHeistSecretBasementBuilder
         body.useGravity = false;
 
         OfficeDoorController controller = hinge.AddComponent<OfficeDoorController>();
-        controller.Configure(panel.transform, label, openAngle, 5.5f);
+        controller.Configure(pivot, panel.transform, label, openAngle, 5.5f);
     }
 
     private static void BuildStairExtension(Transform parent)
