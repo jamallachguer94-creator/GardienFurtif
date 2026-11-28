@@ -1009,7 +1009,7 @@ public static class GardienFurtifWorldRealismPreview
         for (int axle = -1; axle <= 1; axle += 2)
         {
             Transform wheel = Group("Wheel_" + wheelIndex, visual);
-            wheel.localPosition = new Vector3(side * 0.96f, 0.38f, axle * 1.27f);
+            wheel.localPosition = new Vector3(side * 0.96f, 0.20f, axle * 1.27f);
             wheel.localRotation = Quaternion.Euler(0f, 0f, 90f);
             CreateLocalCylinder(wheel, "Rubber", Vector3.zero, new Vector3(0.34f, 0.18f, 0.34f), tyre, false, Quaternion.identity);
             CreateLocalCylinder(wheel, "Rim", new Vector3(0f, 0f, 0f), new Vector3(0.16f, 0.185f, 0.16f), brushedMetal, false, Quaternion.identity);
@@ -1155,7 +1155,7 @@ public static class GardienFurtifWorldRealismPreview
         {
             Transform leg = Group("Leg_Pivot_" + k, visual);
             leg.localPosition = new Vector3(side * 0.11f, 0.27f, z * 0.18f);
-            CreateLocalCapsule(leg, "Leg", new Vector3(0f, -0.06f, 0f), new Vector3(0.07f, 0.10f, 0.07f), catFur, false);
+            CreateLocalCapsule(leg, "Leg", new Vector3(0f, -0.12f, 0f), new Vector3(0.07f, 0.13f, 0.07f), catFur, false);
             legs[k++] = leg;
         }
 
