@@ -504,8 +504,8 @@ public static class OfficeHeistReceptionRealismPreview
         group.position = new Vector3(-9.0f, 0f, -5.2f);
 
         // Main body retains the approximate footprint and height of the original stealth-cover counter.
-        CreateLocalBox(group, "Counter_Main_ColliderBody", new Vector3(0f, 0.49f, 0f),
-            new Vector3(4.20f, 0.98f, 0.90f), walnutDark, true);
+        CreateLocalBox(group, "Counter_Main_ColliderBody", new Vector3(0f, 0.56f, 0f),
+            new Vector3(4.20f, 1.12f, 0.90f), walnutDark, true);
         CreateLocalBox(group, "Counter_Front_Veneer", new Vector3(0f, 0.51f, -0.465f),
             new Vector3(4.12f, 0.82f, 0.035f), walnut, false);
         CreateLocalBox(group, "Counter_ToeKick", new Vector3(0f, 0.075f, -0.47f),
@@ -534,23 +534,23 @@ public static class OfficeHeistReceptionRealismPreview
             new Vector3(0.13f, 0.025f, 0.13f), brass, false, Quaternion.Euler(90f, 0f, 0f));
 
         // Polished stone transaction counter with a softened layered edge.
-        CreateLocalBox(group, "Counter_StoneTop", new Vector3(0f, 1.04f, 0f),
+        CreateLocalBox(group, "Counter_StoneTop", new Vector3(0f, 1.15f, 0f),
             new Vector3(4.52f, 0.12f, 1.05f), stone, false);
-        CreateLocalBox(group, "Counter_StoneTop_Edge", new Vector3(0f, 0.975f, -0.005f),
+        CreateLocalBox(group, "Counter_StoneTop_Edge", new Vector3(0f, 1.085f, -0.005f),
             new Vector3(4.48f, 0.035f, 1.015f), charcoal, false);
-        CreateLocalBox(group, "Counter_Staff_Lip", new Vector3(0f, 1.145f, 0.34f),
+        CreateLocalBox(group, "Counter_Staff_Lip", new Vector3(0f, 1.255f, 0.34f),
             new Vector3(2.45f, 0.15f, 0.10f), walnut, false);
-        CreateLocalBox(group, "Counter_Staff_Lip_Brass", new Vector3(0f, 1.22f, 0.34f),
+        CreateLocalBox(group, "Counter_Staff_Lip_Brass", new Vector3(0f, 1.33f, 0.34f),
             new Vector3(2.48f, 0.018f, 0.105f), brass, false);
 
         // Side return: keep the original L-shape silhouette and collision volume.
         Transform wing = CreateGroup("Reception_Counter_SideReturn", parent);
         wing.position = new Vector3(-6.90f, 0f, -4.10f);
-        CreateLocalBox(wing, "SideReturn_ColliderBody", new Vector3(0f, 0.49f, 0f),
-            new Vector3(0.82f, 0.98f, 1.90f), walnutDark, true);
+        CreateLocalBox(wing, "SideReturn_ColliderBody", new Vector3(0f, 0.56f, 0f),
+            new Vector3(0.82f, 1.12f, 1.90f), walnutDark, true);
         CreateLocalBox(wing, "SideReturn_FrontVeneer", new Vector3(0.43f, 0.50f, 0f),
             new Vector3(0.035f, 0.82f, 1.82f), walnut, false);
-        CreateLocalBox(wing, "SideReturn_StoneTop", new Vector3(0f, 1.04f, 0f),
+        CreateLocalBox(wing, "SideReturn_StoneTop", new Vector3(0f, 1.15f, 0f),
             new Vector3(0.98f, 0.12f, 2.04f), stone, false);
         CreateLocalBox(wing, "SideReturn_BrassEdge", new Vector3(0f, 1.115f, 0f),
             new Vector3(0.99f, 0.018f, 2.05f), brass, false);
@@ -560,16 +560,16 @@ public static class OfficeHeistReceptionRealismPreview
 
         BuildKeyboard(group, "Reception_Keyboard_Left", new Vector3(-0.82f, 1.115f, -0.39f));
         BuildKeyboard(group, "Reception_Keyboard_Right", new Vector3(0.82f, 1.115f, -0.39f));
-        BuildDeskPhone(group, "Reception_DeskPhone", new Vector3(1.48f, 1.12f, 0.22f));
-        BuildPaperwork(group, "Reception_VisitorForms", new Vector3(-1.48f, 1.115f, 0.18f));
-        BuildPenCup(group, "Reception_PenHolder", new Vector3(-1.75f, 1.12f, 0.18f));
-        BuildTaskLamp(group, "Reception_DeskLamp", new Vector3(1.78f, 1.11f, 0.12f));
+        BuildDeskPhone(group, "Reception_DeskPhone", new Vector3(1.48f, 1.23f, 0.22f));
+        BuildPaperwork(group, "Reception_VisitorForms", new Vector3(-1.48f, 1.225f, 0.18f));
+        BuildPenCup(group, "Reception_PenHolder", new Vector3(-1.75f, 1.23f, 0.18f));
+        BuildTaskLamp(group, "Reception_DeskLamp", new Vector3(1.78f, 1.22f, 0.12f));
 
         BuildStaffChair(parent, "Reception_StaffChair_Left", new Vector3(-9.82f, 0f, -4.05f), 180f);
         BuildStaffChair(parent, "Reception_StaffChair_Right", new Vector3(-8.18f, 0f, -4.05f), 180f);
 
         // Low-level LED glow beneath the transaction top.
-        CreateLocalBox(group, "Counter_UnderTop_LED", new Vector3(0f, 0.955f, -0.505f),
+        CreateLocalBox(group, "Counter_UnderTop_LED", new Vector3(0f, 1.065f, -0.505f),
             new Vector3(3.80f, 0.025f, 0.018f), warmEmission, false);
     }
 
@@ -822,7 +822,7 @@ public static class OfficeHeistReceptionRealismPreview
         for (int i = 0; i < 4; i++)
         {
             CreateBox(parent, "Reception_Notice_Line_" + i,
-                new Vector3(-3.095f, 1.94f - i * 0.15f, -2.62f),
+                new Vector3(-3.145f, 1.94f - i * 0.15f, -2.62f),
                 new Vector3(0.012f, 0.018f, 0.62f - i * 0.05f), walnut, false);
         }
 
