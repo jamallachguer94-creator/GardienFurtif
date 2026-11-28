@@ -351,7 +351,7 @@ public static class OfficeHeistReceptionRealismPreview
                     Color tint = Color.Lerp(tone * 0.82f, tone * 1.16f, variation);
                     if (style == SurfaceStyle.Marble)
                     {
-                        float vein = Mathf.Pow(Mathf.Clamp01(1f - Mathf.Abs(Mathf.Sin((u * 8f + Mathf.PerlinNoise(u * 4f, v * 7f)) * 21f)), 0f, 1f), 12f);
+                        float vein = Mathf.Pow(Mathf.Clamp01(1f - Mathf.Abs(Mathf.Sin((u * 8f + Mathf.PerlinNoise(u * 4f, v * 7f)) * 21f))), 12f);
                         tint = Color.Lerp(tint, new Color(0.58f, 0.54f, 0.46f), vein * 0.42f);
                     }
                     else if (style == SurfaceStyle.BrushedMetal)
@@ -441,20 +441,20 @@ public static class OfficeHeistReceptionRealismPreview
     {
         // The lobby's north wall has a 2.2m doorway at X=-9. The panels occupy
         // only the solid section on its east side and never narrow the opening.
-        CreateBox(parent, "Reception_Backdrop_Main", new Vector3(-5.45f, 1.60f, -2.115f), new Vector3(4.65f, 2.65f, 0.10f), walnutDark, false);
-        CreateBox(parent, "Reception_Backdrop_Inlay", new Vector3(-5.45f, 1.60f, -2.055f), new Vector3(4.35f, 2.38f, 0.025f), plaster, false);
-        CreateBox(parent, "Reception_Backdrop_Header", new Vector3(-5.45f, 2.78f, -2.025f), new Vector3(3.55f, 0.035f, 0.018f), brass, false);
-        CreateBox(parent, "Reception_Backdrop_Footer", new Vector3(-5.45f, 0.43f, -2.025f), new Vector3(3.55f, 0.035f, 0.018f), brass, false);
+        CreateBox(parent, "Reception_Backdrop_Main", new Vector3(-5.45f, 1.60f, -2.20f), new Vector3(4.65f, 2.65f, 0.10f), walnutDark, false);
+        CreateBox(parent, "Reception_Backdrop_Inlay", new Vector3(-5.45f, 1.60f, -2.26f), new Vector3(4.35f, 2.38f, 0.025f), plaster, false);
+        CreateBox(parent, "Reception_Backdrop_Header", new Vector3(-5.45f, 2.78f, -2.285f), new Vector3(3.55f, 0.035f, 0.018f), brass, false);
+        CreateBox(parent, "Reception_Backdrop_Footer", new Vector3(-5.45f, 0.43f, -2.285f), new Vector3(3.55f, 0.035f, 0.018f), brass, false);
 
         for (int i = 0; i < 17; i++)
         {
             float x = -7.40f + i * 0.245f;
-            CreateBox(parent, "Reception_Backdrop_Slat_" + i, new Vector3(x, 1.63f, -2.025f), new Vector3(0.028f, 2.15f, 0.022f), walnut, false);
+            CreateBox(parent, "Reception_Backdrop_Slat_" + i, new Vector3(x, 1.63f, -2.282f), new Vector3(0.028f, 2.15f, 0.022f), walnut, false);
         }
 
-        CreateBox(parent, "Reception_Backdrop_Plaque", new Vector3(-5.45f, 2.10f, -1.99f), new Vector3(2.70f, 0.56f, 0.055f), charcoal, false);
-        CreateWorldText(parent, "Reception_Backdrop_Title", "RECEPTION", new Vector3(-5.45f, 2.12f, -1.955f), Quaternion.Euler(0f, 180f, 0f), 0.0060f, new Color(0.86f, 0.70f, 0.43f));
-        CreateWorldText(parent, "Reception_Backdrop_Subtitle", "VISITOR SERVICES", new Vector3(-5.45f, 1.73f, -1.95f), Quaternion.Euler(0f, 180f, 0f), 0.0022f, new Color(0.82f, 0.82f, 0.77f));
+        CreateBox(parent, "Reception_Backdrop_Plaque", new Vector3(-5.45f, 2.10f, -2.31f), new Vector3(2.70f, 0.56f, 0.055f), charcoal, false);
+        CreateWorldText(parent, "Reception_Backdrop_Title", "RECEPTION", new Vector3(-5.45f, 2.17f, -2.345f), Quaternion.Euler(0f, 180f, 0f), 0.0060f, new Color(0.86f, 0.70f, 0.43f));
+        CreateWorldText(parent, "Reception_Backdrop_Subtitle", "VISITOR SERVICES", new Vector3(-5.45f, 1.98f, -2.345f), Quaternion.Euler(0f, 180f, 0f), 0.0022f, new Color(0.82f, 0.82f, 0.77f));
 
         // Wainscot and warm skirting: placed only along solid wall segments.
         CreateBox(parent, "Reception_West_Baseboard", new Vector3(-14.82f, 0.11f, -6.0f), new Vector3(0.12f, 0.20f, 7.55f), walnutDark, false);
@@ -486,7 +486,7 @@ public static class OfficeHeistReceptionRealismPreview
 
         // Direction plate above the corridor doorway; it does not cover the opening.
         CreateBox(parent, "Reception_MainHall_Sign", new Vector3(-9.0f, 2.72f, -2.56f), new Vector3(1.55f, 0.18f, 0.38f), charcoal, false);
-        CreateWorldText(parent, "Reception_MainHall_Sign_Text", "MAIN HALL", new Vector3(-9.0f, 2.70f, -2.35f), Quaternion.identity, 0.0035f, new Color(0.88f, 0.73f, 0.48f));
+        CreateWorldText(parent, "Reception_MainHall_Sign_Text", "MAIN HALL", new Vector3(-9.0f, 2.70f, -2.77f), Quaternion.Euler(0f, 180f, 0f), 0.0035f, new Color(0.88f, 0.73f, 0.48f));
     }
 
     private static void CreateWallBaseSegment(Transform parent, string name, Vector3 pos, Vector3 size)
@@ -694,12 +694,12 @@ public static class OfficeHeistReceptionRealismPreview
     private static void BuildWaitingArea(Transform parent)
     {
         // A carpeted island differentiates the visitor lounge from the main walk route.
-        CreateBox(parent, "Reception_Waiting_Carpet", new Vector3(-12.70f, 0.018f, -7.18f),
-            new Vector3(2.95f, 0.025f, 3.15f), carpet, false);
-        CreateBox(parent, "Reception_Waiting_Carpet_Border", new Vector3(-12.70f, 0.035f, -7.18f),
-            new Vector3(2.82f, 0.012f, 3.02f), brass, false);
-        CreateBox(parent, "Reception_Waiting_Carpet_Inset", new Vector3(-12.70f, 0.045f, -7.18f),
-            new Vector3(2.76f, 0.012f, 2.96f), carpet, false);
+        CreateBox(parent, "Reception_Waiting_Carpet", new Vector3(-12.70f, 0.018f, -7.32f),
+            new Vector3(2.95f, 0.025f, 3.55f), carpet, false);
+        CreateBox(parent, "Reception_Waiting_Carpet_Border", new Vector3(-12.70f, 0.035f, -7.32f),
+            new Vector3(2.82f, 0.012f, 3.42f), brass, false);
+        CreateBox(parent, "Reception_Waiting_Carpet_Inset", new Vector3(-12.70f, 0.045f, -7.32f),
+            new Vector3(2.76f, 0.012f, 3.36f), carpet, false);
 
         BuildSofa(parent, "Reception_WaitingSofa_West", new Vector3(-13.60f, 0f, -6.45f), 90f);
         BuildSofa(parent, "Reception_WaitingSofa_South", new Vector3(-12.20f, 0f, -8.70f), 0f);
@@ -815,15 +815,15 @@ public static class OfficeHeistReceptionRealismPreview
         }
 
         // Small wall-mounted visitor information board on the east wall.
-        CreateBox(parent, "Reception_VisitorNotice_Frame", new Vector3(-3.17f, 1.75f, -6.20f),
-            new Vector3(0.08f, 0.86f, 1.28f), walnutDark, false);
-        CreateBox(parent, "Reception_VisitorNotice_Surface", new Vector3(-3.115f, 1.75f, -6.20f),
-            new Vector3(0.025f, 0.76f, 1.16f), plaster, false);
+        CreateBox(parent, "Reception_VisitorNotice_Frame", new Vector3(-3.17f, 1.72f, -2.62f),
+            new Vector3(0.08f, 0.86f, 0.98f), walnutDark, false);
+        CreateBox(parent, "Reception_VisitorNotice_Surface", new Vector3(-3.115f, 1.72f, -2.62f),
+            new Vector3(0.025f, 0.76f, 0.88f), plaster, false);
         for (int i = 0; i < 4; i++)
         {
             CreateBox(parent, "Reception_Notice_Line_" + i,
-                new Vector3(-3.095f, 1.97f - i * 0.15f, -6.20f),
-                new Vector3(0.012f, 0.018f, 0.76f - i * 0.06f), walnut, false);
+                new Vector3(-3.095f, 1.94f - i * 0.15f, -2.62f),
+                new Vector3(0.012f, 0.018f, 0.62f - i * 0.05f), walnut, false);
         }
 
         // Low discreet power outlets and a wall air-return grille.
