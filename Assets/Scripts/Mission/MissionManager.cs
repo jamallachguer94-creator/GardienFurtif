@@ -539,7 +539,7 @@ public class MissionManager : MonoBehaviour
         trackerRect.anchorMax = new Vector2(1f, 1f);
         trackerRect.pivot = new Vector2(1f, 1f);
         trackerRect.anchoredPosition = new Vector2(-24f, -24f);
-        trackerRect.sizeDelta = new Vector2(360f, 310f);
+        trackerRect.sizeDelta = new Vector2(420f, 400f);
 
         Image trackerBg = trackerObj.AddComponent<Image>();
         trackerBg.color = new Color(0.05f, 0.08f, 0.13f, 0.88f);
@@ -552,11 +552,11 @@ public class MissionManager : MonoBehaviour
         headerRect.anchorMax = new Vector2(1f, 1f);
         headerRect.pivot = new Vector2(0.5f, 1f);
         headerRect.anchoredPosition = Vector2.zero;
-        headerRect.sizeDelta = new Vector2(0f, 34f);
+        headerRect.sizeDelta = new Vector2(0f, 42f);
         Image headerImg = headerBar.AddComponent<Image>();
         headerImg.color = new Color(0.10f, 0.18f, 0.30f, 0.95f);
 
-        Text headerTxt = CreateUIText("HeaderTitle", headerRect, font, "MISSION OBJECTIVES", 14, FontStyle.Bold, TextAnchor.MiddleLeft, new Color(0.65f, 0.85f, 1f, 1f));
+        Text headerTxt = CreateUIText("HeaderTitle", headerRect, font, "MISSION OBJECTIVES", 18, FontStyle.Bold, TextAnchor.MiddleLeft, new Color(0.65f, 0.85f, 1f, 1f));
         headerTxt.rectTransform.offsetMin = new Vector2(14f, 0f);
 
         GameObject dossierRow = CreateUIObject("DossierObjectiveRow", trackerRect);
@@ -564,32 +564,32 @@ public class MissionManager : MonoBehaviour
         dossierRowRect.anchorMin = new Vector2(0f, 1f);
         dossierRowRect.anchorMax = new Vector2(1f, 1f);
         dossierRowRect.pivot = new Vector2(0.5f, 1f);
-        dossierRowRect.anchoredPosition = new Vector2(0f, -42f);
-        dossierRowRect.sizeDelta = new Vector2(-24f, 34f);
+        dossierRowRect.anchoredPosition = new Vector2(0f, -54f);
+        dossierRowRect.sizeDelta = new Vector2(-24f, 42f);
 
-        Image dossierIconImg = CreateUIIcon("DossierIcon", dossierRowRect, new Vector2(16f, 0f), new Vector2(28f, 28f), MissionIconFactory.GetIcon(MissionIconFactory.IconKind.Dossier));
-        Text dossierObjTxt = CreateUIText("DossierText", dossierRowRect, font, "Steal the main dossier", 15, FontStyle.Bold, TextAnchor.MiddleLeft, Color.white);
-        dossierObjTxt.rectTransform.offsetMin = new Vector2(38f, 0f);
+        Image dossierIconImg = CreateUIIcon("DossierIcon", dossierRowRect, new Vector2(20f, 0f), new Vector2(38f, 38f), MissionIconFactory.GetIcon(MissionIconFactory.IconKind.Dossier));
+        Text dossierObjTxt = CreateUIText("DossierText", dossierRowRect, font, "Steal the main dossier", 19, FontStyle.Bold, TextAnchor.MiddleLeft, Color.white);
+        dossierObjTxt.rectTransform.offsetMin = new Vector2(48f, 0f);
 
         GameObject exitRow = CreateUIObject("ExitObjectiveRow", trackerRect);
         RectTransform exitRowRect = exitRow.GetComponent<RectTransform>();
         exitRowRect.anchorMin = new Vector2(0f, 1f);
         exitRowRect.anchorMax = new Vector2(1f, 1f);
         exitRowRect.pivot = new Vector2(0.5f, 1f);
-        exitRowRect.anchoredPosition = new Vector2(0f, -78f);
-        exitRowRect.sizeDelta = new Vector2(-24f, 34f);
+        exitRowRect.anchoredPosition = new Vector2(0f, -100f);
+        exitRowRect.sizeDelta = new Vector2(-24f, 42f);
 
-        Image exitIconImg = CreateUIIcon("ExitIcon", exitRowRect, new Vector2(16f, 0f), new Vector2(28f, 28f), MissionIconFactory.GetIcon(MissionIconFactory.IconKind.ExitDoor));
-        Text exitObjTxt = CreateUIText("ExitText", exitRowRect, font, "Reach the exit", 15, FontStyle.Bold, TextAnchor.MiddleLeft, Color.white);
-        exitObjTxt.rectTransform.offsetMin = new Vector2(38f, 0f);
+        Image exitIconImg = CreateUIIcon("ExitIcon", exitRowRect, new Vector2(20f, 0f), new Vector2(38f, 38f), MissionIconFactory.GetIcon(MissionIconFactory.IconKind.ExitDoor));
+        Text exitObjTxt = CreateUIText("ExitText", exitRowRect, font, "Reach the exit", 19, FontStyle.Bold, TextAnchor.MiddleLeft, Color.white);
+        exitObjTxt.rectTransform.offsetMin = new Vector2(48f, 0f);
 
         GameObject lootCard = CreateUIObject("LootTrackerCard", trackerRect);
         RectTransform lootCardRect = lootCard.GetComponent<RectTransform>();
         lootCardRect.anchorMin = new Vector2(0f, 1f);
         lootCardRect.anchorMax = new Vector2(1f, 1f);
         lootCardRect.pivot = new Vector2(0.5f, 1f);
-        lootCardRect.anchoredPosition = new Vector2(0f, -118f);
-        lootCardRect.sizeDelta = new Vector2(-24f, 64f);
+        lootCardRect.anchoredPosition = new Vector2(0f, -150f);
+        lootCardRect.sizeDelta = new Vector2(-24f, 78f);
         Image lootCardBg = lootCard.AddComponent<Image>();
         lootCardBg.color = new Color(0.08f, 0.12f, 0.19f, 0.95f);
 
@@ -597,8 +597,8 @@ public class MissionManager : MonoBehaviour
         RectTransform ringBgRect = ringBgObj.GetComponent<RectTransform>();
         ringBgRect.anchorMin = new Vector2(0f, 0.5f);
         ringBgRect.anchorMax = new Vector2(0f, 0.5f);
-        ringBgRect.anchoredPosition = new Vector2(32f, 0f);
-        ringBgRect.sizeDelta = new Vector2(46f, 46f);
+        ringBgRect.anchoredPosition = new Vector2(40f, 0f);
+        ringBgRect.sizeDelta = new Vector2(58f, 58f);
         Image ringBgImg = ringBgObj.AddComponent<Image>();
         ringBgImg.sprite = MissionIconFactory.GetIcon(MissionIconFactory.IconKind.RingOutline);
         ringBgImg.color = new Color(0.2f, 0.25f, 0.35f, 0.8f);
@@ -617,25 +617,25 @@ public class MissionManager : MonoBehaviour
         radialFillImg.fillAmount = 0f;
         radialFillImg.color = new Color(1f, 0.80f, 0.20f, 1f);
 
-        Image lootIconImg = CreateUIIcon("LootCenterIcon", ringBgRect, Vector2.zero, new Vector2(26f, 26f), MissionIconFactory.GetIcon(MissionIconFactory.IconKind.LootBag));
+        Image lootIconImg = CreateUIIcon("LootCenterIcon", ringBgRect, Vector2.zero, new Vector2(34f, 34f), MissionIconFactory.GetIcon(MissionIconFactory.IconKind.LootBag));
         lootIconImg.rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
         lootIconImg.rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
 
-        Text lootStatusLbl = CreateUIText("LootStatusLabel", lootCardRect, font, "LOOT COLLECTED", 12, FontStyle.Bold, TextAnchor.UpperLeft, new Color(0.8f, 0.86f, 0.95f, 1f));
-        lootStatusLbl.rectTransform.offsetMin = new Vector2(66f, 8f);
-        lootStatusLbl.rectTransform.offsetMax = new Vector2(-80f, -8f);
+        Text lootStatusLbl = CreateUIText("LootStatusLabel", lootCardRect, font, "LOOT COLLECTED", 15, FontStyle.Bold, TextAnchor.UpperLeft, new Color(0.8f, 0.86f, 0.95f, 1f));
+        lootStatusLbl.rectTransform.offsetMin = new Vector2(82f, 10f);
+        lootStatusLbl.rectTransform.offsetMax = new Vector2(-100f, -10f);
 
-        Text lootCountTxt = CreateUIText("LootCountText", lootCardRect, font, "0 / 0", 18, FontStyle.Bold, TextAnchor.UpperRight, new Color(1f, 0.82f, 0.22f, 1f));
-        lootCountTxt.rectTransform.offsetMin = new Vector2(66f, 6f);
-        lootCountTxt.rectTransform.offsetMax = new Vector2(-12f, -6f);
+        Text lootCountTxt = CreateUIText("LootCountText", lootCardRect, font, "0 / 0", 22, FontStyle.Bold, TextAnchor.UpperRight, new Color(1f, 0.82f, 0.22f, 1f));
+        lootCountTxt.rectTransform.offsetMin = new Vector2(82f, 6f);
+        lootCountTxt.rectTransform.offsetMax = new Vector2(-14f, -6f);
 
         GameObject barBgObj = CreateUIObject("LootBarBg", lootCardRect);
         RectTransform barBgRect = barBgObj.GetComponent<RectTransform>();
         barBgRect.anchorMin = new Vector2(0f, 0f);
         barBgRect.anchorMax = new Vector2(1f, 0f);
         barBgRect.pivot = new Vector2(0.5f, 0f);
-        barBgRect.anchoredPosition = new Vector2(27f, 12f);
-        barBgRect.sizeDelta = new Vector2(-78f, 10f);
+        barBgRect.anchoredPosition = new Vector2(34f, 14f);
+        barBgRect.sizeDelta = new Vector2(-96f, 12f);
         Image barBgImg = barBgObj.AddComponent<Image>();
         barBgImg.color = new Color(0.03f, 0.05f, 0.08f, 0.95f);
 
@@ -655,13 +655,13 @@ public class MissionManager : MonoBehaviour
         RectTransform lootListRect = lootListObj.GetComponent<RectTransform>();
         lootListRect.anchorMin = new Vector2(0f, 0f);
         lootListRect.anchorMax = new Vector2(1f, 1f);
-        lootListRect.offsetMin = new Vector2(14f, 10f);
-        lootListRect.offsetMax = new Vector2(-14f, -188f);
+        lootListRect.offsetMin = new Vector2(16f, 12f);
+        lootListRect.offsetMax = new Vector2(-16f, -244f);
         VerticalLayoutGroup vlg = lootListObj.AddComponent<VerticalLayoutGroup>();
         vlg.childControlHeight = false;
         vlg.childControlWidth = true;
         vlg.childForceExpandHeight = false;
-        vlg.spacing = 3f;
+        vlg.spacing = 5f;
 
         // 2. MISSION GUIDE CHARACTER UI (Top-Left)
         GameObject guideObj = CreateUIObject("MissionGuidePanel", canvasRect);
@@ -669,8 +669,8 @@ public class MissionManager : MonoBehaviour
         guideRect.anchorMin = new Vector2(0f, 1f);
         guideRect.anchorMax = new Vector2(0f, 1f);
         guideRect.pivot = new Vector2(0f, 1f);
-        guideRect.anchoredPosition = new Vector2(24f, -24f);
-        guideRect.sizeDelta = new Vector2(520f, 108f);
+        guideRect.anchoredPosition = new Vector2(24f, 24f);
+        guideRect.sizeDelta = new Vector2(1320f, 240f);
 
         CanvasGroup guideCg = guideObj.AddComponent<CanvasGroup>();
         MissionGuideUI guide = guideObj.AddComponent<MissionGuideUI>();
@@ -681,10 +681,10 @@ public class MissionManager : MonoBehaviour
         pfRect.anchorMax = new Vector2(0f, 0.5f);
         pfRect.pivot = new Vector2(0f, 0.5f);
         pfRect.anchoredPosition = Vector2.zero;
-        pfRect.sizeDelta = new Vector2(96f, 96f);
+        pfRect.sizeDelta = new Vector2(190f, 190f);
         Image pfBg = portraitFrame.AddComponent<Image>();
         pfBg.sprite = MissionIconFactory.GetIcon(MissionIconFactory.IconKind.CircleFill);
-        pfBg.color = new Color(0.06f, 0.12f, 0.20f, 0.96f);
+        pfBg.color = new Color(1f, 0.65f, 0.12f, 1f);
 
         Image portraitImg = CreateUIIcon("PortraitImage", pfRect, Vector2.zero, new Vector2(88f, 88f), MissionIconFactory.GetIcon(MissionIconFactory.IconKind.GuidePortrait));
         portraitImg.rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
@@ -694,10 +694,14 @@ public class MissionManager : MonoBehaviour
         RectTransform bubbleRect = bubbleObj.GetComponent<RectTransform>();
         bubbleRect.anchorMin = new Vector2(0f, 0f);
         bubbleRect.anchorMax = new Vector2(1f, 1f);
-        bubbleRect.offsetMin = new Vector2(108f, 4f);
-        bubbleRect.offsetMax = new Vector2(0f, -4f);
+        bubbleRect.offsetMin = new Vector2(208f, 5f);
+        bubbleRect.offsetMax = new Vector2(0f, -5f);
         Image bubbleBg = bubbleObj.AddComponent<Image>();
-        bubbleBg.color = new Color(0.05f, 0.09f, 0.15f, 0.92f);
+        bubbleBg.color = new Color(0.97f, 0.88f, 0.68f, 0.98f);
+
+        Outline bubbleOutline = bubbleObj.AddComponent<Outline>();
+        bubbleOutline.effectColor = new Color(0.12f, 0.09f, 0.055f, 1f);
+        bubbleOutline.effectDistance = new Vector2(3f, -3f);
 
         GameObject accentBar = CreateUIObject("BubbleAccent", bubbleRect);
         RectTransform accentRect = accentBar.GetComponent<RectTransform>();
@@ -707,17 +711,17 @@ public class MissionManager : MonoBehaviour
         accentRect.anchoredPosition = Vector2.zero;
         accentRect.sizeDelta = new Vector2(5f, 0f);
         Image accentImg = accentBar.AddComponent<Image>();
-        accentImg.color = new Color(0.28f, 0.78f, 1f, 1f);
+        accentImg.color = new Color(0.96f, 0.48f, 0.08f, 1f);
 
-        Text speakerTxt = CreateUIText("SpeakerName", bubbleRect, font, "HANDLER // FOX", 12, FontStyle.Bold, TextAnchor.UpperLeft, new Color(0.38f, 0.84f, 1f, 1f));
-        speakerTxt.rectTransform.offsetMin = new Vector2(16f, 8f);
-        speakerTxt.rectTransform.offsetMax = new Vector2(-56f, -8f);
+        Text speakerTxt = CreateUIText("SpeakerName", bubbleRect, font, "FIELD AGENT // SHADOW", 23, FontStyle.Bold, TextAnchor.UpperLeft, new Color(0.30f, 0.17f, 0.075f, 1f));
+        speakerTxt.rectTransform.offsetMin = new Vector2(26f, 12f);
+        speakerTxt.rectTransform.offsetMax = new Vector2(-90f, -12f);
 
-        Text guideMsgTxt = CreateUIText("DialogueMessage", bubbleRect, font, "Your mission: Find the main dossier. Search the office and collect valuable objects.", 15, FontStyle.Normal, TextAnchor.MiddleLeft, Color.white);
-        guideMsgTxt.rectTransform.offsetMin = new Vector2(16f, 10f);
-        guideMsgTxt.rectTransform.offsetMax = new Vector2(-56f, -26f);
+        Text guideMsgTxt = CreateUIText("DialogueMessage", bubbleRect, font, "Your mission: steal the main dossier, collect the valuables and escape without getting caught.", 28, FontStyle.Bold, TextAnchor.MiddleLeft, Color.white);
+        guideMsgTxt.rectTransform.offsetMin = new Vector2(26f, 16f);
+        guideMsgTxt.rectTransform.offsetMax = new Vector2(-96f, -62f);
 
-        Image contextBadgeImg = CreateUIIcon("ContextObjectiveIcon", bubbleRect, new Vector2(-28f, 0f), new Vector2(36f, 36f), MissionIconFactory.GetIcon(MissionIconFactory.IconKind.Dossier));
+        Image contextBadgeImg = CreateUIIcon("ContextObjectiveIcon", bubbleRect, new Vector2(-46f, 0f), new Vector2(64f, 64f), MissionIconFactory.GetIcon(MissionIconFactory.IconKind.Dossier));
         contextBadgeImg.rectTransform.anchorMin = new Vector2(1f, 0.5f);
         contextBadgeImg.rectTransform.anchorMax = new Vector2(1f, 0.5f);
 
@@ -729,14 +733,14 @@ public class MissionManager : MonoBehaviour
         promptRect.anchorMin = new Vector2(0.5f, 0f);
         promptRect.anchorMax = new Vector2(0.5f, 0f);
         promptRect.pivot = new Vector2(0.5f, 0f);
-        promptRect.anchoredPosition = new Vector2(0f, 68f);
-        promptRect.sizeDelta = new Vector2(500f, 52f);
+        promptRect.anchoredPosition = new Vector2(0f, 76f);
+        promptRect.sizeDelta = new Vector2(620f, 72f);
         Image promptBg = promptRoot.AddComponent<Image>();
         promptBg.color = new Color(0.04f, 0.07f, 0.12f, 0.92f);
 
-        Image promptIconImg = CreateUIIcon("PromptIcon", promptRect, new Vector2(28f, 0f), new Vector2(36f, 36f), MissionIconFactory.GetIcon(MissionIconFactory.IconKind.LootBag));
-        Text promptTxt = CreateUIText("PromptText", promptRect, font, "Press E to interact", 17, FontStyle.Bold, TextAnchor.MiddleCenter, Color.white);
-        promptTxt.rectTransform.offsetMin = new Vector2(54f, 4f);
+        Image promptIconImg = CreateUIIcon("PromptIcon", promptRect, new Vector2(38f, 0f), new Vector2(48f, 48f), MissionIconFactory.GetIcon(MissionIconFactory.IconKind.LootBag));
+        Text promptTxt = CreateUIText("PromptText", promptRect, font, "PRESS E TO INTERACT", 24, FontStyle.Bold, TextAnchor.MiddleCenter, Color.white);
+        promptTxt.rectTransform.offsetMin = new Vector2(82f, 6f);
         promptTxt.rectTransform.offsetMax = new Vector2(-16f, -4f);
         promptRoot.SetActive(false);
 
@@ -746,10 +750,10 @@ public class MissionManager : MonoBehaviour
         feedbackRect.anchorMax = new Vector2(0.5f, 1f);
         feedbackRect.pivot = new Vector2(0.5f, 1f);
         feedbackRect.anchoredPosition = new Vector2(0f, -32f);
-        feedbackRect.sizeDelta = new Vector2(460f, 44f);
+        feedbackRect.sizeDelta = new Vector2(640f, 60f);
         Image feedbackBg = feedbackRoot.AddComponent<Image>();
         feedbackBg.color = new Color(0.06f, 0.14f, 0.24f, 0.92f);
-        Text feedbackTxt = CreateUIText("FeedbackText", feedbackRect, font, "", 16, FontStyle.Bold, TextAnchor.MiddleCenter, new Color(0.95f, 0.98f, 1f, 1f));
+        Text feedbackTxt = CreateUIText("FeedbackText", feedbackRect, font, "", 22, FontStyle.Bold, TextAnchor.MiddleCenter, new Color(0.95f, 0.98f, 1f, 1f));
         feedbackRoot.SetActive(false);
 
         // 4. SCREEN-EDGE DIRECTIONAL INDICATOR
@@ -757,12 +761,12 @@ public class MissionManager : MonoBehaviour
         RectTransform edgeRect = edgeObj.GetComponent<RectTransform>();
         edgeRect.anchorMin = new Vector2(0.5f, 0.5f);
         edgeRect.anchorMax = new Vector2(0.5f, 0.5f);
-        edgeRect.sizeDelta = new Vector2(54f, 54f);
+        edgeRect.sizeDelta = new Vector2(68f, 68f);
         Image edgeArrowImg = edgeObj.AddComponent<Image>();
         edgeArrowImg.sprite = MissionIconFactory.GetIcon(MissionIconFactory.IconKind.ArrowPointer);
         edgeArrowImg.raycastTarget = false;
 
-        Image edgeIconImg = CreateUIIcon("TargetIcon", edgeRect, Vector2.zero, new Vector2(28f, 28f), MissionIconFactory.GetIcon(MissionIconFactory.IconKind.Dossier));
+        Image edgeIconImg = CreateUIIcon("TargetIcon", edgeRect, Vector2.zero, new Vector2(36f, 36f), MissionIconFactory.GetIcon(MissionIconFactory.IconKind.Dossier));
         edgeIconImg.rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
         edgeIconImg.rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
         edgeObj.SetActive(false);
@@ -788,7 +792,7 @@ public class MissionManager : MonoBehaviour
             edgeArrowImg,
             edgeIconImg);
 
-        // 5. MISSION COMPLETION / RESULTS OVERLAY
+        // 5. CARTOON-STYLE MISSION RESULTS MEDALLION
         GameObject resultsHolder = CreateUIObject("MissionResultsController", canvasRect);
         RectTransform rhRect = resultsHolder.GetComponent<RectTransform>();
         rhRect.anchorMin = Vector2.zero;
@@ -802,58 +806,99 @@ public class MissionManager : MonoBehaviour
         overlayRect.anchorMax = Vector2.one;
         overlayRect.sizeDelta = Vector2.zero;
         Image overlayBg = overlayObj.AddComponent<Image>();
-        overlayBg.color = new Color(0.02f, 0.04f, 0.07f, 0.86f);
+        overlayBg.color = new Color(0.035f, 0.045f, 0.055f, 0.76f);
 
-        GameObject cardObj = CreateUIObject("ResultsCard", overlayRect);
+        GameObject outerObj = CreateUIObject("ResultsMedallionOuter", overlayRect);
+        RectTransform outerRect = outerObj.GetComponent<RectTransform>();
+        outerRect.anchorMin = new Vector2(0.5f, 0.5f);
+        outerRect.anchorMax = new Vector2(0.5f, 0.5f);
+        outerRect.sizeDelta = new Vector2(780f, 780f);
+        Image outerImage = outerObj.AddComponent<Image>();
+        outerImage.sprite = MissionIconFactory.GetIcon(MissionIconFactory.IconKind.CircleFill);
+        outerImage.color = new Color(1f, 0.49f, 0.035f, 1f);
+        Outline outerOutline = outerObj.AddComponent<Outline>();
+        outerOutline.effectColor = new Color(0.08f, 0.055f, 0.035f, 1f);
+        outerOutline.effectDistance = new Vector2(7f, -7f);
+
+        GameObject cardObj = CreateUIObject("ResultsCard", outerRect);
         RectTransform cardRect = cardObj.GetComponent<RectTransform>();
         cardRect.anchorMin = new Vector2(0.5f, 0.5f);
         cardRect.anchorMax = new Vector2(0.5f, 0.5f);
-        cardRect.sizeDelta = new Vector2(580f, 470f);
+        cardRect.anchoredPosition = Vector2.zero;
+        cardRect.sizeDelta = new Vector2(720f, 720f);
         Image cardBg = cardObj.AddComponent<Image>();
-        cardBg.color = new Color(0.07f, 0.11f, 0.18f, 0.98f);
+        cardBg.sprite = MissionIconFactory.GetIcon(MissionIconFactory.IconKind.CircleFill);
+        cardBg.color = new Color(0.98f, 0.87f, 0.66f, 1f);
+        Outline cardOutline = cardObj.AddComponent<Outline>();
+        cardOutline.effectColor = new Color(0.20f, 0.13f, 0.075f, 1f);
+        cardOutline.effectDistance = new Vector2(4f, -4f);
 
-        Text resTitle = CreateUIText("ResultsTitle", cardRect, font, "MISSION COMPLETED", 32, FontStyle.Bold, TextAnchor.UpperCenter, new Color(0.24f, 0.92f, 0.48f, 1f));
-        resTitle.rectTransform.offsetMin = new Vector2(20f, 20f);
-        resTitle.rectTransform.offsetMax = new Vector2(-20f, -24f);
+        Text resTitle = CreateUIText("ResultsTitle", cardRect, font, "BRAVO!", 48, FontStyle.Bold, TextAnchor.MiddleCenter, new Color(0.12f, 0.085f, 0.045f, 1f));
+        SetCenteredRect(resTitle.rectTransform, new Vector2(0f, 310f), new Vector2(620f, 72f));
 
-        Text resSub = CreateUIText("ResultsSubtitle", cardRect, font, "You secured the main dossier and escaped.", 15, FontStyle.Normal, TextAnchor.UpperCenter, new Color(0.8f, 0.86f, 0.94f, 1f));
-        resSub.rectTransform.offsetMin = new Vector2(30f, 20f);
-        resSub.rectTransform.offsetMax = new Vector2(-30f, -68f);
+        Text resSub = CreateUIText("ResultsSubtitle", cardRect, font, "YOU MADE IT OUT!", 25, FontStyle.Bold, TextAnchor.MiddleCenter, new Color(0.28f, 0.18f, 0.08f, 1f));
+        SetCenteredRect(resSub.rectTransform, new Vector2(0f, 258f), new Vector2(600f, 48f));
+
+        GameObject portraitFrameObj = CreateUIObject("ResultPortraitFrame", cardRect);
+        RectTransform portraitFrameRect = portraitFrameObj.GetComponent<RectTransform>();
+        portraitFrameRect.anchorMin = new Vector2(0.5f, 0.5f);
+        portraitFrameRect.anchorMax = new Vector2(0.5f, 0.5f);
+        portraitFrameRect.anchoredPosition = new Vector2(0f, 160f);
+        portraitFrameRect.sizeDelta = new Vector2(152f, 152f);
+        Image portraitFrame = portraitFrameObj.AddComponent<Image>();
+        portraitFrame.sprite = MissionIconFactory.GetIcon(MissionIconFactory.IconKind.CircleFill);
+        portraitFrame.color = new Color(1f, 0.63f, 0.10f, 1f);
+        Outline portraitOutline = portraitFrameObj.AddComponent<Outline>();
+        portraitOutline.effectColor = new Color(0.20f, 0.13f, 0.075f, 1f);
+        portraitOutline.effectDistance = new Vector2(3f, -3f);
+
+        Image resultPortraitImg = CreateUIIcon("ResultCharacterPortrait", portraitFrameRect, Vector2.zero,
+            new Vector2(136f, 136f), MissionIconFactory.GetIcon(MissionIconFactory.IconKind.ThiefPortrait));
+        resultPortraitImg.rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
+        resultPortraitImg.rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
+        resultPortraitImg.raycastTarget = false;
 
         Image[] stars = new Image[3];
         for (int i = 0; i < 3; i++)
         {
-            GameObject starObj = CreateUIObject($"Star_{i + 1}", cardRect);
+            GameObject starObj = CreateUIObject("Star_" + (i + 1), cardRect);
             RectTransform starRect = starObj.GetComponent<RectTransform>();
-            starRect.anchorMin = new Vector2(0.5f, 1f);
-            starRect.anchorMax = new Vector2(0.5f, 1f);
-            starRect.anchoredPosition = new Vector2((i - 1) * 66f, -128f);
-            starRect.sizeDelta = new Vector2(52f, 52f);
+            starRect.anchorMin = new Vector2(0.5f, 0.5f);
+            starRect.anchorMax = new Vector2(0.5f, 0.5f);
+            starRect.anchoredPosition = new Vector2((i - 1) * 76f, 54f);
+            starRect.sizeDelta = new Vector2(66f, 66f);
             Image starImg = starObj.AddComponent<Image>();
             starImg.sprite = MissionIconFactory.GetIcon(MissionIconFactory.IconKind.StarFilled);
+            starImg.preserveAspect = true;
             stars[i] = starImg;
         }
 
-        Text dossierVal = CreateResultStatRow(cardRect, font, "Main Dossier:", "COMPLETED", -185f);
-        Text lootCntVal = CreateResultStatRow(cardRect, font, "Loot Collected:", "0 / 0", -225f);
-        Text reqLootVal = CreateResultStatRow(cardRect, font, "Required Loot:", "COMPLETED", -265f);
-        Text scoreVal = CreateResultStatRow(cardRect, font, "Loot Score:", "$0", -305f);
-        Text pctVal = CreateResultStatRow(cardRect, font, "Mission Completion:", "100%", -345f);
+        Text scoreLabel = CreateUIText("ScoreLabel", cardRect, font, "LOOT VALUE", 19, FontStyle.Bold, TextAnchor.MiddleCenter, new Color(0.30f, 0.20f, 0.08f, 1f));
+        SetCenteredRect(scoreLabel.rectTransform, new Vector2(0f, -20f), new Vector2(560f, 34f));
+
+        Text scoreHeadline = CreateUIText("ResultsScoreHeadline", cardRect, font, "$0", 62, FontStyle.Bold, TextAnchor.MiddleCenter, new Color(0.12f, 0.085f, 0.045f, 1f));
+        SetCenteredRect(scoreHeadline.rectTransform, new Vector2(0f, -72f), new Vector2(590f, 78f));
+
+        Text dossierVal = CreateResultStatRow(cardRect, font, "MAIN DOSSIER", "COMPLETED", -142f);
+        Text lootCntVal = CreateResultStatRow(cardRect, font, "LOOT COLLECTED", "0 / 0", -190f);
+        Text reqLootVal = CreateResultStatRow(cardRect, font, "REQUIRED LOOT", "COMPLETED", -238f);
+        Text pctVal = CreateResultStatRow(cardRect, font, "COMPLETION", "100%", -286f);
 
         GameObject btnObj = CreateUIObject("ReplayButton", cardRect);
         RectTransform btnRect = btnObj.GetComponent<RectTransform>();
-        btnRect.anchorMin = new Vector2(0.5f, 0f);
-        btnRect.anchorMax = new Vector2(0.5f, 0f);
-        btnRect.pivot = new Vector2(0.5f, 0f);
-        btnRect.anchoredPosition = new Vector2(0f, 24f);
-        btnRect.sizeDelta = new Vector2(260f, 46f);
+        btnRect.anchorMin = new Vector2(0.5f, 0.5f);
+        btnRect.anchorMax = new Vector2(0.5f, 0.5f);
+        btnRect.anchoredPosition = new Vector2(0f, -350f);
+        btnRect.sizeDelta = new Vector2(300f, 58f);
         Image btnImg = btnObj.AddComponent<Image>();
-        btnImg.color = new Color(0.16f, 0.56f, 0.92f, 1f);
+        btnImg.color = new Color(0.91f, 0.41f, 0.035f, 1f);
+        Outline btnOutline = btnObj.AddComponent<Outline>();
+        btnOutline.effectColor = new Color(0.14f, 0.09f, 0.035f, 1f);
+        btnOutline.effectDistance = new Vector2(3f, -3f);
         Button replayBtn = btnObj.AddComponent<Button>();
         replayBtn.targetGraphic = btnImg;
 
-        CreateUIText("ReplayBtnText", btnRect, font, "REPLAY MISSION (R)", 16, FontStyle.Bold, TextAnchor.MiddleCenter, Color.white);
-
+        CreateUIText("ReplayBtnText", btnRect, font, "RETRY MISSION  (R)", 23, FontStyle.Bold, TextAnchor.MiddleCenter, Color.white);
         overlayObj.SetActive(false);
 
         results.BindUIReferences(
@@ -863,17 +908,11 @@ public class MissionManager : MonoBehaviour
             dossierVal,
             lootCntVal,
             reqLootVal,
-            scoreVal,
+            scoreHeadline,
             pctVal,
             stars,
             replayBtn);
-
-        if (manager != null)
-        {
-            manager.guideUI = guide;
-            manager.objectiveTracker = tracker;
-            manager.resultsUI = results;
-        }
+        results.BindResultArtwork(resultPortraitImg, scoreHeadline);
 
         return canvasObj;
     }
@@ -928,24 +967,36 @@ public class MissionManager : MonoBehaviour
         return txt;
     }
 
+    private static void SetCenteredRect(RectTransform rect, Vector2 anchoredPosition, Vector2 size)
+    {
+        rect.anchorMin = new Vector2(0.5f, 0.5f);
+        rect.anchorMax = new Vector2(0.5f, 0.5f);
+        rect.pivot = new Vector2(0.5f, 0.5f);
+        rect.anchoredPosition = anchoredPosition;
+        rect.sizeDelta = size;
+    }
+
     private static Text CreateResultStatRow(RectTransform cardRect, Font font, string label, string defaultVal, float yOffset)
     {
-        GameObject rowObj = CreateUIObject($"StatRow_{label}", cardRect);
+        GameObject rowObj = CreateUIObject("StatRow_" + label, cardRect);
         RectTransform rowRect = rowObj.GetComponent<RectTransform>();
-        rowRect.anchorMin = new Vector2(0f, 1f);
-        rowRect.anchorMax = new Vector2(1f, 1f);
-        rowRect.pivot = new Vector2(0.5f, 1f);
+        rowRect.anchorMin = new Vector2(0.5f, 0.5f);
+        rowRect.anchorMax = new Vector2(0.5f, 0.5f);
+        rowRect.pivot = new Vector2(0.5f, 0.5f);
         rowRect.anchoredPosition = new Vector2(0f, yOffset);
-        rowRect.sizeDelta = new Vector2(-80f, 32f);
+        rowRect.sizeDelta = new Vector2(560f, 42f);
 
         Image rowBg = rowObj.AddComponent<Image>();
-        rowBg.color = new Color(0.10f, 0.16f, 0.25f, 0.75f);
+        rowBg.color = new Color(0.26f, 0.19f, 0.10f, 0.14f);
+        Outline rowOutline = rowObj.AddComponent<Outline>();
+        rowOutline.effectColor = new Color(0.40f, 0.26f, 0.12f, 0.28f);
+        rowOutline.effectDistance = new Vector2(1f, -1f);
 
-        Text lblTxt = CreateUIText("Label", rowRect, font, label, 16, FontStyle.Bold, TextAnchor.MiddleLeft, new Color(0.82f, 0.88f, 0.96f, 1f));
-        lblTxt.rectTransform.offsetMin = new Vector2(16f, 0f);
+        Text lblTxt = CreateUIText("Label", rowRect, font, label, 19, FontStyle.Bold, TextAnchor.MiddleLeft, new Color(0.26f, 0.18f, 0.09f, 1f));
+        lblTxt.rectTransform.offsetMin = new Vector2(18f, 0f);
 
-        Text valTxt = CreateUIText("Value", rowRect, font, defaultVal, 16, FontStyle.Bold, TextAnchor.MiddleRight, Color.white);
-        valTxt.rectTransform.offsetMax = new Vector2(-16f, 0f);
+        Text valTxt = CreateUIText("Value", rowRect, font, defaultVal, 19, FontStyle.Bold, TextAnchor.MiddleRight, new Color(0.14f, 0.10f, 0.05f, 1f));
+        valTxt.rectTransform.offsetMax = new Vector2(-18f, 0f);
 
         return valTxt;
     }
