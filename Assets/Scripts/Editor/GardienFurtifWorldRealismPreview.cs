@@ -404,10 +404,10 @@ public static class GardienFurtifWorldRealismPreview
         Map(new[] { "Ext_AsphaltRoad", "Expansion_Road", "GF_Compound_Asphalt" }, asphalt);
         Map(new[] { "Ext_SidewalkConcrete", "Ext_CourtyardStonePaving", "Expansion_Path", "GF_Compound_Paving" }, paving);
         Map(new[] { "Expansion_Ground", "GF_Compound_Dry_Earth" }, dryEarth);
-        Map(new[] { "Ext_GrassOlive", "Ext_FoliageNaturalGreen", "Ext_TreeBarkBrown", "Office_Plant",
+        Map(new[] { "Ext_GrassOlive", "Ext_FoliageNaturalGreen", "Office_Plant",
             "GF_Office_Plant", "Expansion_Grass", "Expansion_Tree", "Expansion_Bush",
             "GF_Compound_Olive_Grass", "GF_Compound_Tree_Foliage", "GF_Compound_Bush_Foliage" }, grass);
-        Map(new[] { "Roof_ModernSlate", "Expansion_Roof", "GF_Compound_Terracotta_Roof" }, roof);
+        Map(new[] { "Expansion_Roof", "GF_Compound_Terracotta_Roof" }, roof);
         Map(new[] { "Glass_TintedBlueGrey", "Office_Glass_Blue", "GF_Office_Glass",
             "Expansion_Glass", "GF_Compound_Tinted_Glass" }, glass);
         Map(new[] { "Expansion_Sign", "GF_Compound_Sign_Dark_Green" }, signDark);
