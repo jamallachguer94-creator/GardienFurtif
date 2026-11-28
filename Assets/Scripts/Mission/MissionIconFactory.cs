@@ -10,6 +10,10 @@ public static class MissionIconFactory
     public enum IconKind
     {
         GuidePortrait,
+        ThiefPortrait,
+        VillainPortrait,
+        ResultsClock,
+        ResultsMoneyBag,
         Dossier,
         ExitDoor,
         Checkmark,
@@ -208,6 +212,51 @@ public static class MissionIconFactory
 
             case IconKind.StarEmpty:
                 FillStar(p, s, center, center, s * 0.44f, s * 0.19f, new Color(0.28f, 0.32f, 0.38f, 0.85f));
+                break;
+
+            case IconKind.ThiefPortrait:
+                FillCircle(p, s, center, center, s * 0.47f, new Color(0.98f, 0.52f, 0.08f, 1f));
+                FillRing(p, s, center, center, s * 0.41f, s * 0.47f, new Color(0.14f, 0.10f, 0.08f, 1f));
+                FillEllipse(p, s, center, s * 0.48f, s * 0.28f, s * 0.34f, new Color(0.66f, 0.43f, 0.30f, 1f));
+                FillEllipse(p, s, center, s * 0.76f, s * 0.34f, s * 0.18f, new Color(0.08f, 0.09f, 0.11f, 1f));
+                FillRect(p, s, s * 0.19f, s * 0.49f, s * 0.62f, s * 0.17f, new Color(0.045f, 0.05f, 0.06f, 1f));
+                FillRect(p, s, s * 0.26f, s * 0.55f, s * 0.19f, s * 0.045f, Color.white);
+                FillRect(p, s, s * 0.55f, s * 0.55f, s * 0.19f, s * 0.045f, Color.white);
+                FillEllipse(p, s, center, s * 0.25f, s * 0.20f, s * 0.07f, new Color(0.16f, 0.09f, 0.07f, 1f));
+                FillRect(p, s, s * 0.18f, s * 0.17f, s * 0.64f, s * 0.07f, new Color(0.16f, 0.10f, 0.07f, 1f));
+                FillRect(p, s, s * 0.35f, s * 0.20f, s * 0.30f, s * 0.04f, new Color(0.96f, 0.50f, 0.08f, 1f));
+                break;
+
+            case IconKind.VillainPortrait:
+                FillCircle(p, s, center, center, s * 0.47f, new Color(0.28f, 0.43f, 0.20f, 1f));
+                FillRing(p, s, center, center, s * 0.41f, s * 0.47f, new Color(0.13f, 0.10f, 0.08f, 1f));
+                FillEllipse(p, s, center, s * 0.48f, s * 0.29f, s * 0.34f, new Color(0.78f, 0.69f, 0.52f, 1f));
+                FillEllipse(p, s, s * 0.19f, s * 0.72f, s * 0.17f, s * 0.25f, new Color(0.92f, 0.91f, 0.84f, 1f));
+                FillEllipse(p, s, s * 0.81f, s * 0.72f, s * 0.17f, s * 0.25f, new Color(0.92f, 0.91f, 0.84f, 1f));
+                FillRect(p, s, s * 0.18f, s * 0.51f, s * 0.64f, s * 0.13f, new Color(0.18f, 0.85f, 0.29f, 1f));
+                FillRect(p, s, s * 0.22f, s * 0.55f, s * 0.22f, s * 0.045f, Color.white);
+                FillRect(p, s, s * 0.56f, s * 0.55f, s * 0.22f, s * 0.045f, Color.white);
+                FillRect(p, s, s * 0.37f, s * 0.31f, s * 0.26f, s * 0.055f, new Color(0.22f, 0.12f, 0.08f, 1f));
+                FillRect(p, s, s * 0.31f, s * 0.20f, s * 0.38f, s * 0.06f, new Color(0.90f, 0.90f, 0.84f, 1f));
+                break;
+
+            case IconKind.ResultsClock:
+                FillCircle(p, s, center, center, s * 0.46f, new Color(1f, 0.72f, 0.08f, 1f));
+                FillRing(p, s, center, center, s * 0.37f, s * 0.46f, new Color(0.18f, 0.12f, 0.07f, 1f));
+                FillCircle(p, s, center, center, s * 0.34f, new Color(1f, 0.86f, 0.28f, 1f));
+                DrawLine(p, s, new Vector2(center, center), new Vector2(center, s * 0.68f), s * 0.035f, new Color(0.22f, 0.15f, 0.08f, 1f));
+                DrawLine(p, s, new Vector2(center, center), new Vector2(s * 0.68f, s * 0.42f), s * 0.035f, new Color(0.22f, 0.15f, 0.08f, 1f));
+                FillCircle(p, s, center, center, s * 0.05f, new Color(0.22f, 0.15f, 0.08f, 1f));
+                break;
+
+            case IconKind.ResultsMoneyBag:
+                FillCircle(p, s, center, center, s * 0.46f, new Color(1f, 0.72f, 0.08f, 1f));
+                FillRing(p, s, center, center, s * 0.40f, s * 0.46f, new Color(0.18f, 0.12f, 0.07f, 1f));
+                FillEllipse(p, s, center, s * 0.43f, s * 0.25f, s * 0.30f, new Color(0.89f, 0.59f, 0.08f, 1f));
+                FillRect(p, s, s * 0.34f, s * 0.64f, s * 0.32f, s * 0.10f, new Color(0.72f, 0.40f, 0.04f, 1f));
+                FillTriangle(p, s, new Vector2(center, s * 0.86f), new Vector2(s * 0.37f, s * 0.70f), new Vector2(s * 0.63f, s * 0.70f), new Color(0.95f, 0.70f, 0.15f, 1f));
+                FillRect(p, s, s * 0.46f, s * 0.35f, s * 0.08f, s * 0.22f, new Color(1f, 0.88f, 0.40f, 1f));
+                FillCircle(p, s, center, s * 0.46f, s * 0.065f, new Color(1f, 0.88f, 0.40f, 1f));
                 break;
 
             case IconKind.LootBag:
