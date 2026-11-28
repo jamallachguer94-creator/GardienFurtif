@@ -232,6 +232,8 @@ public static class OfficeHeistSecretBasementBuilder
             restoredDoors = RestoreOriginalOfficeDoors(officeObject.transform);
         }
 
+        if (AssetDatabase.IsValidFolder(MaterialFolder))
+            AssetDatabase.DeleteAsset(MaterialFolder);
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
         EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
