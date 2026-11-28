@@ -2,13 +2,13 @@ using UnityEngine;
 using UnityEngine.AI;
 
 /// <summary>
-/// Interactive swing door for the Gardien Furtif basement preview.
-/// Aim at the door and press E while inside its interaction area.
-/// Its NavMeshObstacle is removed while open so guards can pass through.
+/// Interactive swing door. The interaction trigger stays fixed while only the
+/// pivot and door panel rotate. Aim at the panel and press E while nearby.
 /// </summary>
 [DisallowMultipleComponent]
 public sealed class OfficeDoorController : MonoBehaviour
 {
+    [SerializeField] private Transform doorPivot;
     [SerializeField] private Transform doorPanel;
     [SerializeField] private string doorLabel = "Door";
     [SerializeField] private KeyCode interactionKey = KeyCode.E;
@@ -24,8 +24,14 @@ public sealed class OfficeDoorController : MonoBehaviour
 
     public bool IsOpen { get; private set; }
 
-    public void Configure(Transform panel, string label, float angle, float speed)
+    public void Configure(
+        Transform pivot,
+        Transform panel,
+        string label,
+        float angle,
+        float speed)
     {
+        doorPivot = pivot;
         doorPanel = panel;
         doorLabel = string.IsNullOrWhiteSpace(label) ? "Door" : label;
         openAngle = angle;
@@ -42,8 +48,14 @@ public sealed class OfficeDoorController : MonoBehaviour
 
     private void CacheReferences()
     {
-        if (doorPanel == null && transform.childCount > 0)
-            doorPanel = transform.GetChild(0);
+        if (doorPivot == null)
+            doorPivot = transform.Find("SwingPivot");
+
+        if (doorPivot == null)
+            doorPivot = transform;
+
+        if (doorPanel == null && doorPivot != null)
+            doorPanel = doorPivot.Find("DoorPanel");
 
         if (doorPanel == null) return;
 
@@ -61,7 +73,8 @@ public sealed class OfficeDoorController : MonoBehaviour
 
     private void RecalculateRotations()
     {
-        closedRotation = transform.localRotation;
+        if (doorPivot == null) return;
+        closedRotation = doorPivot.localRotation;
         openRotation = closedRotation * Quaternion.AngleAxis(openAngle, Vector3.up);
     }
 
@@ -72,18 +85,21 @@ public sealed class OfficeDoorController : MonoBehaviour
         if (focused && Input.GetKeyDown(interactionKey))
         {
             IsOpen = !IsOpen;
+
             if (navObstacle != null)
                 navObstacle.enabled = false;
 
             Debug.Log($"[OfficeDoor] {doorLabel}: {(IsOpen ? "opened" : "closing")}");
         }
 
+        if (doorPivot == null) return;
+
         Quaternion target = IsOpen ? openRotation : closedRotation;
-        transform.localRotation = Quaternion.Slerp(
-            transform.localRotation, target, Time.deltaTime * animationSpeed);
+        doorPivot.localRotation = Quaternion.Slerp(
+            doorPivot.localRotation, target, Time.deltaTime * animationSpeed);
 
         if (navObstacle != null && !IsOpen &&
-            Quaternion.Angle(transform.localRotation, closedRotation) < 2f)
+            Quaternion.Angle(doorPivot.localRotation, closedRotation) < 2f)
         {
             navObstacle.enabled = true;
         }
