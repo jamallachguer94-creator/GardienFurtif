@@ -48,7 +48,7 @@ public class MissionHUD : MonoBehaviour
 
         objectiveStyle = new GUIStyle(GUI.skin.label)
         {
-            fontSize = 19,
+            fontSize = 26,
             fontStyle = FontStyle.Bold,
             wordWrap = true,
             alignment = TextAnchor.MiddleLeft
@@ -57,16 +57,16 @@ public class MissionHUD : MonoBehaviour
 
         promptStyle = new GUIStyle(GUI.skin.label)
         {
-            fontSize = 18,
+            fontSize = 24,
             fontStyle = FontStyle.Bold,
             alignment = TextAnchor.MiddleCenter,
             wordWrap = true
         };
         promptStyle.normal.textColor = Color.white;
 
-        feedbackStyle = new GUIStyle(promptStyle) { fontSize = 17 };
-        endTitleStyle = new GUIStyle(promptStyle) { fontSize = 34 };
-        endMessageStyle = new GUIStyle(promptStyle) { fontSize = 19, fontStyle = FontStyle.Normal };
+        feedbackStyle = new GUIStyle(promptStyle) { fontSize = 22 };
+        endTitleStyle = new GUIStyle(promptStyle) { fontSize = 44 };
+        endMessageStyle = new GUIStyle(promptStyle) { fontSize = 25, fontStyle = FontStyle.Normal };
     }
 
     private void OnGUI()
@@ -76,14 +76,14 @@ public class MissionHUD : MonoBehaviour
         EnsureStyles();
 
         GUI.color = new Color(0.04f, 0.05f, 0.07f, 0.82f);
-        GUI.Box(new Rect(18, 18, 430, 76), GUIContent.none);
+        GUI.Box(new Rect(18, 18, 560, 96), GUIContent.none);
         GUI.color = Color.white;
-        GUI.Label(new Rect(34, 28, 398, 56), objective, objectiveStyle);
+        GUI.Label(new Rect(40, 30, 520, 68), objective, objectiveStyle);
 
         if (!string.IsNullOrEmpty(prompt) && !showEnd)
         {
-            float width = Mathf.Min(560f, Screen.width - 40f);
-            Rect promptRect = new Rect((Screen.width - width) * 0.5f, Screen.height - 112f, width, 54f);
+            float width = Mathf.Min(760f, Screen.width - 40f);
+            Rect promptRect = new Rect((Screen.width - width) * 0.5f, Screen.height - 138f, width, 72f);
             GUI.color = new Color(0.02f, 0.03f, 0.04f, 0.88f);
             GUI.Box(promptRect, GUIContent.none);
             GUI.color = Color.white;
@@ -92,7 +92,7 @@ public class MissionHUD : MonoBehaviour
 
         if (!string.IsNullOrEmpty(feedback) && Time.unscaledTime <= feedbackUntil && !showEnd)
         {
-            float width = Mathf.Min(680f, Screen.width - 40f);
+            float width = Mathf.Min(840f, Screen.width - 40f);
             Rect feedbackRect = new Rect((Screen.width - width) * 0.5f, 112f, width, 52f);
             GUI.color = new Color(0.02f, 0.03f, 0.04f, 0.88f);
             GUI.Box(feedbackRect, GUIContent.none);
@@ -105,9 +105,9 @@ public class MissionHUD : MonoBehaviour
             GUI.color = new Color(0f, 0f, 0f, 0.78f);
             GUI.Box(new Rect(0, 0, Screen.width, Screen.height), GUIContent.none);
             GUI.color = success ? new Color(0.25f, 0.9f, 0.45f) : new Color(1f, 0.35f, 0.3f);
-            GUI.Label(new Rect(40, Screen.height * 0.34f, Screen.width - 80, 65), endTitle, endTitleStyle);
+            GUI.Label(new Rect(40, Screen.height * 0.32f, Screen.width - 80, 84), endTitle, endTitleStyle);
             GUI.color = Color.white;
-            GUI.Label(new Rect(Screen.width * 0.2f, Screen.height * 0.46f, Screen.width * 0.6f, 90), endMessage, endMessageStyle);
+            GUI.Label(new Rect(Screen.width * 0.2f, Screen.height * 0.45f, Screen.width * 0.68f, 130), endMessage, endMessageStyle);
         }
 
         GUI.color = Color.white;
