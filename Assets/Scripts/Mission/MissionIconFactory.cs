@@ -40,6 +40,23 @@ public static class MissionIconFactory
         if (Cache.TryGetValue(kind, out Sprite cached) && cached != null)
             return cached;
 
+        // Full-resolution, original character art is stored in Resources so it also
+        // loads in Play Mode without assigning scene references or creating UI prefabs.
+        if (kind == IconKind.ThiefPortrait || kind == IconKind.VillainPortrait)
+        {
+            Texture2D portraitTexture = Resources.Load<Texture2D>("GardienFurtif/UI/" + kind);
+            if (portraitTexture != null)
+            {
+                Sprite portraitSprite = Sprite.Create(
+                    portraitTexture,
+                    new Rect(0f, 0f, portraitTexture.width, portraitTexture.height),
+                    new Vector2(0.5f, 0.5f),
+                    100f);
+                Cache[kind] = portraitSprite;
+                return portraitSprite;
+            }
+        }
+
         Sprite created = CreateIconSprite(kind, 64);
         Cache[kind] = created;
         return created;
