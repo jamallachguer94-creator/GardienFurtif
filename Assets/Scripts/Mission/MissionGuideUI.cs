@@ -11,7 +11,7 @@ public class MissionGuideUI : MonoBehaviour
 {
     [Header("Guide Character Visuals")]
     [SerializeField] private Sprite guidePortrait;
-    [SerializeField] private string guideName = "HANDLER // FOX";
+    [SerializeField] private string guideName = "FIELD AGENT // SHADOW";
 
     [Header("Typewriter & Animation")]
     [SerializeField] private bool enableTypewriter = true;
@@ -32,7 +32,7 @@ public class MissionGuideUI : MonoBehaviour
 
     public Sprite GuidePortrait
     {
-        get => guidePortrait != null ? guidePortrait : MissionIconFactory.GetIcon(MissionIconFactory.IconKind.GuidePortrait);
+        get => guidePortrait != null ? guidePortrait : MissionIconFactory.GetIcon(MissionIconFactory.IconKind.ThiefPortrait);
         set
         {
             guidePortrait = value;
@@ -159,7 +159,7 @@ public class MissionGuideUI : MonoBehaviour
     public void ShowMissionStartDialogue()
     {
         ShowGuideMessage(
-            "Your mission: Find the main dossier. Search the office and collect valuable objects.",
+            "Your mission: steal the main dossier, collect the valuables and escape without getting caught.",
             MissionIconFactory.GetIcon(MissionIconFactory.IconKind.Dossier),
             "MISSION_START");
     }
@@ -167,7 +167,7 @@ public class MissionGuideUI : MonoBehaviour
     public void ShowNearDossierDialogue()
     {
         ShowGuideMessage(
-            "The important dossier is nearby. Collect it!",
+            "The main dossier is close. Stay quiet, take it and watch the guards!",
             MissionIconFactory.GetIcon(MissionIconFactory.IconKind.Dossier),
             "NEAR_DOSSIER");
     }
@@ -175,8 +175,8 @@ public class MissionGuideUI : MonoBehaviour
     public void ShowDossierCollectedDialogue(bool exitReadyNow)
     {
         string text = exitReadyNow
-            ? "Excellent! You got the main dossier. Now find the exit!"
-            : "Excellent! You got the main dossier. Collect the required loot to unlock the exit!";
+            ? "Perfect! You have the dossier. Reach the exit and get out of here!"
+            : "You got the dossier! The exit is still locked. Find the remaining required loot!";
 
         ShowGuideMessage(
             text,
@@ -203,8 +203,8 @@ public class MissionGuideUI : MonoBehaviour
     public void ShowAllLootCollectedDialogue(bool hasDossier)
     {
         string msg = hasDossier
-            ? "Excellent! All valuable objects have been collected. Now get to the exit!"
-            : "Excellent! All valuable objects have been collected. Now grab the main dossier!";
+            ? "All the valuables are yours! Now head to the exit before anyone spots you!"
+            : "The loot is secured. Now find the main dossier!";
 
         ShowGuideMessage(
             msg,
@@ -223,7 +223,7 @@ public class MissionGuideUI : MonoBehaviour
     public void ShowMissionCompletedDialogue()
     {
         ShowGuideMessage(
-            "Perfect job! Mission completed!",
+            "You made it out! Excellent work, thief!",
             MissionIconFactory.GetIcon(MissionIconFactory.IconKind.Checkmark),
             "MISSION_COMPLETED");
     }
@@ -231,7 +231,7 @@ public class MissionGuideUI : MonoBehaviour
     public void ShowMissionFailedDialogue(string reason)
     {
         ShowGuideMessage(
-            $"Mission failed! {reason}",
+            $"You were caught! {reason}",
             MissionIconFactory.GetIcon(MissionIconFactory.IconKind.Lock),
             "MISSION_FAILED");
     }
