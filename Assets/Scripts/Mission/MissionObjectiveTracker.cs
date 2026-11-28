@@ -251,15 +251,15 @@ public class MissionObjectiveTracker : MonoBehaviour
                 GameObject row = new GameObject($"LootRow_{item.DisplayName}");
                 row.transform.SetParent(individualLootListContainer, false);
                 RectTransform rowRect = row.AddComponent<RectTransform>();
-                rowRect.sizeDelta = new Vector2(310f, 22f);
+                rowRect.sizeDelta = new Vector2(360f, 30f);
 
                 GameObject iconObj = new GameObject("Icon");
                 iconObj.transform.SetParent(rowRect, false);
                 RectTransform iconRect = iconObj.AddComponent<RectTransform>();
                 iconRect.anchorMin = new Vector2(0f, 0.5f);
                 iconRect.anchorMax = new Vector2(0f, 0.5f);
-                iconRect.anchoredPosition = new Vector2(12f, 0f);
-                iconRect.sizeDelta = new Vector2(18f, 18f);
+                iconRect.anchoredPosition = new Vector2(14f, 0f);
+                iconRect.sizeDelta = new Vector2(24f, 24f);
                 Image iconImg = iconObj.AddComponent<Image>();
                 iconImg.preserveAspect = true;
 
@@ -268,23 +268,27 @@ public class MissionObjectiveTracker : MonoBehaviour
                 RectTransform txtRect = txtObj.AddComponent<RectTransform>();
                 txtRect.anchorMin = new Vector2(0f, 0f);
                 txtRect.anchorMax = new Vector2(1f, 1f);
-                txtRect.offsetMin = new Vector2(28f, 0f);
+                txtRect.offsetMin = new Vector2(36f, 0f);
                 txtRect.offsetMax = new Vector2(-58f, 0f);
                 Text lbl = txtObj.AddComponent<Text>();
                 lbl.font = font;
-                lbl.fontSize = 12;
+                lbl.fontSize = 16;
                 lbl.alignment = TextAnchor.MiddleLeft;
+                lbl.fontStyle = FontStyle.Bold;
+                lbl.color = IncompleteColor;
+                lbl.horizontalOverflow = HorizontalWrapMode.Wrap;
+                lbl.verticalOverflow = VerticalWrapMode.Truncate;
 
                 GameObject valObj = new GameObject("Value");
                 valObj.transform.SetParent(rowRect, false);
                 RectTransform valRect = valObj.AddComponent<RectTransform>();
                 valRect.anchorMin = new Vector2(1f, 0f);
                 valRect.anchorMax = new Vector2(1f, 1f);
-                valRect.offsetMin = new Vector2(-56f, 0f);
-                valRect.offsetMax = new Vector2(-4f, 0f);
+                valRect.offsetMin = new Vector2(-72f, 0f);
+                valRect.offsetMax = new Vector2(-6f, 0f);
                 Text valTxt = valObj.AddComponent<Text>();
                 valTxt.font = font;
-                valTxt.fontSize = 11;
+                valTxt.fontSize = 14;
                 valTxt.fontStyle = FontStyle.Bold;
                 valTxt.alignment = TextAnchor.MiddleRight;
 
