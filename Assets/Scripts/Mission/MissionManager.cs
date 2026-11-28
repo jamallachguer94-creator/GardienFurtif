@@ -666,9 +666,9 @@ public class MissionManager : MonoBehaviour
         // 2. MISSION GUIDE CHARACTER UI (Top-Left)
         GameObject guideObj = CreateUIObject("MissionGuidePanel", canvasRect);
         RectTransform guideRect = guideObj.GetComponent<RectTransform>();
-        guideRect.anchorMin = new Vector2(0f, 1f);
-        guideRect.anchorMax = new Vector2(0f, 1f);
-        guideRect.pivot = new Vector2(0f, 1f);
+        guideRect.anchorMin = new Vector2(0f, 0f);
+        guideRect.anchorMax = new Vector2(0f, 0f);
+        guideRect.pivot = new Vector2(0f, 0f);
         guideRect.anchoredPosition = new Vector2(24f, 24f);
         guideRect.sizeDelta = new Vector2(1320f, 240f);
 
@@ -686,7 +686,7 @@ public class MissionManager : MonoBehaviour
         pfBg.sprite = MissionIconFactory.GetIcon(MissionIconFactory.IconKind.CircleFill);
         pfBg.color = new Color(1f, 0.65f, 0.12f, 1f);
 
-        Image portraitImg = CreateUIIcon("PortraitImage", pfRect, Vector2.zero, new Vector2(88f, 88f), MissionIconFactory.GetIcon(MissionIconFactory.IconKind.GuidePortrait));
+        Image portraitImg = CreateUIIcon("PortraitImage", pfRect, Vector2.zero, new Vector2(174f, 174f), MissionIconFactory.GetIcon(MissionIconFactory.IconKind.ThiefPortrait));
         portraitImg.rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
         portraitImg.rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
 
@@ -716,10 +716,18 @@ public class MissionManager : MonoBehaviour
         Text speakerTxt = CreateUIText("SpeakerName", bubbleRect, font, "FIELD AGENT // SHADOW", 23, FontStyle.Bold, TextAnchor.UpperLeft, new Color(0.30f, 0.17f, 0.075f, 1f));
         speakerTxt.rectTransform.offsetMin = new Vector2(26f, 12f);
         speakerTxt.rectTransform.offsetMax = new Vector2(-90f, -12f);
+        speakerTxt.resizeTextForBestFit = true;
+        speakerTxt.resizeTextMinSize = 19;
+        speakerTxt.resizeTextMaxSize = 23;
 
-        Text guideMsgTxt = CreateUIText("DialogueMessage", bubbleRect, font, "Your mission: steal the main dossier, collect the valuables and escape without getting caught.", 28, FontStyle.Bold, TextAnchor.MiddleLeft, Color.white);
+        Text guideMsgTxt = CreateUIText("DialogueMessage", bubbleRect, font, "Your mission: steal the main dossier, collect the valuables and escape without getting caught.", 28, FontStyle.Bold, TextAnchor.MiddleLeft, new Color(0.18f, 0.12f, 0.07f, 1f));
         guideMsgTxt.rectTransform.offsetMin = new Vector2(26f, 16f);
         guideMsgTxt.rectTransform.offsetMax = new Vector2(-96f, -62f);
+        guideMsgTxt.resizeTextForBestFit = true;
+        guideMsgTxt.resizeTextMinSize = 20;
+        guideMsgTxt.resizeTextMaxSize = 28;
+        guideMsgTxt.horizontalOverflow = HorizontalWrapMode.Wrap;
+        guideMsgTxt.verticalOverflow = VerticalWrapMode.Overflow;
 
         Image contextBadgeImg = CreateUIIcon("ContextObjectiveIcon", bubbleRect, new Vector2(-46f, 0f), new Vector2(64f, 64f), MissionIconFactory.GetIcon(MissionIconFactory.IconKind.Dossier));
         contextBadgeImg.rectTransform.anchorMin = new Vector2(1f, 0.5f);
