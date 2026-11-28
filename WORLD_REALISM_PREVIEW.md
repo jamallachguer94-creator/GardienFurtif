@@ -17,8 +17,9 @@ This branch is based on `feature/reception-realism-preview`, so it keeps the sep
 
 1. For existing static office doors, run **Tools > Gardien Furtif > Secret Basement > 2. Upgrade Existing Office Doors**. A newly built main office already creates interactive doors.
 2. To add the thief's underground level, run **Tools > Gardien Furtif > Secret Basement > 1. Build Preview**. This also upgrades existing office doors and is reversible.
-3. Run **Tools > Gardien Furtif > World Realism > 1. Restore Original Door Colors** if you only want the door repair, or go straight to the full preview (it restores the original door materials automatically).
-4. Run **Tools > Gardien Furtif > World Realism > 2. Build Whole World Realism Preview**.
+3. For the detailed reception furniture and finishes, run **Tools > Gardien Furtif > Reception Realism > 1. Build Reception Preview**.
+4. Run **Tools > Gardien Furtif > World Realism > 1. Restore Original Door Colors** if you only want the door repair, or go straight to the full preview (it restores the original door materials automatically).
+5. Run **Tools > Gardien Furtif > World Realism > 2. Build Whole World Realism Preview**.
 
 ## Menus
 
@@ -26,6 +27,7 @@ This branch is based on `feature/reception-realism-preview`, so it keeps the sep
 - **Tools > Gardien Furtif > World Realism > 2. Build Whole World Realism Preview**
 - **Tools > Gardien Furtif > World Realism > 3. Remove Preview & Restore Materials**
 - **Tools > Gardien Furtif > Secret Basement > 3. Remove Preview & Restore Office**
+- **Tools > Gardien Furtif > Reception Realism > 2. Remove Preview & Restore Original**
 
 Run the door-color command first if you only want to repair the existing scene. The build command also restores original builder door/frame materials before applying the realism pass.
 
@@ -55,7 +57,7 @@ Run the door-color command first if you only want to repair the existing scene. 
 
 ## Revert and validation
 
-Use **World Realism > 3. Remove Preview & Restore Materials** to remove the world-only geometry/actors and restore the material assignments captured before the preview. The explicit correction to original door colors is kept. To remove the basement as well, then use **Secret Basement > 3. Remove Preview & Restore Office**.
+Use **World Realism > 3. Remove Preview & Restore Materials** to remove the world-only geometry/actors and restore the material assignments captured before the preview. The explicit correction to original door colors is kept. To remove the other previews too, use **Reception Realism > 2. Remove Preview & Restore Original** for the reception, and **Secret Basement > 3. Remove Preview & Restore Office** for the basement.
 
 This is procedural geometry and procedural textures, not imported photorealistic asset packs or scanned 3D people/vehicles/animals. Unity runtime, lighting appearance, transparent glass, character facing, path clearance and frame rate still need testing in the actual scene. No Unity runtime test was run from this branch creation.
 
