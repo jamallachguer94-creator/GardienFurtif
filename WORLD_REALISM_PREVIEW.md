@@ -14,11 +14,12 @@ This is a combined preview branch containing the Reception Realism Preview, the 
 
 ## Recommended build order
 
-1. For existing static office doors, run **Tools > Gardien Furtif > Secret Basement > 2. Upgrade Existing Office Doors**. A newly built main office already creates interactive doors.
-2. To add the thief's underground level, run **Tools > Gardien Furtif > Secret Basement > 1. Build Preview**. This also upgrades existing office doors and is reversible.
+1. If the outdoor compound is missing, run **Gardien Furtif > Environment > Complete Existing Office Compound**.
+2. To add the thief's underground hideout, run **Tools > Gardien Furtif > Secret Basement > 1. Build Preview**. The hideout is placed under the side Workshop building; the main-office staircase is restored.
 3. For the detailed reception furniture and finishes, run **Tools > Gardien Furtif > Reception Realism > 1. Build Reception Preview**.
 4. Run **Tools > Gardien Furtif > World Realism > 1. Restore Original Door Colors** if you only want the door repair, or go straight to the full preview (it restores the original door materials automatically).
 5. Run **Tools > Gardien Furtif > World Realism > 2. Build Whole World Realism Preview**.
+6. If the Mission UI needs to be regenerated, run **Tools > Gardien Furtif > Mission > 2. Build / Update Mission UI**. This rebuilds the UI Canvas and saves the MissionUI prefab.
 
 ## Menus
 
@@ -46,11 +47,22 @@ Run the door-color command first if you only want to repair the existing scene. 
 - Adds four low-detail ambient pedestrians on outside paths/courtyards.
 - Adds one dog and one cat walking only in outside courtyard routes.
 
+## Mission guide and results UI
+
+- The guide character appears in a large lower-left speech panel with the original thief illustration and a readable typewriter message.
+- Objective rows, loot text, interaction prompts and feedback text have been enlarged.
+- The interaction prompt is a dark amber oval with a high-contrast outline and is kept above the dialogue panel.
+- The win/loss screen uses a large orange/gold round medallion, a large loot-value score, three-star rating, objective stats and a character illustration. The thief appears on success; the eccentric villain appears on failure.
+- Original character art is loaded from `Assets/Resources/GardienFurtif/UI/`. Unity imports these PNGs as Resources textures; the icon factory creates runtime Sprites from them.
+- The result screen pauses gameplay and the Retry button / `R` key restarts `Office_Heist`. The scene is now listed in Build Settings so replay has a valid build index.
+- No separate Main Menu or next-level scene exists in the current project, so the result screen deliberately does not show non-functional Menu/Next buttons.
+
 ## Gameplay isolation
 
 - Cars, pedestrians and animals are generated only under `WorldRealism_PREVIEW` and only at outer-road/courtyard coordinates.
 - Ambient actors have no colliders, rigidbodies, NavMeshAgents, tags, audio emitters or gameplay scripts; movement is a lightweight waypoint animation.
 - The world realism pass does not change the Player, Mission System, Guard AI, patrol points, spawn points, door interaction logic or objective triggers. It only restores the original wood material on the office door panels and frames.
+- The underground hideout is a separate preview below `05 - Workshop`; it uses a hinged trapdoor with the existing `OfficeDoorController` interaction. The main office stairwell opening is no longer used.
 - Door renderers are excluded from the general material remapping. Original dark-walnut material is restored to the office door panels, leaves, jambs, header trims and wooden insets; separate metal handles keep their metal finish. The preview-removal command preserves the door-color correction.
 - Original shared materials for other remapped renderers are captured and restored when the preview is removed.
 
