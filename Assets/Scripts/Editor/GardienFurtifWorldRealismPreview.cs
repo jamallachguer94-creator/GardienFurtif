@@ -1049,8 +1049,12 @@ public static class GardienFurtifWorldRealismPreview
 
         CreateLocalSphere(visual, "Head", new Vector3(0f, 1.59f, 0f), new Vector3(0.22f, 0.27f, 0.22f), skin);
         CreateLocalCylinder(visual, "Neck", new Vector3(0f, 1.38f, 0f), new Vector3(0.08f, 0.10f, 0.08f), skin, false, Quaternion.identity);
-        CreateLocalBox(visual, "Torso", new Vector3(0f, 1.03f, 0f), new Vector3(0.46f, 0.63f, 0.28f), shirt, false);
-        CreateLocalBox(visual, "Pelvis", new Vector3(0f, 0.68f, 0f), new Vector3(0.40f, 0.20f, 0.25f), trousers, false);
+        CreateLocalCapsule(visual, "Torso", new Vector3(0f, 1.03f, 0f), new Vector3(0.23f, 0.32f, 0.14f), shirt, false);
+        CreateLocalCapsule(visual, "Pelvis", new Vector3(0f, 0.68f, 0f), new Vector3(0.20f, 0.10f, 0.125f), trousers, false);
+        CreateLocalSphere(visual, "Hair_Cap", new Vector3(0f, 1.72f, 0.015f), new Vector3(0.225f, 0.095f, 0.225f), darkMetal);
+        CreateLocalSphere(visual, "Eye_Left", new Vector3(-0.065f, 1.625f, -0.096f), new Vector3(0.025f, 0.030f, 0.018f), darkMetal);
+        CreateLocalSphere(visual, "Eye_Right", new Vector3(0.065f, 1.625f, -0.096f), new Vector3(0.025f, 0.030f, 0.018f), darkMetal);
+        CreateLocalSphere(visual, "Nose", new Vector3(0f, 1.565f, -0.115f), new Vector3(0.030f, 0.035f, 0.022f), skin);
 
         Transform leftLeg = Group("Left_Leg_Pivot", visual);
         leftLeg.localPosition = new Vector3(-0.13f, 0.63f, 0f);
@@ -1110,7 +1114,10 @@ public static class GardienFurtifWorldRealismPreview
         CreateLocalBox(visual, "Body", new Vector3(0f, 0.54f, 0.05f), new Vector3(0.34f, 0.40f, 0.86f), dogFur, false);
         CreateLocalSphere(visual, "Chest", new Vector3(0f, 0.58f, -0.33f), new Vector3(0.34f, 0.40f, 0.36f), dogFur);
         CreateLocalSphere(visual, "Head", new Vector3(0f, 0.77f, -0.47f), new Vector3(0.30f, 0.31f, 0.31f), dogFur);
-        CreateLocalBox(visual, "Muzzle", new Vector3(0f, 0.66f, -0.72f), new Vector3(0.22f, 0.14f, 0.24f), paleStone, false);
+        CreateLocalSphere(visual, "Muzzle", new Vector3(0f, 0.66f, -0.69f), new Vector3(0.25f, 0.16f, 0.24f), paleStone);
+        CreateLocalSphere(visual, "Eye_Left", new Vector3(-0.095f, 0.83f, -0.625f), new Vector3(0.035f, 0.040f, 0.028f), darkMetal);
+        CreateLocalSphere(visual, "Eye_Right", new Vector3(0.095f, 0.83f, -0.625f), new Vector3(0.035f, 0.040f, 0.028f), darkMetal);
+        CreateLocalSphere(visual, "Nose", new Vector3(0f, 0.70f, -0.82f), new Vector3(0.055f, 0.045f, 0.035f), darkMetal);
         CreateLocalBox(visual, "Ear_Left", new Vector3(-0.19f, 0.98f, -0.43f), new Vector3(0.10f, 0.22f, 0.12f), walnut, false);
         CreateLocalBox(visual, "Ear_Right", new Vector3(0.19f, 0.98f, -0.43f), new Vector3(0.10f, 0.22f, 0.12f), walnut, false);
         Transform tail = Group("Tail_Pivot", visual);
@@ -1144,6 +1151,9 @@ public static class GardienFurtifWorldRealismPreview
         CreateLocalSphere(visual, "Head", new Vector3(0f, 0.48f, -0.31f), new Vector3(0.22f, 0.23f, 0.22f), catFur);
         CreateLocalSphere(visual, "Ear_Left", new Vector3(-0.13f, 0.66f, -0.36f), new Vector3(0.09f, 0.16f, 0.08f), catFur);
         CreateLocalSphere(visual, "Ear_Right", new Vector3(0.13f, 0.66f, -0.36f), new Vector3(0.09f, 0.16f, 0.08f), catFur);
+        CreateLocalSphere(visual, "Eye_Left", new Vector3(-0.075f, 0.50f, -0.49f), new Vector3(0.035f, 0.045f, 0.025f), darkMetal);
+        CreateLocalSphere(visual, "Eye_Right", new Vector3(0.075f, 0.50f, -0.49f), new Vector3(0.035f, 0.045f, 0.025f), darkMetal);
+        CreateLocalSphere(visual, "Nose", new Vector3(0f, 0.43f, -0.525f), new Vector3(0.035f, 0.028f, 0.022f), carPaintRed);
         Transform tail = Group("Tail_Pivot", visual);
         tail.localPosition = new Vector3(0f, 0.44f, 0.34f);
         CreateLocalCapsule(tail, "Tail", new Vector3(0f, 0.14f, 0.13f), new Vector3(0.045f, 0.25f, 0.045f), catFur, false);
