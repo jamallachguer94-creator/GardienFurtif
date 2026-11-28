@@ -52,7 +52,7 @@ Run the door-color command first if you only want to repair the existing scene. 
 - Cars, pedestrians and animals are generated only under `WorldRealism_PREVIEW` and only at outer-road/courtyard coordinates.
 - Ambient actors have no colliders, rigidbodies, NavMeshAgents, tags, audio emitters or gameplay scripts; movement is a lightweight waypoint animation.
 - The main Player, Mission System, Guard AI, patrol points, spawn points, interior doors and objective triggers are not intentionally modified.
-- Door renderers are excluded from the general material remapping. Original dark-walnut material is restored to the office door panels, leaves, jambs and header trims; separate metal handles and decorative insets keep their own materials. The preview-removal command preserves the door-color correction.
+- Door renderers are excluded from the general material remapping. Original dark-walnut material is restored to the office door panels, leaves, jambs, header trims and wooden insets; separate metal handles keep their metal finish. The preview-removal command preserves the door-color correction.
 - Original shared materials for other remapped renderers are captured and restored when the preview is removed.
 
 ## Revert and validation
