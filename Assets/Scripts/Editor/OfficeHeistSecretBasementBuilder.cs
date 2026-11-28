@@ -17,6 +17,7 @@ public static class OfficeHeistSecretBasementBuilder
     private const string ChangesName = "BasementStairOpening_Changes";
     private const string SlabBackupName = "GF_Structural_Slab__PreviewBackup";
     private const string CorridorBackupName = "GF_Finish_MainCorridor__PreviewBackup";
+    private const string MeetingFinishBackupName = "GF_Finish_MeetingWood__PreviewBackup";
     private const string StairLandingBackupName = "Stair_Bottom_LandingPad__PreviewBackup";
     private const string MaterialFolder = "Assets/Generated/SecretBasement/Materials";
 
@@ -385,6 +386,13 @@ public static class OfficeHeistSecretBasementBuilder
             corridor.gameObject.SetActive(false);
         }
 
+        Transform meetingFinish = floors.Find("GF_Finish_MeetingWood");
+        if (meetingFinish != null)
+        {
+            meetingFinish.name = MeetingFinishBackupName;
+            meetingFinish.gameObject.SetActive(false);
+        }
+
         Transform changes = CreateGroup(ChangesName, floors);
 
         // A 2m x 6m opening at X 11..13 / Z -3.8..2.2, connected to the current stair landing.
@@ -409,6 +417,22 @@ public static class OfficeHeistSecretBasementBuilder
                 new Vector3(13.9f, 0.005f, 0f), new Vector3(1.8f, 0.01f, 3.9f), corridorMat, false);
         }
 
+        // The meeting-room hardwood finish overlaps the southern edge of the stair opening.
+        // Split it into three non-overlapping pieces so no floating floor panel covers the stairs.
+        if (floors.Find(MeetingFinishBackupName) != null)
+        {
+            Material meetingMat = AssetDatabase.LoadAssetAtPath<Material>(
+                "Assets/Generated/OfficeHeist/Materials/Floor_ExecutiveHardwood.mat");
+            if (meetingMat == null) meetingMat = floorAccentMat;
+
+            CreateBox(changes, "GF_MeetingFinish_West",
+                new Vector3(9.55f, 0.005f, -6.0f), new Vector3(2.9f, 0.01f, 7.8f), meetingMat, false);
+            CreateBox(changes, "GF_MeetingFinish_East",
+                new Vector3(13.95f, 0.005f, -6.0f), new Vector3(1.9f, 0.01f, 7.8f), meetingMat, false);
+            CreateBox(changes, "GF_MeetingFinish_SouthStrip",
+                new Vector3(12.0f, 0.005f, -6.85f), new Vector3(2.0f, 0.01f, 6.1f), meetingMat, false);
+        }
+
         return true;
     }
 
@@ -429,6 +453,13 @@ public static class OfficeHeistSecretBasementBuilder
         {
             corridorBackup.name = "GF_Finish_MainCorridor";
             corridorBackup.gameObject.SetActive(true);
+        }
+
+        Transform meetingFinishBackup = floors.Find(MeetingFinishBackupName);
+        if (meetingFinishBackup != null)
+        {
+            meetingFinishBackup.name = "GF_Finish_MeetingWood";
+            meetingFinishBackup.gameObject.SetActive(true);
         }
     }
 
