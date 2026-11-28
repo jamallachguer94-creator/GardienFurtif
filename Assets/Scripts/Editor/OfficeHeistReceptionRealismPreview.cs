@@ -72,12 +72,11 @@ public static class OfficeHeistReceptionRealismPreview
         }
 
         Transform furniture = building.transform.Find("Furniture");
-        Transform originalReception = furniture != null ? furniture.Find("Reception") : null;
-        if (furniture == null || originalReception == null)
+        if (furniture == null)
         {
             EditorUtility.DisplayDialog(
                 "Reception Realism",
-                "The expected Furniture/Reception group was not found. No scene objects were changed.",
+                "The expected Furniture group was not found. No scene objects were changed.",
                 "OK");
             return;
         }
@@ -85,7 +84,17 @@ public static class OfficeHeistReceptionRealismPreview
         int undoGroup = Undo.GetCurrentGroup();
         Undo.SetCurrentGroupName("Build Reception Realism Preview");
 
+        // Restore the original group first so repeated builds remain safe and idempotent.
         RemovePreviewInternal(building.transform, furniture);
+        Transform originalReception = furniture.Find("Reception");
+        if (originalReception == null)
+        {
+            EditorUtility.DisplayDialog(
+                "Reception Realism",
+                "The original Furniture/Reception group was not found. No scene objects were changed.",
+                "OK");
+            return;
+        }
 
         EnsureMaterials();
 
